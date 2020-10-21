@@ -1,0 +1,26 @@
+---
+title: 'MATH 479 Network Science Project'
+author: 'Zhaoheng Li and Zuofu Huang, Fall 2020 Macalester College'
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    split_by: chapter
+    config:
+      toc:
+        collapse: chapter
+        scroll_highlight: yes
+documentclass: book  
+github-repo: zuofuhuang/NetworkProject
+---
+  
+# Preface {-}
+ 
+Hello! Welcome to our final project of Network Science! This bookdown is a work in progress, and please check back early and often (as much as people do to their Github code). Feel free to contact us if you have any questions!
+
+&nbsp;
+
+> Now that we are in the realm of networks, we feel compelled to motivate our project with an xkcd comic related to networks.
+
+![](network.png)
+
+Credit to xkcd: https://xkcd.com/350/

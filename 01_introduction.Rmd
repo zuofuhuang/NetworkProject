@@ -1,0 +1,20 @@
+# Introduction 
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(reshape2)
+library(Matrix)
+library(igraph)
+library(gtools)
+library(gridExtra)
+library(png)
+library(grid)
+library(knitr)
+library(kableExtra)
+```
+
+We are motivated by existing genetic association studies that find the correlation between certain diseases/traits and genetic variants (SNP mutations). We wonder if network analysis can be utilized in the process of association studies. Later, we came across the paper named **Network Analysis of GWAS data (Leiserson et. al, 2013)**, where we first saw the connection made between genetics and network science. This motivates our attempt of finding genetic pathway interactions for a certain disease/trait.
+
+Intuitively, we would like to think of the simplified scenario: a certain disease can be caused by several genetic pathways. Suppose we have $n$ SNP locations previously identified as related to the disease, and $k$ subsets among the SNP locations that in combination cause the disease ($k < n$). Our goal is to simulate data that aligns with the proposed setting, and use network science tools to identify these pathway interactions (pretending that we did not know the underlying *true* subsets).
+
+This process aims at testing the validity of the network science tool we propose. Looking forward, we would like to test how the tool behaves when the dataset we simulate contains genetic information for two diseases: we wonder if the algorithm is capable of picking up pathway interaction patterns for both diseases.

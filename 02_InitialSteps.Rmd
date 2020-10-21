@@ -1,0 +1,218 @@
+# Initial Steps
+
+Our initial thought was that Genome-Wide Association Studies (GWAS) data is widely available
+
+## Simulate original data
+
+We start by creating the dataset. Everyone row is set to the reference level first (i.e. there is no variant).
+
+```{r eval=FALSE}
+n <- 500
+n_disease <- 100
+loci <- 1000
+locus_length <- 200
+```
+
+```{r eval=FALSE}
+reference <- sample(c("A","T","C","G"), size = loci*locus_length, replace = TRUE)
+data <- data.frame(matrix(data = rep(reference, n), nrow = n, ncol = loci * locus_length,byrow = TRUE))
+
+SNP_location <- sample(1:(loci*locus_length), size = 50, replace = FALSE)
+reference_level_SNP_location <- reference[SNP_location]
+```
+
+## Sample mutations for patients at SNP locations
+
+We then sample mutations at SNP locations who were categorized at patients.
+
+```{r eval=FALSE} 
+disease_people_row_number <- sample(1:500, 100, replace = FALSE)
+```
+
+```{r eval=FALSE}
+combo_number <- 15
+SNP_number <- sample(1:6, combo_number, replace = TRUE)
+disease_combo <- list()
+
+for (i in 1:length(SNP_number)){
+  disease_combo[[i]] <- sample(SNP_location, size = SNP_number[i], replace = FALSE)
+}
+
+disease_people_SNP_locations <- list()
+which_combo_they_get <- sample(1:combo_number, n_disease, replace = TRUE)
+```
+
+```{r eval=FALSE}
+#helper functions for decomposition.
+helper2 <- function(char){
+  other_set <- setdiff(c("A","T","G","C"),char)
+  return(sample(other_set,1))
+}
+
+helper3 <- function(char, p = 0.15){
+  random <- runif(1)
+  if (random <= (1-3*p)){
+    return(char)
+  } else if (random <= 1-2*p){
+    return(setdiff(c("A","T","C","G"),char)[1])
+  } else if (random <= (1-p)){
+    return(setdiff(c("A","T","C","G"),char)[2])
+  } else {
+    return(setdiff(c("A","T","C","G"),char)[3])
+  }
+}
+```
+
+```{r eval=FALSE}
+# For patients
+for (i in 1:n_disease){
+  # disease-related SNP mutations first
+  reference_level_SNP_location_copy <- reference_level_SNP_location
+  thiscombo <- disease_combo[[which_combo_they_get[i]]]
+  index <- match(thiscombo, SNP_location)
+  for (j in 1:length(index)){
+    reference_level_SNP_location_copy[index[j]] <- helper2(reference_level_SNP_location[index[j]])
+  }
+  
+  # non-disease-related SNP mutations
+  non_forced_index <- setdiff(1:50, index)
+  for (k in 1:length(non_forced_index)){
+    reference_level_SNP_location_copy[non_forced_index[k]] <- helper3(reference_level_SNP_location[non_forced_index[k]],0.15)
+  }
+
+  data[disease_people_row_number[i],][SNP_location] <- reference_level_SNP_location_copy
+}
+
+```
+
+## Sample mutations for non-patients at SNP locations
+
+We then hypothesize that given a common condition, non-patients are also more likely to have mutations at the SNP locations than at most other locations (e.g. those locations that make human human). 
+
+```{r eval=FALSE}
+# For those who are not set to have disease first (400)
+# Loop over 50 genes, each one has some possibility to mutate. (More likely than the other nucleotides on the genome)
+
+non_disease_row_number <- setdiff(1:500,disease_people_row_number)
+for (i in non_disease_row_number){
+  for (j in SNP_location)
+    data[i,j] <- helper3(data[i,j],0.05)
+}
+```
+
+## Variants at non-SNP locations
+
+The next step is simulating random noise at non-SNP locations to better mimic properties of gene mutations in real life.
+
+```{r eval=FALSE}
+potential_SNP_places <- SNP_location
+
+potential_random_change_sites <- setdiff(1:(loci*locus_length),SNP_location)
+
+for (i in 1:n){
+    random_locus <- sample(potential_random_change_sites, size = (loci*locus_length/1000), replace = FALSE) # definitely change
+    for(j in random_locus){
+      data[i,j] <- helper2(data[i,j])
+      potential_SNP_places <- c(potential_SNP_places, random_locus)
+    }
+}
+
+potential_SNP_places <- unique(potential_SNP_places)
+```
+
+## Screening
+
+With the mutations that non-patients had at SNP locations, some of them may fall into the "disease" status. We then performed a round of screening for 400 people who were initially categorized without the disease. Surprisingly, we found that a large number of people fall into the "disease" status. We were surprised for two reasons:
+
++ The probability of mutations at each location is low.
+
++ Even if many mutations happen for someone, a right "combination of pathways" is needed to achieve the "disease" status, which happens more often than estimated.
+
+```{r eval=FALSE}
+# Do a round of screening for 400 people who did not initially have the disease
+NewPatient <- c()
+for (i in non_disease_row_number){
+    MutatedSNP <- c()
+    for(j in SNP_location){
+      if(isMutated(i,j)){
+        MutatedSNP <- c(MutatedSNP,j)
+      }
+    }
+    for(k in 1:15){
+      if(all(disease_combo[[k]] %in% MutatedSNP)){
+        causalPathway <- c()
+        for(position in disease_combo[[k]]){
+          causalPathway = c(causalPathway,helper2(reference[position]))
+        }
+        if(all(data[i,position] == causalPathway)){
+          NewPatient <- c(NewPatient,i)
+          break
+        }
+      }
+    }
+}
+```
+
+```{r eval=FALSE}
+disease_row_final <- c(disease_people_row_number, NewPatient)
+
+disease_status_vector <- rep(FALSE, 500)
+
+for (i in 1:500){
+  if (i %in% disease_row_final){
+    disease_status_vector[i] <- TRUE
+  }
+}
+```
+
+## Marginal Regression
+
+Once we have simulated potential variants for everyone at every location, we find all places that at least one person has a variation at, select the places and fit a marginal regression at each location against the disease status.
+
+```{r eval=FALSE}
+for (i in potential_SNP_places){
+  reference_level_here <- reference[i]
+  for (j in 1:n){
+    if (data[j,i] == reference_level_here){
+      data[j,i] <- TRUE
+    } else {
+      data[j,i] <- FALSE
+    }
+  }
+}
+
+subdata <- data[,potential_SNP_places]
+```
+
+```{r eval=FALSE}
+isMutated <- function(person,position){
+  if(data[person,position] == reference[position] ){
+    return(FALSE)
+  }
+  else{
+    return(TRUE)
+  }
+}
+```
+
+```{r eval=FALSE}
+for (i in potential_SNP_places){
+  summary(lm(disease_status_vector ~ data[,i]))
+}
+```
+
+## Discussion
+
+Problems with this approach, as we realized later, were that:
+
+- We assumed genetic variants were the only reason people caused the disease, which was almost never the case. 
+
+- People who were initially categorized as non-patients and later changed their status are more than we expected. This casts doubt on the necessity of pre-determining the number of patients (100 in this case).
+
+- Our approach was not fully supported by pre-existing literature. We pasted pieces of several literature into this approach. The probability of mutations at each location was also not documented.
+
+- When we are simulating random variants, we set the number of changes to be size = (loci*locus_length/1000) as we believed the average probability of SNP is 1/1000. However, this is faulty because the size was fixed at the expected value of the number of mutation sites, without allowing any difference across individuals.
+
+  - Let $\text{X = number of variants}$ and $\text{n = number of locations}$. $X$ follows the distribution: $X \sim Bin(n,p)$. However, $X$ can vary as we draw from the Binomial distribution.
+
+With the reasons above, we keep digging into the literature and tested potential alternatives.

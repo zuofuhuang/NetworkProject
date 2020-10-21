@@ -1,0 +1,172 @@
+# Progress and Revision
+
+## Rationale
+
+When we found out that only SNP locations can be categorized as significant and other loci are exclusively "non-significant", we realized that we are getting too far into simulation. Although it seemed that every step we take is justified, the simulated data seem unrealistic and overfitting for our scenario. As we were conduting a more extensive literature review process in the hope of shedding light on our next simulation steps, we came across the paper **Discovery of Mutated Subnetworks Associated with Clinical Data in Cancer (Vandin et. al, 2012)**. Section 3.1 of the paper contains a description of how the data is simulated in a slightly different setting.
+
+There are a few notable changes that we implemented in the *Progress and Revision* section.
+
++ We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of $p$ is determined by the biological background that on average the probability of having a mutation at each location is $1/1000$, as described in “United Arab Emirates Architecture” (n.d.). 
+  + For people whose diseases are caused by genetic factors: the probability of mutations at each of the other locations has a probability of $p = 1/1000$.
+  + For people whose diseases are caused by non-genetic factors: the probability of mutations at each of the non-SNP locations has a probability of $p = 1/1000$.
+  + For people who do not have the disease: the probability of mutations at each of the non-SNP locations has a probability of $p = 1/1000$.
+
++ For the purpose of the simulation, we combine the group of people whose disease are caused by non-genetic factors and the group of people who do not carry the disease. Suppose we have a total of 500 people, half of which do not carry the disease. Then the total number of people whose disease are caused by genetic factors is 10% of the total population, as seen in *n_disease <- 0.1n* in the *Update Code* section below.
+
++ We determine that there are 4 combinations of genetic pathways that cause the disease (which is much more realistic than 15 pathways). Each of the pathway contains a random group of 4-5 variants chosen from 15 SNP locations. The variant could be present in more than one pathway or none of the pathways.
+
++ We replace the multiplication of loci and locus_length with a total positions of 3000. We argue that reducing the number of loci at first does not change our inference process. As we test the validity of the approach, we then have the freedom of increasing the dimension (column) of the dataset or incorporating another disease/trait and the corresponding genetic pathways in our analysis. 
+
+## Updated Code
+
+```{r}
+n <- 500
+n_disease <- n*0.1
+total_position <- 3000
+```
+
+```{r}
+reference <- sample(c("A","T","C","G"), size = total_position, replace = TRUE)
+
+data <- data.frame(matrix(data = rep(reference, n), nrow = n, ncol = total_position,byrow=TRUE))
+
+disease_people_row_number <-seq(1,n_disease)
+non_disease <- seq((n_disease+1),n)
+
+combo_number <- 4
+disease_combo <- list()
+
+SNP_number <- sample(4:5, combo_number, replace = TRUE)
+SNP_location <- sample(1:total_position, 15, replace = FALSE)
+
+for (i in 1:length(SNP_number)){
+  disease_combo[[i]] <- sample(SNP_location, size = SNP_number[i], replace = FALSE)
+}
+
+reference_level_SNP_location <- reference[SNP_location]
+
+disease_people_SNP_locations <- list()
+which_combo_they_get <- sample(1:combo_number, n_disease, replace = TRUE)
+```
+
+```{r}
+helper <- function(char){
+ return(sample(setdiff(c("A","C","T","G"),char),1))
+}
+
+# function to mutate positions not in the identified pathways
+mutater <- function(vec,non_position){
+  mutated <- c()
+  for (i in 1:length(vec)){
+    if (! i %in% non_position){
+      rand <- runif(1)
+      if (rand <= 10^{-3}){
+        vec[i] <- helper(vec[i])
+        mutated <- c(mutated, i)
+      }
+    }
+  }
+  return(list(vec,mutated))
+}
+```
+
+```{r}
+# all mutated positions
+mutated_position <- SNP_location
+
+# keep track of mutated positions for each subject
+# to record co-occurrence frequency of mutations
+
+# For causal-pathway-related patients
+for (i in 1:n_disease){
+  
+  # disease-related SNP mutations first
+  reference_level_SNP_location_copy <- reference_level_SNP_location
+  
+  thiscombo <- disease_combo[[which_combo_they_get[i]]]
+
+  index <- match(thiscombo, SNP_location)
+
+  for (j in 1:length(index)){
+    reference_level_SNP_location_copy[index[j]] <- helper(reference_level_SNP_location[index[j]])
+  }
+  
+  data[disease_people_row_number[i],][SNP_location] <- reference_level_SNP_location_copy
+  
+  
+  # random change
+  mutated_result <- mutater(data[i,],thiscombo)
+  data[i,] <- mutated_result[[1]]
+  
+  # update the list of mutated positions for person i 
+  #mutatedLst[[i]] = c(thiscombo,mutated_result[[2]])
+  
+  # update the list of all positions that mutated
+  mutated_position <- c(mutated_position, mutated_result[[2]])
+}
+
+#  for everyone else
+for (k in (n_disease+1):n){
+   # update mutated positions
+  mutated_result <- mutater(data[k,], SNP_location)
+  data[k,] <- mutated_result[[1]]
+  
+  mutated_position <- c(mutated_position, mutated_result[[2]])
+}
+
+mutated_position <- unique(mutated_position)
+```
+
+```{r}
+# Delete the locations among the 15 pre-identified locations that are not selected to be part of a causal pathway
+del <- c()
+for(p in mutated_position){
+  count <- 0
+
+  if(all(data[,p]==reference[p])){
+      del <- c(del,p)
+  }
+}
+
+mutated_position <- setdiff(mutated_position,del)
+```
+
+```{r}
+# Create a subset of the data for all positions with at least one mutation
+for(position in mutated_position){
+  # return true if a mutation happens at the position
+  data[,position] <- !(data[,position]==reference[position])
+}
+sub_data <- data[,mutated_position]
+position <- colnames(sub_data)
+```
+
+Create the adjacency matrix A that contains all positions where there is at least one mutation across all subjects.
+
+```{r}
+A = matrix(0,length(mutated_position),length(mutated_position))
+rownames(A) = colnames(sub_data)
+colnames(A) = colnames(sub_data)
+for(i in 1:nrow(sub_data)){
+  count = sum(sub_data[i,]==TRUE)
+  if(count>=2){
+    loc =  which(as.logical(as.vector(sub_data[i,])),TRUE)
+    pairs_mat = combn(loc,2)
+    for(j in 1:ncol(pairs_mat)){
+    
+      r = pairs_mat[1,j]
+      c = pairs_mat[2,j]
+
+      A[r,c] = A[r,c]+1
+    }
+  }
+}
+
+A = as.matrix(forceSymmetric(A,"U"))
+```
+
+Calculate the degree of the adjacency matrix. We can understand more of the matrix by calculating the average degree.
+
+```{r}
+deg = rowSums(A)
+```

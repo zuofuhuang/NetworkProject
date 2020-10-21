@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Progress and Revision | MATH 479 Network Science Project</title>
+  <meta name="description" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="zuofuhuang/NetworkProject" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
+  
+  
+  
+
+<meta name="author" content="Zhaoheng Li and Zuofu Huang, Fall 2020 Macalester College" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="initial-steps.html"/>
+<link rel="next" href="network-construction.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="initial-steps.html"><a href="initial-steps.html"><i class="fa fa-check"></i><b>2</b> Initial Steps</a><ul>
+<li class="chapter" data-level="2.1" data-path="initial-steps.html"><a href="initial-steps.html#simulate-original-data"><i class="fa fa-check"></i><b>2.1</b> Simulate original data</a></li>
+<li class="chapter" data-level="2.2" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.2</b> Sample mutations for patients at SNP locations</a></li>
+<li class="chapter" data-level="2.3" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-non-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.3</b> Sample mutations for non-patients at SNP locations</a></li>
+<li class="chapter" data-level="2.4" data-path="initial-steps.html"><a href="initial-steps.html#variants-at-non-snp-locations"><i class="fa fa-check"></i><b>2.4</b> Variants at non-SNP locations</a></li>
+<li class="chapter" data-level="2.5" data-path="initial-steps.html"><a href="initial-steps.html#screening"><i class="fa fa-check"></i><b>2.5</b> Screening</a></li>
+<li class="chapter" data-level="2.6" data-path="initial-steps.html"><a href="initial-steps.html#marginal-regression"><i class="fa fa-check"></i><b>2.6</b> Marginal Regression</a></li>
+<li class="chapter" data-level="2.7" data-path="initial-steps.html"><a href="initial-steps.html#discussion"><i class="fa fa-check"></i><b>2.7</b> Discussion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="progress-and-revision.html"><a href="progress-and-revision.html"><i class="fa fa-check"></i><b>3</b> Progress and Revision</a><ul>
+<li class="chapter" data-level="3.1" data-path="progress-and-revision.html"><a href="progress-and-revision.html#rationale"><i class="fa fa-check"></i><b>3.1</b> Rationale</a></li>
+<li class="chapter" data-level="3.2" data-path="progress-and-revision.html"><a href="progress-and-revision.html#updated-code"><i class="fa fa-check"></i><b>3.2</b> Updated Code</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>4</b> Network Construction</a><ul>
+<li class="chapter" data-level="4.1" data-path="network-construction.html"><a href="network-construction.html#network-construction-process"><i class="fa fa-check"></i><b>4.1</b> Network Construction Process</a></li>
+<li class="chapter" data-level="4.2" data-path="network-construction.html"><a href="network-construction.html#analysis"><i class="fa fa-check"></i><b>4.2</b> Analysis</a></li>
+<li class="chapter" data-level="4.3" data-path="network-construction.html"><a href="network-construction.html#centrality-measures-report"><i class="fa fa-check"></i><b>4.3</b> Centrality Measures Report</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html"><i class="fa fa-check"></i><b>5</b> Enhanced Influence Models</a><ul>
+<li class="chapter" data-level="5.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#graph-diffusion-kernel"><i class="fa fa-check"></i><b>5.1</b> Graph Diffusion Kernel</a></li>
+<li class="chapter" data-level="5.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#enhanced-influence-model"><i class="fa fa-check"></i><b>5.2</b> Enhanced Influence Model</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#determine-value-for-cold-edge-threshold-delta"><i class="fa fa-check"></i><b>5.2.1</b> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#alternative-situation"><i class="fa fa-check"></i><b>5.2.2</b> Alternative Situation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#code"><i class="fa fa-check"></i><b>5.3</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html"><i class="fa fa-check"></i><b>6</b> Discussion and Future Work</a><ul>
+<li class="chapter" data-level="6.1" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#what-did-we-achieve"><i class="fa fa-check"></i><b>6.1</b> What did we achieve?</a></li>
+<li class="chapter" data-level="6.2" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#limitations"><i class="fa fa-check"></i><b>6.2</b> Limitations</a></li>
+<li class="chapter" data-level="6.3" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#future-work"><i class="fa fa-check"></i><b>6.3</b> Future Work</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MATH 479 Network Science Project</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="progress-and-revision" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Progress and Revision</h1>
+<div id="rationale" class="section level2">
+<h2><span class="header-section-number">3.1</span> Rationale</h2>
+<p>When we found out that only SNP locations can be categorized as significant and other loci are exclusively “non-significant”, we realized that we are getting too far into simulation. Although it seemed that every step we take is justified, the simulated data seem unrealistic and overfitting for our scenario. As we were conduting a more extensive literature review process in the hope of shedding light on our next simulation steps, we came across the paper <strong>Discovery of Mutated Subnetworks Associated with Clinical Data in Cancer (Vandin et. al, 2012)</strong>. Section 3.1 of the paper contains a description of how the data is simulated in a slightly different setting.</p>
+<p>There are a few notable changes that we implemented in the <em>Progress and Revision</em> section.</p>
+<ul>
+<li><p>We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of <span class="math inline">\(p\)</span> is determined by the biological background that on average the probability of having a mutation at each location is <span class="math inline">\(1/1000\)</span>, as described in “United Arab Emirates Architecture” (n.d.).</p>
+<ul>
+<li>For people whose diseases are caused by genetic factors: the probability of mutations at each of the other locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
+<li>For people whose diseases are caused by non-genetic factors: the probability of mutations at each of the non-SNP locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
+<li>For people who do not have the disease: the probability of mutations at each of the non-SNP locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
+</ul></li>
+<li><p>For the purpose of the simulation, we combine the group of people whose disease are caused by non-genetic factors and the group of people who do not carry the disease. Suppose we have a total of 500 people, half of which do not carry the disease. Then the total number of people whose disease are caused by genetic factors is 10% of the total population, as seen in <em>n_disease &lt;- 0.1n</em> in the <em>Update Code</em> section below.</p></li>
+<li><p>We determine that there are 4 combinations of genetic pathways that cause the disease (which is much more realistic than 15 pathways). Each of the pathway contains a random group of 4-5 variants chosen from 15 SNP locations. The variant could be present in more than one pathway or none of the pathways.</p></li>
+<li><p>We replace the multiplication of loci and locus_length with a total positions of 3000. We argue that reducing the number of loci at first does not change our inference process. As we test the validity of the approach, we then have the freedom of increasing the dimension (column) of the dataset or incorporating another disease/trait and the corresponding genetic pathways in our analysis.</p></li>
+</ul>
+</div>
+<div id="updated-code" class="section level2">
+<h2><span class="header-section-number">3.2</span> Updated Code</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="progress-and-revision.html#cb14-1"></a>n &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb14-2"><a href="progress-and-revision.html#cb14-2"></a>n_disease &lt;-<span class="st"> </span>n<span class="op">*</span><span class="fl">0.1</span></span>
+<span id="cb14-3"><a href="progress-and-revision.html#cb14-3"></a>total_position &lt;-<span class="st"> </span><span class="dv">3000</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="progress-and-revision.html#cb15-1"></a>reference &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>), <span class="dt">size =</span> total_position, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb15-2"><a href="progress-and-revision.html#cb15-2"></a></span>
+<span id="cb15-3"><a href="progress-and-revision.html#cb15-3"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="dt">data =</span> <span class="kw">rep</span>(reference, n), <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> total_position,<span class="dt">byrow=</span><span class="ot">TRUE</span>))</span>
+<span id="cb15-4"><a href="progress-and-revision.html#cb15-4"></a></span>
+<span id="cb15-5"><a href="progress-and-revision.html#cb15-5"></a>disease_people_row_number &lt;-<span class="kw">seq</span>(<span class="dv">1</span>,n_disease)</span>
+<span id="cb15-6"><a href="progress-and-revision.html#cb15-6"></a>non_disease &lt;-<span class="st"> </span><span class="kw">seq</span>((n_disease<span class="op">+</span><span class="dv">1</span>),n)</span>
+<span id="cb15-7"><a href="progress-and-revision.html#cb15-7"></a></span>
+<span id="cb15-8"><a href="progress-and-revision.html#cb15-8"></a>combo_number &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb15-9"><a href="progress-and-revision.html#cb15-9"></a>disease_combo &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb15-10"><a href="progress-and-revision.html#cb15-10"></a></span>
+<span id="cb15-11"><a href="progress-and-revision.html#cb15-11"></a>SNP_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>, combo_number, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb15-12"><a href="progress-and-revision.html#cb15-12"></a>SNP_location &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>total_position, <span class="dv">15</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb15-13"><a href="progress-and-revision.html#cb15-13"></a></span>
+<span id="cb15-14"><a href="progress-and-revision.html#cb15-14"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(SNP_number)){</span>
+<span id="cb15-15"><a href="progress-and-revision.html#cb15-15"></a>  disease_combo[[i]] &lt;-<span class="st"> </span><span class="kw">sample</span>(SNP_location, <span class="dt">size =</span> SNP_number[i], <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb15-16"><a href="progress-and-revision.html#cb15-16"></a>}</span>
+<span id="cb15-17"><a href="progress-and-revision.html#cb15-17"></a></span>
+<span id="cb15-18"><a href="progress-and-revision.html#cb15-18"></a>reference_level_SNP_location &lt;-<span class="st"> </span>reference[SNP_location]</span>
+<span id="cb15-19"><a href="progress-and-revision.html#cb15-19"></a></span>
+<span id="cb15-20"><a href="progress-and-revision.html#cb15-20"></a>disease_people_SNP_locations &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb15-21"><a href="progress-and-revision.html#cb15-21"></a>which_combo_they_get &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>combo_number, n_disease, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="progress-and-revision.html#cb16-1"></a>helper &lt;-<span class="st"> </span><span class="cf">function</span>(char){</span>
+<span id="cb16-2"><a href="progress-and-revision.html#cb16-2"></a> <span class="kw">return</span>(<span class="kw">sample</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>),char),<span class="dv">1</span>))</span>
+<span id="cb16-3"><a href="progress-and-revision.html#cb16-3"></a>}</span>
+<span id="cb16-4"><a href="progress-and-revision.html#cb16-4"></a></span>
+<span id="cb16-5"><a href="progress-and-revision.html#cb16-5"></a><span class="co"># function to mutate positions not in the identified pathways</span></span>
+<span id="cb16-6"><a href="progress-and-revision.html#cb16-6"></a>mutater &lt;-<span class="st"> </span><span class="cf">function</span>(vec,non_position){</span>
+<span id="cb16-7"><a href="progress-and-revision.html#cb16-7"></a>  mutated &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb16-8"><a href="progress-and-revision.html#cb16-8"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(vec)){</span>
+<span id="cb16-9"><a href="progress-and-revision.html#cb16-9"></a>    <span class="cf">if</span> (<span class="op">!</span><span class="st"> </span>i <span class="op">%in%</span><span class="st"> </span>non_position){</span>
+<span id="cb16-10"><a href="progress-and-revision.html#cb16-10"></a>      rand &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb16-11"><a href="progress-and-revision.html#cb16-11"></a>      <span class="cf">if</span> (rand <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span><span class="op">^</span>{<span class="op">-</span><span class="dv">3</span>}){</span>
+<span id="cb16-12"><a href="progress-and-revision.html#cb16-12"></a>        vec[i] &lt;-<span class="st"> </span><span class="kw">helper</span>(vec[i])</span>
+<span id="cb16-13"><a href="progress-and-revision.html#cb16-13"></a>        mutated &lt;-<span class="st"> </span><span class="kw">c</span>(mutated, i)</span>
+<span id="cb16-14"><a href="progress-and-revision.html#cb16-14"></a>      }</span>
+<span id="cb16-15"><a href="progress-and-revision.html#cb16-15"></a>    }</span>
+<span id="cb16-16"><a href="progress-and-revision.html#cb16-16"></a>  }</span>
+<span id="cb16-17"><a href="progress-and-revision.html#cb16-17"></a>  <span class="kw">return</span>(<span class="kw">list</span>(vec,mutated))</span>
+<span id="cb16-18"><a href="progress-and-revision.html#cb16-18"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="progress-and-revision.html#cb17-1"></a><span class="co"># all mutated positions</span></span>
+<span id="cb17-2"><a href="progress-and-revision.html#cb17-2"></a>mutated_position &lt;-<span class="st"> </span>SNP_location</span>
+<span id="cb17-3"><a href="progress-and-revision.html#cb17-3"></a></span>
+<span id="cb17-4"><a href="progress-and-revision.html#cb17-4"></a><span class="co"># keep track of mutated positions for each subject</span></span>
+<span id="cb17-5"><a href="progress-and-revision.html#cb17-5"></a><span class="co"># to record co-occurrence frequency of mutations</span></span>
+<span id="cb17-6"><a href="progress-and-revision.html#cb17-6"></a></span>
+<span id="cb17-7"><a href="progress-and-revision.html#cb17-7"></a><span class="co"># For causal-pathway-related patients</span></span>
+<span id="cb17-8"><a href="progress-and-revision.html#cb17-8"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_disease){</span>
+<span id="cb17-9"><a href="progress-and-revision.html#cb17-9"></a>  </span>
+<span id="cb17-10"><a href="progress-and-revision.html#cb17-10"></a>  <span class="co"># disease-related SNP mutations first</span></span>
+<span id="cb17-11"><a href="progress-and-revision.html#cb17-11"></a>  reference_level_SNP_location_copy &lt;-<span class="st"> </span>reference_level_SNP_location</span>
+<span id="cb17-12"><a href="progress-and-revision.html#cb17-12"></a>  </span>
+<span id="cb17-13"><a href="progress-and-revision.html#cb17-13"></a>  thiscombo &lt;-<span class="st"> </span>disease_combo[[which_combo_they_get[i]]]</span>
+<span id="cb17-14"><a href="progress-and-revision.html#cb17-14"></a></span>
+<span id="cb17-15"><a href="progress-and-revision.html#cb17-15"></a>  index &lt;-<span class="st"> </span><span class="kw">match</span>(thiscombo, SNP_location)</span>
+<span id="cb17-16"><a href="progress-and-revision.html#cb17-16"></a></span>
+<span id="cb17-17"><a href="progress-and-revision.html#cb17-17"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(index)){</span>
+<span id="cb17-18"><a href="progress-and-revision.html#cb17-18"></a>    reference_level_SNP_location_copy[index[j]] &lt;-<span class="st"> </span><span class="kw">helper</span>(reference_level_SNP_location[index[j]])</span>
+<span id="cb17-19"><a href="progress-and-revision.html#cb17-19"></a>  }</span>
+<span id="cb17-20"><a href="progress-and-revision.html#cb17-20"></a>  </span>
+<span id="cb17-21"><a href="progress-and-revision.html#cb17-21"></a>  data[disease_people_row_number[i],][SNP_location] &lt;-<span class="st"> </span>reference_level_SNP_location_copy</span>
+<span id="cb17-22"><a href="progress-and-revision.html#cb17-22"></a>  </span>
+<span id="cb17-23"><a href="progress-and-revision.html#cb17-23"></a>  </span>
+<span id="cb17-24"><a href="progress-and-revision.html#cb17-24"></a>  <span class="co"># random change</span></span>
+<span id="cb17-25"><a href="progress-and-revision.html#cb17-25"></a>  mutated_result &lt;-<span class="st"> </span><span class="kw">mutater</span>(data[i,],thiscombo)</span>
+<span id="cb17-26"><a href="progress-and-revision.html#cb17-26"></a>  data[i,] &lt;-<span class="st"> </span>mutated_result[[<span class="dv">1</span>]]</span>
+<span id="cb17-27"><a href="progress-and-revision.html#cb17-27"></a>  </span>
+<span id="cb17-28"><a href="progress-and-revision.html#cb17-28"></a>  <span class="co"># update the list of mutated positions for person i </span></span>
+<span id="cb17-29"><a href="progress-and-revision.html#cb17-29"></a>  <span class="co">#mutatedLst[[i]] = c(thiscombo,mutated_result[[2]])</span></span>
+<span id="cb17-30"><a href="progress-and-revision.html#cb17-30"></a>  </span>
+<span id="cb17-31"><a href="progress-and-revision.html#cb17-31"></a>  <span class="co"># update the list of all positions that mutated</span></span>
+<span id="cb17-32"><a href="progress-and-revision.html#cb17-32"></a>  mutated_position &lt;-<span class="st"> </span><span class="kw">c</span>(mutated_position, mutated_result[[<span class="dv">2</span>]])</span>
+<span id="cb17-33"><a href="progress-and-revision.html#cb17-33"></a>}</span>
+<span id="cb17-34"><a href="progress-and-revision.html#cb17-34"></a></span>
+<span id="cb17-35"><a href="progress-and-revision.html#cb17-35"></a><span class="co">#  for everyone else</span></span>
+<span id="cb17-36"><a href="progress-and-revision.html#cb17-36"></a><span class="cf">for</span> (k <span class="cf">in</span> (n_disease<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>n){</span>
+<span id="cb17-37"><a href="progress-and-revision.html#cb17-37"></a>   <span class="co"># update mutated positions</span></span>
+<span id="cb17-38"><a href="progress-and-revision.html#cb17-38"></a>  mutated_result &lt;-<span class="st"> </span><span class="kw">mutater</span>(data[k,], SNP_location)</span>
+<span id="cb17-39"><a href="progress-and-revision.html#cb17-39"></a>  data[k,] &lt;-<span class="st"> </span>mutated_result[[<span class="dv">1</span>]]</span>
+<span id="cb17-40"><a href="progress-and-revision.html#cb17-40"></a>  </span>
+<span id="cb17-41"><a href="progress-and-revision.html#cb17-41"></a>  mutated_position &lt;-<span class="st"> </span><span class="kw">c</span>(mutated_position, mutated_result[[<span class="dv">2</span>]])</span>
+<span id="cb17-42"><a href="progress-and-revision.html#cb17-42"></a>}</span>
+<span id="cb17-43"><a href="progress-and-revision.html#cb17-43"></a></span>
+<span id="cb17-44"><a href="progress-and-revision.html#cb17-44"></a>mutated_position &lt;-<span class="st"> </span><span class="kw">unique</span>(mutated_position)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="progress-and-revision.html#cb18-1"></a><span class="co"># Delete the locations among the 15 pre-identified locations that are not selected to be part of a causal pathway</span></span>
+<span id="cb18-2"><a href="progress-and-revision.html#cb18-2"></a>del &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb18-3"><a href="progress-and-revision.html#cb18-3"></a><span class="cf">for</span>(p <span class="cf">in</span> mutated_position){</span>
+<span id="cb18-4"><a href="progress-and-revision.html#cb18-4"></a>  count &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb18-5"><a href="progress-and-revision.html#cb18-5"></a></span>
+<span id="cb18-6"><a href="progress-and-revision.html#cb18-6"></a>  <span class="cf">if</span>(<span class="kw">all</span>(data[,p]<span class="op">==</span>reference[p])){</span>
+<span id="cb18-7"><a href="progress-and-revision.html#cb18-7"></a>      del &lt;-<span class="st"> </span><span class="kw">c</span>(del,p)</span>
+<span id="cb18-8"><a href="progress-and-revision.html#cb18-8"></a>  }</span>
+<span id="cb18-9"><a href="progress-and-revision.html#cb18-9"></a>}</span>
+<span id="cb18-10"><a href="progress-and-revision.html#cb18-10"></a></span>
+<span id="cb18-11"><a href="progress-and-revision.html#cb18-11"></a>mutated_position &lt;-<span class="st"> </span><span class="kw">setdiff</span>(mutated_position,del)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="progress-and-revision.html#cb19-1"></a><span class="co"># Create a subset of the data for all positions with at least one mutation</span></span>
+<span id="cb19-2"><a href="progress-and-revision.html#cb19-2"></a><span class="cf">for</span>(position <span class="cf">in</span> mutated_position){</span>
+<span id="cb19-3"><a href="progress-and-revision.html#cb19-3"></a>  <span class="co"># return true if a mutation happens at the position</span></span>
+<span id="cb19-4"><a href="progress-and-revision.html#cb19-4"></a>  data[,position] &lt;-<span class="st"> </span><span class="op">!</span>(data[,position]<span class="op">==</span>reference[position])</span>
+<span id="cb19-5"><a href="progress-and-revision.html#cb19-5"></a>}</span>
+<span id="cb19-6"><a href="progress-and-revision.html#cb19-6"></a>sub_data &lt;-<span class="st"> </span>data[,mutated_position]</span>
+<span id="cb19-7"><a href="progress-and-revision.html#cb19-7"></a>position &lt;-<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span></code></pre></div>
+<p>Create the adjacency matrix A that contains all positions where there is at least one mutation across all subjects.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="progress-and-revision.html#cb20-1"></a>A =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">length</span>(mutated_position),<span class="kw">length</span>(mutated_position))</span>
+<span id="cb20-2"><a href="progress-and-revision.html#cb20-2"></a><span class="kw">rownames</span>(A) =<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span>
+<span id="cb20-3"><a href="progress-and-revision.html#cb20-3"></a><span class="kw">colnames</span>(A) =<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span>
+<span id="cb20-4"><a href="progress-and-revision.html#cb20-4"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(sub_data)){</span>
+<span id="cb20-5"><a href="progress-and-revision.html#cb20-5"></a>  count =<span class="st"> </span><span class="kw">sum</span>(sub_data[i,]<span class="op">==</span><span class="ot">TRUE</span>)</span>
+<span id="cb20-6"><a href="progress-and-revision.html#cb20-6"></a>  <span class="cf">if</span>(count<span class="op">&gt;=</span><span class="dv">2</span>){</span>
+<span id="cb20-7"><a href="progress-and-revision.html#cb20-7"></a>    loc =<span class="st">  </span><span class="kw">which</span>(<span class="kw">as.logical</span>(<span class="kw">as.vector</span>(sub_data[i,])),<span class="ot">TRUE</span>)</span>
+<span id="cb20-8"><a href="progress-and-revision.html#cb20-8"></a>    pairs_mat =<span class="st"> </span><span class="kw">combn</span>(loc,<span class="dv">2</span>)</span>
+<span id="cb20-9"><a href="progress-and-revision.html#cb20-9"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(pairs_mat)){</span>
+<span id="cb20-10"><a href="progress-and-revision.html#cb20-10"></a>    </span>
+<span id="cb20-11"><a href="progress-and-revision.html#cb20-11"></a>      r =<span class="st"> </span>pairs_mat[<span class="dv">1</span>,j]</span>
+<span id="cb20-12"><a href="progress-and-revision.html#cb20-12"></a>      c =<span class="st"> </span>pairs_mat[<span class="dv">2</span>,j]</span>
+<span id="cb20-13"><a href="progress-and-revision.html#cb20-13"></a></span>
+<span id="cb20-14"><a href="progress-and-revision.html#cb20-14"></a>      A[r,c] =<span class="st"> </span>A[r,c]<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb20-15"><a href="progress-and-revision.html#cb20-15"></a>    }</span>
+<span id="cb20-16"><a href="progress-and-revision.html#cb20-16"></a>  }</span>
+<span id="cb20-17"><a href="progress-and-revision.html#cb20-17"></a>}</span>
+<span id="cb20-18"><a href="progress-and-revision.html#cb20-18"></a></span>
+<span id="cb20-19"><a href="progress-and-revision.html#cb20-19"></a>A =<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(A,<span class="st">&quot;U&quot;</span>))</span></code></pre></div>
+<p>Calculate the degree of the adjacency matrix. We can understand more of the matrix by calculating the average degree.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="progress-and-revision.html#cb21-1"></a>deg =<span class="st"> </span><span class="kw">rowSums</span>(A)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="initial-steps.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="network-construction.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "chapter",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

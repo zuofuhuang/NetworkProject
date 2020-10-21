@@ -1,0 +1,18 @@
+# References
+
+1. Leiserson, M. D., Eldridge, J. V., Ramachandran, S., & Raphael, B. J. (2013). Network analysis of GWAS data. Current opinion in genetics & development, 23(6), 602-610. https://doi.org/10.1016/j.gde.2013.09.003
+
+2. Vandin, F., Clay, P., Upfal, E., & Raphael, B. J. (2012). Discovery of mutated subnetworks associated with clinical data in cancer. Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing, 55-66. 
+
+3. Vandin, F., Upfal, E., & Raphael, B. J. (2011). Algorithms for detecting significantly mutated pathways in cancer. Journal of computational biology : a journal of computational molecular cell biology, 18(3), 507-522. https://doi.org/10.1089/cmb.2010.0265
+
+4. Qi, Y., Suhail, Y., Lin, Y. Y., Boeke, J. D., & Bader, J. S. (2008). Finding friends and enemies in an enemies-only network: a graph diffusion kernel for predicting novel genetic interactions and co-complex membership from yeast genetic interactions. Genome research, 18(12), 1991-2004. https://doi.org/10.1101/gr.077693.108
+
+5. What are single nucleotide polymorphisms (SNPs)? (n.d.). Retrieved from https://medlineplus.gov/genetics/understanding/genomicresearch/snp/
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> fc9bc3389f10c78caadaa9d56096928a52c78f21

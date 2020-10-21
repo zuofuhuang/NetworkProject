@@ -1,0 +1,19 @@
+# Discussion and Future Work
+
+## What did we achieve?
+
+The most exciting part of this project to us is using network science to solve real-life problems. Genetics is such an complex topic and affects every part of who we are. Given how chemistry works in our body, it is hard to imagine that we could accurately quantify how genes interact with each other. But we are excited to learn that with some basic assumptions, one could have some predicting power with mathematical tools, even though we have to leave out many details in our modeling process.
+
+The takeaway is that we are able to model how pathway interactions cause diseases and use network science tools to detect such pathways. Our assumption states that diseases/traits can be caused by a combination of mutations at SNP locations, and one mutation may be involved in multiple combinations. This poses an inherent challenge for network analysis: it is hard to classify which modularity class that such mutations should belong to. However, we present that our method perfectly classifies different pathway interactions if one mutation could only exist in one combination.
+
+## Limitations
+
+A major limitation, as discussed above, is the adherence to biological facts. It is not feasible to exactly replicate the complex biochemical processes along the DNA sequence, and thus our assumptions bear the risk of not representing the reality.
+
+During our analysis, we first pre-determined which combinations of variants along the genome could lead to the disease/trait. However, we do not know the underlying true combinations of pathway interactions in real life. When implementing our algorithm in a more realistic setting, we may have difficulty interpreting the validity of the result. For example, in Chapter 4, we see that our method perfectly detects the combination "X2699, X1320, X520, X2881", and yields slight discrepancies in other combinations. Thus, it is important to test the algorithm in different settings and better understand how the results may be impacted.
+
+In addition, many inputs of our method are chosen relatively arbitrarily based on existing literature. We attempted many different values for variables including total SNP locations and the number of combinations. It is, however, important to note that we could not test all potential values for all variables. We would like to understand changes in our algorithm's accuracy if we have a larger number of SNP locations or more possible combinations etc.
+
+## Future Work
+
+Given the time constraint, many interesting problems and extensions remain to be explored and discussed. One extension that we mentioned earlier is how we can incorporate two disease/traits and their corresponding pathways and check if our method accurately detects both pathways under a different setting of noises. In addition, there may be other tools designed for our setting, which may incorporate work from network science, statistical genetics or computational biology. 

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Network Construction | MATH 479 Network Science Project</title>
+  <meta name="description" content="Chapter 4 Network Construction | MATH 479 Network Science Project" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Network Construction | MATH 479 Network Science Project" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="zuofuhuang/NetworkProject" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Network Construction | MATH 479 Network Science Project" />
+  
+  
+  
+
+<meta name="author" content="Zhaoheng Li and Zuofu Huang, Fall 2020 Macalester College" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="progress-and-revision.html"/>
+<link rel="next" href="enhanced-influence-models.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="initial-steps.html"><a href="initial-steps.html"><i class="fa fa-check"></i><b>2</b> Initial Steps</a><ul>
+<li class="chapter" data-level="2.1" data-path="initial-steps.html"><a href="initial-steps.html#simulate-original-data"><i class="fa fa-check"></i><b>2.1</b> Simulate original data</a></li>
+<li class="chapter" data-level="2.2" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.2</b> Sample mutations for patients at SNP locations</a></li>
+<li class="chapter" data-level="2.3" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-non-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.3</b> Sample mutations for non-patients at SNP locations</a></li>
+<li class="chapter" data-level="2.4" data-path="initial-steps.html"><a href="initial-steps.html#variants-at-non-snp-locations"><i class="fa fa-check"></i><b>2.4</b> Variants at non-SNP locations</a></li>
+<li class="chapter" data-level="2.5" data-path="initial-steps.html"><a href="initial-steps.html#screening"><i class="fa fa-check"></i><b>2.5</b> Screening</a></li>
+<li class="chapter" data-level="2.6" data-path="initial-steps.html"><a href="initial-steps.html#marginal-regression"><i class="fa fa-check"></i><b>2.6</b> Marginal Regression</a></li>
+<li class="chapter" data-level="2.7" data-path="initial-steps.html"><a href="initial-steps.html#discussion"><i class="fa fa-check"></i><b>2.7</b> Discussion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="progress-and-revision.html"><a href="progress-and-revision.html"><i class="fa fa-check"></i><b>3</b> Progress and Revision</a><ul>
+<li class="chapter" data-level="3.1" data-path="progress-and-revision.html"><a href="progress-and-revision.html#rationale"><i class="fa fa-check"></i><b>3.1</b> Rationale</a></li>
+<li class="chapter" data-level="3.2" data-path="progress-and-revision.html"><a href="progress-and-revision.html#updated-code"><i class="fa fa-check"></i><b>3.2</b> Updated Code</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>4</b> Network Construction</a><ul>
+<li class="chapter" data-level="4.1" data-path="network-construction.html"><a href="network-construction.html#network-construction-process"><i class="fa fa-check"></i><b>4.1</b> Network Construction Process</a></li>
+<li class="chapter" data-level="4.2" data-path="network-construction.html"><a href="network-construction.html#analysis"><i class="fa fa-check"></i><b>4.2</b> Analysis</a></li>
+<li class="chapter" data-level="4.3" data-path="network-construction.html"><a href="network-construction.html#centrality-measures-report"><i class="fa fa-check"></i><b>4.3</b> Centrality Measures Report</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html"><i class="fa fa-check"></i><b>5</b> Enhanced Influence Models</a><ul>
+<li class="chapter" data-level="5.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#graph-diffusion-kernel"><i class="fa fa-check"></i><b>5.1</b> Graph Diffusion Kernel</a></li>
+<li class="chapter" data-level="5.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#enhanced-influence-model"><i class="fa fa-check"></i><b>5.2</b> Enhanced Influence Model</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#determine-value-for-cold-edge-threshold-delta"><i class="fa fa-check"></i><b>5.2.1</b> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#alternative-situation"><i class="fa fa-check"></i><b>5.2.2</b> Alternative Situation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#code"><i class="fa fa-check"></i><b>5.3</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html"><i class="fa fa-check"></i><b>6</b> Discussion and Future Work</a><ul>
+<li class="chapter" data-level="6.1" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#what-did-we-achieve"><i class="fa fa-check"></i><b>6.1</b> What did we achieve?</a></li>
+<li class="chapter" data-level="6.2" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#limitations"><i class="fa fa-check"></i><b>6.2</b> Limitations</a></li>
+<li class="chapter" data-level="6.3" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#future-work"><i class="fa fa-check"></i><b>6.3</b> Future Work</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MATH 479 Network Science Project</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="network-construction" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Network Construction</h1>
+<div id="network-construction-process" class="section level2">
+<h2><span class="header-section-number">4.1</span> Network Construction Process</h2>
+<p>Below are the steps for calculating the “gene score” of each location that quantifies the degree of association between a base position and the disease/trait of interest. A higher score means a stronger association.</p>
+<p>For each position <span class="math inline">\(g\)</span>, we performed marginal regression and obtain a p-value, <span class="math inline">\(p_g\)</span>. Every position then is assigned a score <span class="math inline">\(\sigma(g) = -2log(p_g)\)</span> (Vandin et al., 2012). Two positions share an edge if they occur together, and the edge weight is their co-occurrence number.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="network-construction.html#cb22-1"></a><span class="co"># record p values for each position</span></span>
+<span id="cb22-2"><a href="network-construction.html#cb22-2"></a>mutations_pVal =<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb22-3"><a href="network-construction.html#cb22-3"></a>disease_status_vector =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>,n<span class="op">/</span><span class="dv">2</span>),<span class="kw">rep</span>(<span class="dv">0</span>,n<span class="op">/</span><span class="dv">2</span>))</span>
+<span id="cb22-4"><a href="network-construction.html#cb22-4"></a></span>
+<span id="cb22-5"><a href="network-construction.html#cb22-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(position)){</span>
+<span id="cb22-6"><a href="network-construction.html#cb22-6"></a>  outcome &lt;-<span class="st"> &quot;disease_status_vector&quot;</span></span>
+<span id="cb22-7"><a href="network-construction.html#cb22-7"></a>  variable &lt;-<span class="st"> </span>position[i]</span>
+<span id="cb22-8"><a href="network-construction.html#cb22-8"></a>  f &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(outcome, </span>
+<span id="cb22-9"><a href="network-construction.html#cb22-9"></a>        <span class="kw">paste</span>(variable), </span>
+<span id="cb22-10"><a href="network-construction.html#cb22-10"></a>        <span class="dt">sep =</span> <span class="st">&quot; ~ &quot;</span>))</span>
+<span id="cb22-11"><a href="network-construction.html#cb22-11"></a>  model &lt;-<span class="st"> </span><span class="kw">lm</span>(f, <span class="dt">data =</span> sub_data)</span>
+<span id="cb22-12"><a href="network-construction.html#cb22-12"></a>  mutations_pVal =<span class="st"> </span><span class="kw">c</span>(mutations_pVal,<span class="kw">summary</span>(model)<span class="op">$</span>coefficient[,<span class="dv">4</span>][<span class="dv">2</span>])</span>
+<span id="cb22-13"><a href="network-construction.html#cb22-13"></a>}</span>
+<span id="cb22-14"><a href="network-construction.html#cb22-14"></a></span>
+<span id="cb22-15"><a href="network-construction.html#cb22-15"></a><span class="co"># compute score for each mutated position</span></span>
+<span id="cb22-16"><a href="network-construction.html#cb22-16"></a>mutations_score &lt;-<span class="st"> </span><span class="dv">-2</span><span class="op">*</span><span class="kw">log</span>(mutations_pVal)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="network-construction.html#cb23-1"></a>edges =<span class="st"> </span><span class="kw">melt</span>(A) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value)<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-2"><a href="network-construction.html#cb23-2"></a><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb23-3"><a href="network-construction.html#cb23-3"></a></span>
+<span id="cb23-4"><a href="network-construction.html#cb23-4"></a>nodes =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">colnames</span>(sub_data))<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Lable=</span> <span class="kw">colnames</span>(sub_data))</span>
+<span id="cb23-5"><a href="network-construction.html#cb23-5"></a><span class="kw">colnames</span>(nodes) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Id&quot;</span>,<span class="st">&quot;Lable&quot;</span>)</span>
+<span id="cb23-6"><a href="network-construction.html#cb23-6"></a></span>
+<span id="cb23-7"><a href="network-construction.html#cb23-7"></a>A.dat =<span class="st"> </span><span class="kw">as.data.frame</span>(A)</span></code></pre></div>
+</div>
+<div id="analysis" class="section level2">
+<h2><span class="header-section-number">4.2</span> Analysis</h2>
+<p>After revising our simulation methodology, we simulated using 3000 base positions and 500 samples to obtain the following graphs. 12 of the 15 previously identified SNP locations are chosen to be part of at least one genetic pathway: X520, X521, X526, X1237, X1320, X1533, X1627, X2075, X2106, X2699, X2766, and X2881. These 12 effective SNP locations form 4 causal pathways that lead to the disease:</p>
+<ol style="list-style-type: decimal">
+<li><p>X2699, X1320, X520, X2881</p></li>
+<li><p>X2766, X1237, X2075, X521, X526</p></li>
+<li><p>X526, X2766, X2106, X2075, X1533</p></li>
+<li><p>X2699, X521, X2881, X1533, X1627</p></li>
+</ol>
+<p>After a round of random mutations, we obtain 1187 mutated positions in total. This gives us an undirected weighted graph with 1187 nodes and 2838 edges, which produces an average degree of4.78. There is a single major component containing roughly 65% of its nodes. Expectedly, all causal pathways identified beforehand exist within this major connected component. Figure 4.1 shows the full graph, while Figure 4.2 shows its single major component. Using a resolution of 1, we obtained 25 modularity classes within the major connected component. The 12 selected positions are divided between two largest modules.</p>
+<p><img src="mod1Full_3000.png" />
+<span class="math display">\[\text{Figure} \; 4.1 :\; \text{Full Network of Mutated Gene Base Positions}\]</span></p>
+<p><img src="mod1Major_3000.png" />
+<span class="math display">\[\text{Figure} \; 4.2 :\; \text {Modularity Class Decomposition within the Major Connected Component, with Nodes Sized According to Closeness Centrality}\]</span></p>
+</div>
+<div id="centrality-measures-report" class="section level2">
+<h2><span class="header-section-number">4.3</span> Centrality Measures Report</h2>
+<p>Table 4.1 reports the top 12 nodes ranked by their degrees, eigenvector centrality, closeness centrality and betweeness centrality. The 12 effective disease-related positions selected are exactly the top 12 nodes with the greatest degrees and eigenvector centrality. This might be a result of the high degree of inter-connectivity among these positions. By comparison, the <span class="math inline">\(8^{th}\)</span>, <span class="math inline">\(10^{th}\)</span>, and <span class="math inline">\(12^{th}\)</span> nodes with the most closeness centrality are random variations, while 8 of the top 12 nodes with the greatest betweenness centrality are random variations.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="network-construction.html#cb24-1"></a>dt =<span class="st"> </span>tab1</span>
+<span id="cb24-2"><a href="network-construction.html#cb24-2"></a>pathwaySNP =<span class="st"> </span>tab1<span class="op">$</span>Degree</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="network-construction.html#cb25-1"></a>dt<span class="op">$</span>Degree =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span>Degree, <span class="dt">color =</span> <span class="kw">ifelse</span>(dt<span class="op">$</span>Degree <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
+<span id="cb25-2"><a href="network-construction.html#cb25-2"></a>dt<span class="op">$</span><span class="st">`</span><span class="dt">Eigenvector Centrality</span><span class="st">`</span> =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Eigenvector Centrality</span><span class="st">`</span>,<span class="dt">color=</span>  <span class="kw">ifelse</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Eigenvector Centrality</span><span class="st">`</span> <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
+<span id="cb25-3"><a href="network-construction.html#cb25-3"></a>dt<span class="op">$</span><span class="st">`</span><span class="dt">Closeness Centrality</span><span class="st">`</span> =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Closeness Centrality</span><span class="st">`</span>, <span class="dt">color =</span> <span class="kw">ifelse</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Closeness Centrality</span><span class="st">`</span> <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
+<span id="cb25-4"><a href="network-construction.html#cb25-4"></a>dt<span class="op">$</span><span class="st">`</span><span class="dt">Betweeness Centrality</span><span class="st">`</span> =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Betweeness Centrality</span><span class="st">`</span>, <span class="dt">color =</span> <span class="kw">ifelse</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Betweeness Centrality</span><span class="st">`</span> <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="network-construction.html#cb26-1"></a><span class="kw">kbl</span>(dt, <span class="dt">escape =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb26-2"><a href="network-construction.html#cb26-2"></a><span class="st">  </span><span class="kw">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Rank
+</th>
+<th style="text-align:left;">
+Degree
+</th>
+<th style="text-align:left;">
+Eigenvector Centrality
+</th>
+<th style="text-align:left;">
+Closeness Centrality
+</th>
+<th style="text-align:left;">
+Betweeness Centrality
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2699</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2881</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2881</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2881</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2881</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2699</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2699</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2699</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X521</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X521</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1533</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1533</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2075</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1533</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X520</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X807</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2766</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2075</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1320</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X2083</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X526</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2766</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X521</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X2438</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1533</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X526</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2075</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X2251</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X520</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X520</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2766</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X1301</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1320</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1320</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X526</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X1806</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1237</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1627</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X39</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X1739</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1627</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1237</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X1627</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X521</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2106</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: red !important;">X2106</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X1889</span>
+</td>
+<td style="text-align:left;">
+<span style="     color: blue !important;">X571</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="network-construction.html#cb27-1"></a>dt <span class="op">%&gt;%</span></span>
+<span id="cb27-2"><a href="network-construction.html#cb27-2"></a><span class="st">  </span><span class="kw">kbl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb27-3"><a href="network-construction.html#cb27-3"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> T)</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Rank
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Degree
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Eigenvector Centrality
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Closeness Centrality
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Betweeness Centrality
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2075&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X520&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X807&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2766&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2075&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1320&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X2083&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X526&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2766&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X2438&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X526&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2075&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X2251&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X520&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X520&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2766&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X1301&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1320&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1320&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X526&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X1806&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1237&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1627&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X39&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X1739&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1627&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1237&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X1627&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2106&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: red !important;" &gt;X2106&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X1889&lt;/span&gt;
+</td>
+<td style="text-align:left;">
+&lt;span style=" color: blue !important;" &gt;X571&lt;/span&gt;
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="progress-and-revision.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="enhanced-influence-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "chapter",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

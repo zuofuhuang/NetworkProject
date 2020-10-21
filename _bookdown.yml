@@ -1,0 +1,7 @@
+book_filename: "NetworkProject"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+rmd_files: ['index.Rmd','01_Introduction.Rmd','02_InitialSteps.Rmd','03_ProgressRevision.Rmd','04_Network.Rmd','05_Models.Rmd','06_Discussion.Rmd','07_References.Rmd']
+output_dir: "docs"
