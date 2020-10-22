@@ -134,13 +134,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="initial-steps.html"><a href="initial-steps.html"><i class="fa fa-check"></i><b>2</b> Initial Steps</a><ul>
-<li class="chapter" data-level="2.1" data-path="initial-steps.html"><a href="initial-steps.html#simulate-original-data"><i class="fa fa-check"></i><b>2.1</b> Simulate original data</a></li>
-<li class="chapter" data-level="2.2" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.2</b> Sample mutations for patients at SNP locations</a></li>
-<li class="chapter" data-level="2.3" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-non-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.3</b> Sample mutations for non-patients at SNP locations</a></li>
-<li class="chapter" data-level="2.4" data-path="initial-steps.html"><a href="initial-steps.html#variants-at-non-snp-locations"><i class="fa fa-check"></i><b>2.4</b> Variants at non-SNP locations</a></li>
-<li class="chapter" data-level="2.5" data-path="initial-steps.html"><a href="initial-steps.html#screening"><i class="fa fa-check"></i><b>2.5</b> Screening</a></li>
-<li class="chapter" data-level="2.6" data-path="initial-steps.html"><a href="initial-steps.html#marginal-regression"><i class="fa fa-check"></i><b>2.6</b> Marginal Regression</a></li>
-<li class="chapter" data-level="2.7" data-path="initial-steps.html"><a href="initial-steps.html#discussion"><i class="fa fa-check"></i><b>2.7</b> Discussion</a></li>
+<li class="chapter" data-level="2.1" data-path="initial-steps.html"><a href="initial-steps.html#genetics-background"><i class="fa fa-check"></i><b>2.1</b> Genetics Background</a></li>
+<li class="chapter" data-level="2.2" data-path="initial-steps.html"><a href="initial-steps.html#simulate-original-data"><i class="fa fa-check"></i><b>2.2</b> Simulate original data</a></li>
+<li class="chapter" data-level="2.3" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.3</b> Sample mutations for patients at SNP locations</a></li>
+<li class="chapter" data-level="2.4" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-non-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.4</b> Sample mutations for non-patients at SNP locations</a></li>
+<li class="chapter" data-level="2.5" data-path="initial-steps.html"><a href="initial-steps.html#variants-at-non-snp-locations"><i class="fa fa-check"></i><b>2.5</b> Variants at non-SNP locations</a></li>
+<li class="chapter" data-level="2.6" data-path="initial-steps.html"><a href="initial-steps.html#screening"><i class="fa fa-check"></i><b>2.6</b> Screening</a></li>
+<li class="chapter" data-level="2.7" data-path="initial-steps.html"><a href="initial-steps.html#marginal-regression"><i class="fa fa-check"></i><b>2.7</b> Marginal Regression</a></li>
+<li class="chapter" data-level="2.8" data-path="initial-steps.html"><a href="initial-steps.html#discussion"><i class="fa fa-check"></i><b>2.8</b> Discussion</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="progress-and-revision.html"><a href="progress-and-revision.html"><i class="fa fa-check"></i><b>3</b> Progress and Revision</a><ul>
 <li class="chapter" data-level="3.1" data-path="progress-and-revision.html"><a href="progress-and-revision.html#rationale"><i class="fa fa-check"></i><b>3.1</b> Rationale</a></li>
@@ -188,29 +189,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.1</span> Network Construction Process</h2>
 <p>Below are the steps for calculating the “gene score” of each location that quantifies the degree of association between a base position and the disease/trait of interest. A higher score means a stronger association.</p>
 <p>For each position <span class="math inline">\(g\)</span>, we performed marginal regression and obtain a p-value, <span class="math inline">\(p_g\)</span>. Every position then is assigned a score <span class="math inline">\(\sigma(g) = -2log(p_g)\)</span> (Vandin et al., 2012). Two positions share an edge if they occur together, and the edge weight is their co-occurrence number.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="network-construction.html#cb22-1"></a><span class="co"># record p values for each position</span></span>
-<span id="cb22-2"><a href="network-construction.html#cb22-2"></a>mutations_pVal =<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb22-3"><a href="network-construction.html#cb22-3"></a>disease_status_vector =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>,n<span class="op">/</span><span class="dv">2</span>),<span class="kw">rep</span>(<span class="dv">0</span>,n<span class="op">/</span><span class="dv">2</span>))</span>
-<span id="cb22-4"><a href="network-construction.html#cb22-4"></a></span>
-<span id="cb22-5"><a href="network-construction.html#cb22-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(position)){</span>
-<span id="cb22-6"><a href="network-construction.html#cb22-6"></a>  outcome &lt;-<span class="st"> &quot;disease_status_vector&quot;</span></span>
-<span id="cb22-7"><a href="network-construction.html#cb22-7"></a>  variable &lt;-<span class="st"> </span>position[i]</span>
-<span id="cb22-8"><a href="network-construction.html#cb22-8"></a>  f &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(outcome, </span>
-<span id="cb22-9"><a href="network-construction.html#cb22-9"></a>        <span class="kw">paste</span>(variable), </span>
-<span id="cb22-10"><a href="network-construction.html#cb22-10"></a>        <span class="dt">sep =</span> <span class="st">&quot; ~ &quot;</span>))</span>
-<span id="cb22-11"><a href="network-construction.html#cb22-11"></a>  model &lt;-<span class="st"> </span><span class="kw">lm</span>(f, <span class="dt">data =</span> sub_data)</span>
-<span id="cb22-12"><a href="network-construction.html#cb22-12"></a>  mutations_pVal =<span class="st"> </span><span class="kw">c</span>(mutations_pVal,<span class="kw">summary</span>(model)<span class="op">$</span>coefficient[,<span class="dv">4</span>][<span class="dv">2</span>])</span>
-<span id="cb22-13"><a href="network-construction.html#cb22-13"></a>}</span>
-<span id="cb22-14"><a href="network-construction.html#cb22-14"></a></span>
-<span id="cb22-15"><a href="network-construction.html#cb22-15"></a><span class="co"># compute score for each mutated position</span></span>
-<span id="cb22-16"><a href="network-construction.html#cb22-16"></a>mutations_score &lt;-<span class="st"> </span><span class="dv">-2</span><span class="op">*</span><span class="kw">log</span>(mutations_pVal)</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="network-construction.html#cb23-1"></a>edges =<span class="st"> </span><span class="kw">melt</span>(A) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value)<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb23-2"><a href="network-construction.html#cb23-2"></a><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
-<span id="cb23-3"><a href="network-construction.html#cb23-3"></a></span>
-<span id="cb23-4"><a href="network-construction.html#cb23-4"></a>nodes =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">colnames</span>(sub_data))<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Lable=</span> <span class="kw">colnames</span>(sub_data))</span>
-<span id="cb23-5"><a href="network-construction.html#cb23-5"></a><span class="kw">colnames</span>(nodes) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Id&quot;</span>,<span class="st">&quot;Lable&quot;</span>)</span>
-<span id="cb23-6"><a href="network-construction.html#cb23-6"></a></span>
-<span id="cb23-7"><a href="network-construction.html#cb23-7"></a>A.dat =<span class="st"> </span><span class="kw">as.data.frame</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="network-construction.html#cb23-1"></a><span class="co"># record p values for each position</span></span>
+<span id="cb23-2"><a href="network-construction.html#cb23-2"></a>mutations_pVal =<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb23-3"><a href="network-construction.html#cb23-3"></a>disease_status_vector =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>,n<span class="op">/</span><span class="dv">2</span>),<span class="kw">rep</span>(<span class="dv">0</span>,n<span class="op">/</span><span class="dv">2</span>)) <span class="co"># Arbitrarily assign the first half with disease</span></span>
+<span id="cb23-4"><a href="network-construction.html#cb23-4"></a></span>
+<span id="cb23-5"><a href="network-construction.html#cb23-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(position)){</span>
+<span id="cb23-6"><a href="network-construction.html#cb23-6"></a>  outcome &lt;-<span class="st"> &quot;disease_status_vector&quot;</span></span>
+<span id="cb23-7"><a href="network-construction.html#cb23-7"></a>  variable &lt;-<span class="st"> </span>position[i]</span>
+<span id="cb23-8"><a href="network-construction.html#cb23-8"></a>  f &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(outcome, </span>
+<span id="cb23-9"><a href="network-construction.html#cb23-9"></a>        <span class="kw">paste</span>(variable), </span>
+<span id="cb23-10"><a href="network-construction.html#cb23-10"></a>        <span class="dt">sep =</span> <span class="st">&quot; ~ &quot;</span>))</span>
+<span id="cb23-11"><a href="network-construction.html#cb23-11"></a>  model &lt;-<span class="st"> </span><span class="kw">lm</span>(f, <span class="dt">data =</span> sub_data)</span>
+<span id="cb23-12"><a href="network-construction.html#cb23-12"></a>  mutations_pVal =<span class="st"> </span><span class="kw">c</span>(mutations_pVal,<span class="kw">summary</span>(model)<span class="op">$</span>coefficient[,<span class="dv">4</span>][<span class="dv">2</span>])</span>
+<span id="cb23-13"><a href="network-construction.html#cb23-13"></a>}</span>
+<span id="cb23-14"><a href="network-construction.html#cb23-14"></a></span>
+<span id="cb23-15"><a href="network-construction.html#cb23-15"></a><span class="co"># compute score for each mutated position</span></span>
+<span id="cb23-16"><a href="network-construction.html#cb23-16"></a>mutations_score &lt;-<span class="st"> </span><span class="dv">-2</span><span class="op">*</span><span class="kw">log</span>(mutations_pVal)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="network-construction.html#cb24-1"></a>edges =<span class="st"> </span><span class="kw">melt</span>(A) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value)<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb24-2"><a href="network-construction.html#cb24-2"></a><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb24-3"><a href="network-construction.html#cb24-3"></a></span>
+<span id="cb24-4"><a href="network-construction.html#cb24-4"></a>nodes =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">colnames</span>(sub_data))<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Lable=</span> <span class="kw">colnames</span>(sub_data))</span>
+<span id="cb24-5"><a href="network-construction.html#cb24-5"></a><span class="kw">colnames</span>(nodes) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Id&quot;</span>,<span class="st">&quot;Lable&quot;</span>)</span>
+<span id="cb24-6"><a href="network-construction.html#cb24-6"></a></span>
+<span id="cb24-7"><a href="network-construction.html#cb24-7"></a>A.dat =<span class="st"> </span><span class="kw">as.data.frame</span>(A)</span></code></pre></div>
 </div>
 <div id="analysis" class="section level2">
 <h2><span class="header-section-number">4.2</span> Analysis</h2>
@@ -229,15 +230,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="centrality-measures-report" class="section level2">
 <h2><span class="header-section-number">4.3</span> Centrality Measures Report</h2>
-<p>Table 4.1 reports the top 12 nodes ranked by their degrees, eigenvector centrality, closeness centrality and betweeness centrality. The 12 effective disease-related positions selected are exactly the top 12 nodes with the greatest degrees and eigenvector centrality. This might be a result of the high degree of inter-connectivity among these positions. By comparison, the <span class="math inline">\(8^{th}\)</span>, <span class="math inline">\(10^{th}\)</span>, and <span class="math inline">\(12^{th}\)</span> nodes with the most closeness centrality are random variations, while 8 of the top 12 nodes with the greatest betweenness centrality are random variations.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="network-construction.html#cb24-1"></a>dt =<span class="st"> </span>tab1</span>
-<span id="cb24-2"><a href="network-construction.html#cb24-2"></a>pathwaySNP =<span class="st"> </span>tab1<span class="op">$</span>Degree</span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="network-construction.html#cb25-1"></a>dt<span class="op">$</span>Degree =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span>Degree, <span class="dt">color =</span> <span class="kw">ifelse</span>(dt<span class="op">$</span>Degree <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
-<span id="cb25-2"><a href="network-construction.html#cb25-2"></a>dt<span class="op">$</span><span class="st">`</span><span class="dt">Eigenvector Centrality</span><span class="st">`</span> =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Eigenvector Centrality</span><span class="st">`</span>,<span class="dt">color=</span>  <span class="kw">ifelse</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Eigenvector Centrality</span><span class="st">`</span> <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
-<span id="cb25-3"><a href="network-construction.html#cb25-3"></a>dt<span class="op">$</span><span class="st">`</span><span class="dt">Closeness Centrality</span><span class="st">`</span> =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Closeness Centrality</span><span class="st">`</span>, <span class="dt">color =</span> <span class="kw">ifelse</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Closeness Centrality</span><span class="st">`</span> <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
-<span id="cb25-4"><a href="network-construction.html#cb25-4"></a>dt<span class="op">$</span><span class="st">`</span><span class="dt">Betweeness Centrality</span><span class="st">`</span> =<span class="st"> </span><span class="kw">cell_spec</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Betweeness Centrality</span><span class="st">`</span>, <span class="dt">color =</span> <span class="kw">ifelse</span>(dt<span class="op">$</span><span class="st">`</span><span class="dt">Betweeness Centrality</span><span class="st">`</span> <span class="op">%in%</span>pathwaySNP, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="network-construction.html#cb26-1"></a><span class="kw">kbl</span>(dt, <span class="dt">escape =</span> F) <span class="op">%&gt;%</span></span>
-<span id="cb26-2"><a href="network-construction.html#cb26-2"></a><span class="st">  </span><span class="kw">kable_styling</span>()</span></code></pre></div>
+<p>Table 4.1 reports the top 12 nodes ranked by their degrees, eigenvector centrality, closeness centrality and betweeness centrality. The 12 effective disease-related positions selected are exactly the top 12 nodes with the greatest degrees and eigenvector centrality. This might be a result of the high degree of inter-connectivity among these positions.</p>
+<p>As a comparison, the <span class="math inline">\(8^{th}\)</span>, <span class="math inline">\(10^{th}\)</span>, and <span class="math inline">\(12^{th}\)</span> nodes with the highest closeness centrality are random variations, while 8 of the top 12 nodes with the greatest betweenness centrality are random variations.</p>
+<p>Nodes colored blue below are random variables; nodes colored in red are nodes representing 12 SNP locations, where each is part of at least one combination.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -465,236 +460,7 @@ Betweeness Centrality
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="network-construction.html#cb27-1"></a>dt <span class="op">%&gt;%</span></span>
-<span id="cb27-2"><a href="network-construction.html#cb27-2"></a><span class="st">  </span><span class="kw">kbl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb27-3"><a href="network-construction.html#cb27-3"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> T)</span></code></pre></div>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Rank
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Degree
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Eigenvector Centrality
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Closeness Centrality
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Betweeness Centrality
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2881&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2699&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2075&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X520&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X807&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2766&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2075&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1320&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X2083&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-6
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X526&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2766&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X2438&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-7
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1533&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X526&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2075&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X2251&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-8
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X520&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X520&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2766&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X1301&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-9
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1320&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1320&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X526&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X1806&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1237&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1627&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X39&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X1739&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-11
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1627&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1237&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X1627&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X521&lt;/span&gt;
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2106&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: red !important;" &gt;X2106&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X1889&lt;/span&gt;
-</td>
-<td style="text-align:left;">
-&lt;span style=" color: blue !important;" &gt;X571&lt;/span&gt;
-</td>
-</tr>
-</tbody>
-</table>
+<p><span class="math display">\[\text{Figure 4.1: Top 12 nodes with the highest degree, eigenvector centrality, closeness centrality and betweenness centrality}\]</span></p>
 
 </div>
 </div>

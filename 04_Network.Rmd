@@ -9,7 +9,7 @@ For each position $g$, we performed marginal regression and obtain a p-value, $p
 ```{r}
 # record p values for each position
 mutations_pVal = c()
-disease_status_vector = c(rep(1,n/2),rep(0,n/2))
+disease_status_vector = c(rep(1,n/2),rep(0,n/2)) # Arbitrarily assign the first half with disease
 
 for (i in 1:length(position)){
   outcome <- "disease_status_vector"
@@ -58,7 +58,11 @@ $$\text{Figure} \; 4.2 :\; \text {Modularity Class Decomposition within the Majo
 
 ## Centrality Measures Report
 
-Table 4.1 reports the top 12 nodes ranked by their degrees, eigenvector centrality, closeness centrality and betweeness centrality. The 12 effective disease-related positions selected are exactly the top 12 nodes with the greatest degrees and eigenvector centrality. This might be a result of the high degree of inter-connectivity among these positions. By comparison, the $8^{th}$, $10^{th}$, and $12^{th}$ nodes with the most closeness centrality are random variations, while 8 of the top 12 nodes with the greatest betweenness centrality are random variations.
+Table 4.1 reports the top 12 nodes ranked by their degrees, eigenvector centrality, closeness centrality and betweeness centrality. The 12 effective disease-related positions selected are exactly the top 12 nodes with the greatest degrees and eigenvector centrality. This might be a result of the high degree of inter-connectivity among these positions. 
+
+As a comparison, the $8^{th}$, $10^{th}$, and $12^{th}$ nodes with the highest closeness centrality are random variations, while 8 of the top 12 nodes with the greatest betweenness centrality are random variations.
+
+Nodes colored blue below are random variables; nodes colored in red are nodes representing 12 SNP locations, where each is part of at least one combination.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -73,28 +77,21 @@ Closeness =c("X2881", "X2699","X1533","X520","X1320","X521","X2075","X2766","X52
 Betweenness = c("X2881", "X2699","X1533","X807","X2083","X2438","X2251","X1301","X1806","X1739","X521","X571")
 tab1=as.data.frame(cbind(Rank,Degree,Eigen,Closeness,Betweenness))
 colnames(tab1) = c("Rank","Degree","Eigenvector Centrality","Closeness Centrality", "Betweeness Centrality")
-```
-```{r}
+
 dt = tab1
 pathwaySNP = tab1$Degree
-```
-```{r}
+
 dt$Degree = cell_spec(dt$Degree, color = ifelse(dt$Degree %in%pathwaySNP, "red", "blue"))
 dt$`Eigenvector Centrality` = cell_spec(dt$`Eigenvector Centrality`,color=  ifelse(dt$`Eigenvector Centrality` %in%pathwaySNP, "red", "blue"))
 dt$`Closeness Centrality` = cell_spec(dt$`Closeness Centrality`, color = ifelse(dt$`Closeness Centrality` %in%pathwaySNP, "red", "blue"))
 dt$`Betweeness Centrality` = cell_spec(dt$`Betweeness Centrality`, color = ifelse(dt$`Betweeness Centrality` %in%pathwaySNP, "red", "blue"))
-```
 
-
-```{r}
 kbl(dt, escape = F) %>%
   kable_styling()
 ```
 
+$$\text{Figure 4.1: Top 12 nodes with the highest degree, eigenvector centrality, closeness centrality and betweenness centrality}$$
 
-```{r}
-dt %>%
-  kbl() %>%
-  kable_styling(fixed_thead = T)
-```
+## Preliminary Conclusions
 
+Here comes the questionL

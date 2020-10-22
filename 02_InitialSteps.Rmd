@@ -1,16 +1,25 @@
 # Initial Steps
 
-Our initial thought was that Genome-Wide Association Studies (GWAS) data is widely available
+Our initial thought was that Genome-Wide Association Studies data is readily available for public access and that we should be able to retrieve the dataset easily. However, it came unexpected that a research proposal from faculty was needed to obtain GWAS data for research purposes. Therefore, we decide to simulate our own GWAS data for the purpose of this research. 
+
+## Genetics Background
+
+The human genome contains roughly 234,000 exons, 80% of which contain fewer than 200 base pairs in length. However, mutations in these exons contain a majority of mutations that are related to diseases. Our setting is structured in this context.
+
+Suppose we have a disease. It is reasonable to assume that we know where the mutations related to this disease approximately are along the genome. As shown below, we guess that 1000 loci (specific position where a gene is located) could harbor the disease-related mutations. We assumed that each locus contains 200 base pairs (a pair of complementary bases in a double-stranded DNA: A-T, G-C).
+
+```{r eval=FALSE}
+loci <- 1000
+locus_length <- 200
+```
 
 ## Simulate original data
 
-We start by creating the dataset. Everyone row is set to the reference level first (i.e. there is no variant).
+We start by creating the dataset. Everyone row is set to the reference level first (i.e. there is no variant). Suppose initially we have 500 individuals, and we categorize 100 as people who have the disease.
 
 ```{r eval=FALSE}
 n <- 500
 n_disease <- 100
-loci <- 1000
-locus_length <- 200
 ```
 
 ```{r eval=FALSE}
@@ -122,7 +131,7 @@ potential_SNP_places <- unique(potential_SNP_places)
 
 ## Screening
 
-With the mutations that non-patients had at SNP locations, some of them may fall into the "disease" status. We then performed a round of screening for 400 people who were initially categorized without the disease. Surprisingly, we found that a large number of people fall into the "disease" status. We were surprised for two reasons:
+With the mutations that non-patients had at SNP locations, some of the 400 people may fall into the "disease" status. We then performed a round of screening for 400 people who were initially categorized without the disease. Surprisingly, we found that a large number of people fall into the "disease" status. We were surprised for two reasons:
 
 + The probability of mutations at each location is low.
 

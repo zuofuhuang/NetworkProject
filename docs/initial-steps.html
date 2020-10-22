@@ -134,13 +134,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="initial-steps.html"><a href="initial-steps.html"><i class="fa fa-check"></i><b>2</b> Initial Steps</a><ul>
-<li class="chapter" data-level="2.1" data-path="initial-steps.html"><a href="initial-steps.html#simulate-original-data"><i class="fa fa-check"></i><b>2.1</b> Simulate original data</a></li>
-<li class="chapter" data-level="2.2" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.2</b> Sample mutations for patients at SNP locations</a></li>
-<li class="chapter" data-level="2.3" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-non-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.3</b> Sample mutations for non-patients at SNP locations</a></li>
-<li class="chapter" data-level="2.4" data-path="initial-steps.html"><a href="initial-steps.html#variants-at-non-snp-locations"><i class="fa fa-check"></i><b>2.4</b> Variants at non-SNP locations</a></li>
-<li class="chapter" data-level="2.5" data-path="initial-steps.html"><a href="initial-steps.html#screening"><i class="fa fa-check"></i><b>2.5</b> Screening</a></li>
-<li class="chapter" data-level="2.6" data-path="initial-steps.html"><a href="initial-steps.html#marginal-regression"><i class="fa fa-check"></i><b>2.6</b> Marginal Regression</a></li>
-<li class="chapter" data-level="2.7" data-path="initial-steps.html"><a href="initial-steps.html#discussion"><i class="fa fa-check"></i><b>2.7</b> Discussion</a></li>
+<li class="chapter" data-level="2.1" data-path="initial-steps.html"><a href="initial-steps.html#genetics-background"><i class="fa fa-check"></i><b>2.1</b> Genetics Background</a></li>
+<li class="chapter" data-level="2.2" data-path="initial-steps.html"><a href="initial-steps.html#simulate-original-data"><i class="fa fa-check"></i><b>2.2</b> Simulate original data</a></li>
+<li class="chapter" data-level="2.3" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.3</b> Sample mutations for patients at SNP locations</a></li>
+<li class="chapter" data-level="2.4" data-path="initial-steps.html"><a href="initial-steps.html#sample-mutations-for-non-patients-at-snp-locations"><i class="fa fa-check"></i><b>2.4</b> Sample mutations for non-patients at SNP locations</a></li>
+<li class="chapter" data-level="2.5" data-path="initial-steps.html"><a href="initial-steps.html#variants-at-non-snp-locations"><i class="fa fa-check"></i><b>2.5</b> Variants at non-SNP locations</a></li>
+<li class="chapter" data-level="2.6" data-path="initial-steps.html"><a href="initial-steps.html#screening"><i class="fa fa-check"></i><b>2.6</b> Screening</a></li>
+<li class="chapter" data-level="2.7" data-path="initial-steps.html"><a href="initial-steps.html#marginal-regression"><i class="fa fa-check"></i><b>2.7</b> Marginal Regression</a></li>
+<li class="chapter" data-level="2.8" data-path="initial-steps.html"><a href="initial-steps.html#discussion"><i class="fa fa-check"></i><b>2.8</b> Discussion</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="progress-and-revision.html"><a href="progress-and-revision.html"><i class="fa fa-check"></i><b>3</b> Progress and Revision</a><ul>
 <li class="chapter" data-level="3.1" data-path="progress-and-revision.html"><a href="progress-and-revision.html#rationale"><i class="fa fa-check"></i><b>3.1</b> Rationale</a></li>
@@ -184,168 +185,173 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="initial-steps" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Initial Steps</h1>
-<p>Our initial thought was that Genome-Wide Association Studies (GWAS) data is widely available</p>
+<p>Our initial thought was that Genome-Wide Association Studies data is readily available for public access and that we should be able to retrieve the dataset easily. However, it came unexpected that a research proposal from faculty was needed to obtain GWAS data for research purposes. Therefore, we decide to simulate our own GWAS data for the purpose of this research.</p>
+<div id="genetics-background" class="section level2">
+<h2><span class="header-section-number">2.1</span> Genetics Background</h2>
+<p>The human genome contains roughly 234,000 exons, 80% of which contain fewer than 200 base pairs in length. However, mutations in these exons contain a majority of mutations that are related to diseases. Our setting is structured in this context.</p>
+<p>Suppose we have a disease. It is reasonable to assume that we know where the mutations related to this disease approximately are along the genome. As shown below, we guess that 1000 loci (specific position where a gene is located) could harbor the disease-related mutations. We assumed that each locus contains 200 base pairs (a pair of complementary bases in a double-stranded DNA: A-T, G-C).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="initial-steps.html#cb1-1"></a>loci &lt;-<span class="st"> </span><span class="dv">1000</span></span>
+<span id="cb1-2"><a href="initial-steps.html#cb1-2"></a>locus_length &lt;-<span class="st"> </span><span class="dv">200</span></span></code></pre></div>
+</div>
 <div id="simulate-original-data" class="section level2">
-<h2><span class="header-section-number">2.1</span> Simulate original data</h2>
-<p>We start by creating the dataset. Everyone row is set to the reference level first (i.e. there is no variant).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="initial-steps.html#cb1-1"></a>n &lt;-<span class="st"> </span><span class="dv">500</span></span>
-<span id="cb1-2"><a href="initial-steps.html#cb1-2"></a>n_disease &lt;-<span class="st"> </span><span class="dv">100</span></span>
-<span id="cb1-3"><a href="initial-steps.html#cb1-3"></a>loci &lt;-<span class="st"> </span><span class="dv">1000</span></span>
-<span id="cb1-4"><a href="initial-steps.html#cb1-4"></a>locus_length &lt;-<span class="st"> </span><span class="dv">200</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="initial-steps.html#cb2-1"></a>reference &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>), <span class="dt">size =</span> loci<span class="op">*</span>locus_length, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb2-2"><a href="initial-steps.html#cb2-2"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="dt">data =</span> <span class="kw">rep</span>(reference, n), <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> loci <span class="op">*</span><span class="st"> </span>locus_length,<span class="dt">byrow =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb2-3"><a href="initial-steps.html#cb2-3"></a></span>
-<span id="cb2-4"><a href="initial-steps.html#cb2-4"></a>SNP_location &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>(loci<span class="op">*</span>locus_length), <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb2-5"><a href="initial-steps.html#cb2-5"></a>reference_level_SNP_location &lt;-<span class="st"> </span>reference[SNP_location]</span></code></pre></div>
+<h2><span class="header-section-number">2.2</span> Simulate original data</h2>
+<p>We start by creating the dataset. Everyone row is set to the reference level first (i.e. there is no variant). Suppose initially we have 500 individuals, and we categorize 100 as people who have the disease.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="initial-steps.html#cb2-1"></a>n &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb2-2"><a href="initial-steps.html#cb2-2"></a>n_disease &lt;-<span class="st"> </span><span class="dv">100</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="initial-steps.html#cb3-1"></a>reference &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>), <span class="dt">size =</span> loci<span class="op">*</span>locus_length, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb3-2"><a href="initial-steps.html#cb3-2"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="dt">data =</span> <span class="kw">rep</span>(reference, n), <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> loci <span class="op">*</span><span class="st"> </span>locus_length,<span class="dt">byrow =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb3-3"><a href="initial-steps.html#cb3-3"></a></span>
+<span id="cb3-4"><a href="initial-steps.html#cb3-4"></a>SNP_location &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>(loci<span class="op">*</span>locus_length), <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb3-5"><a href="initial-steps.html#cb3-5"></a>reference_level_SNP_location &lt;-<span class="st"> </span>reference[SNP_location]</span></code></pre></div>
 </div>
 <div id="sample-mutations-for-patients-at-snp-locations" class="section level2">
-<h2><span class="header-section-number">2.2</span> Sample mutations for patients at SNP locations</h2>
+<h2><span class="header-section-number">2.3</span> Sample mutations for patients at SNP locations</h2>
 <p>We then sample mutations at SNP locations who were categorized at patients.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="initial-steps.html#cb3-1"></a>disease_people_row_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>, <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="initial-steps.html#cb4-1"></a>combo_number &lt;-<span class="st"> </span><span class="dv">15</span></span>
-<span id="cb4-2"><a href="initial-steps.html#cb4-2"></a>SNP_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, combo_number, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-3"><a href="initial-steps.html#cb4-3"></a>disease_combo &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb4-4"><a href="initial-steps.html#cb4-4"></a></span>
-<span id="cb4-5"><a href="initial-steps.html#cb4-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(SNP_number)){</span>
-<span id="cb4-6"><a href="initial-steps.html#cb4-6"></a>  disease_combo[[i]] &lt;-<span class="st"> </span><span class="kw">sample</span>(SNP_location, <span class="dt">size =</span> SNP_number[i], <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb4-7"><a href="initial-steps.html#cb4-7"></a>}</span>
-<span id="cb4-8"><a href="initial-steps.html#cb4-8"></a></span>
-<span id="cb4-9"><a href="initial-steps.html#cb4-9"></a>disease_people_SNP_locations &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb4-10"><a href="initial-steps.html#cb4-10"></a>which_combo_they_get &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>combo_number, n_disease, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="initial-steps.html#cb5-1"></a><span class="co">#helper functions for decomposition.</span></span>
-<span id="cb5-2"><a href="initial-steps.html#cb5-2"></a>helper2 &lt;-<span class="st"> </span><span class="cf">function</span>(char){</span>
-<span id="cb5-3"><a href="initial-steps.html#cb5-3"></a>  other_set &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>),char)</span>
-<span id="cb5-4"><a href="initial-steps.html#cb5-4"></a>  <span class="kw">return</span>(<span class="kw">sample</span>(other_set,<span class="dv">1</span>))</span>
-<span id="cb5-5"><a href="initial-steps.html#cb5-5"></a>}</span>
-<span id="cb5-6"><a href="initial-steps.html#cb5-6"></a></span>
-<span id="cb5-7"><a href="initial-steps.html#cb5-7"></a>helper3 &lt;-<span class="st"> </span><span class="cf">function</span>(char, <span class="dt">p =</span> <span class="fl">0.15</span>){</span>
-<span id="cb5-8"><a href="initial-steps.html#cb5-8"></a>  random &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</span>
-<span id="cb5-9"><a href="initial-steps.html#cb5-9"></a>  <span class="cf">if</span> (random <span class="op">&lt;=</span><span class="st"> </span>(<span class="dv">1-3</span><span class="op">*</span>p)){</span>
-<span id="cb5-10"><a href="initial-steps.html#cb5-10"></a>    <span class="kw">return</span>(char)</span>
-<span id="cb5-11"><a href="initial-steps.html#cb5-11"></a>  } <span class="cf">else</span> <span class="cf">if</span> (random <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1-2</span><span class="op">*</span>p){</span>
-<span id="cb5-12"><a href="initial-steps.html#cb5-12"></a>    <span class="kw">return</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>),char)[<span class="dv">1</span>])</span>
-<span id="cb5-13"><a href="initial-steps.html#cb5-13"></a>  } <span class="cf">else</span> <span class="cf">if</span> (random <span class="op">&lt;=</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>p)){</span>
-<span id="cb5-14"><a href="initial-steps.html#cb5-14"></a>    <span class="kw">return</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>),char)[<span class="dv">2</span>])</span>
-<span id="cb5-15"><a href="initial-steps.html#cb5-15"></a>  } <span class="cf">else</span> {</span>
-<span id="cb5-16"><a href="initial-steps.html#cb5-16"></a>    <span class="kw">return</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>),char)[<span class="dv">3</span>])</span>
-<span id="cb5-17"><a href="initial-steps.html#cb5-17"></a>  }</span>
-<span id="cb5-18"><a href="initial-steps.html#cb5-18"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="initial-steps.html#cb6-1"></a><span class="co"># For patients</span></span>
-<span id="cb6-2"><a href="initial-steps.html#cb6-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_disease){</span>
-<span id="cb6-3"><a href="initial-steps.html#cb6-3"></a>  <span class="co"># disease-related SNP mutations first</span></span>
-<span id="cb6-4"><a href="initial-steps.html#cb6-4"></a>  reference_level_SNP_location_copy &lt;-<span class="st"> </span>reference_level_SNP_location</span>
-<span id="cb6-5"><a href="initial-steps.html#cb6-5"></a>  thiscombo &lt;-<span class="st"> </span>disease_combo[[which_combo_they_get[i]]]</span>
-<span id="cb6-6"><a href="initial-steps.html#cb6-6"></a>  index &lt;-<span class="st"> </span><span class="kw">match</span>(thiscombo, SNP_location)</span>
-<span id="cb6-7"><a href="initial-steps.html#cb6-7"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(index)){</span>
-<span id="cb6-8"><a href="initial-steps.html#cb6-8"></a>    reference_level_SNP_location_copy[index[j]] &lt;-<span class="st"> </span><span class="kw">helper2</span>(reference_level_SNP_location[index[j]])</span>
-<span id="cb6-9"><a href="initial-steps.html#cb6-9"></a>  }</span>
-<span id="cb6-10"><a href="initial-steps.html#cb6-10"></a>  </span>
-<span id="cb6-11"><a href="initial-steps.html#cb6-11"></a>  <span class="co"># non-disease-related SNP mutations</span></span>
-<span id="cb6-12"><a href="initial-steps.html#cb6-12"></a>  non_forced_index &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, index)</span>
-<span id="cb6-13"><a href="initial-steps.html#cb6-13"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(non_forced_index)){</span>
-<span id="cb6-14"><a href="initial-steps.html#cb6-14"></a>    reference_level_SNP_location_copy[non_forced_index[k]] &lt;-<span class="st"> </span><span class="kw">helper3</span>(reference_level_SNP_location[non_forced_index[k]],<span class="fl">0.15</span>)</span>
-<span id="cb6-15"><a href="initial-steps.html#cb6-15"></a>  }</span>
-<span id="cb6-16"><a href="initial-steps.html#cb6-16"></a></span>
-<span id="cb6-17"><a href="initial-steps.html#cb6-17"></a>  data[disease_people_row_number[i],][SNP_location] &lt;-<span class="st"> </span>reference_level_SNP_location_copy</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="initial-steps.html#cb4-1"></a>disease_people_row_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>, <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="initial-steps.html#cb5-1"></a>combo_number &lt;-<span class="st"> </span><span class="dv">15</span></span>
+<span id="cb5-2"><a href="initial-steps.html#cb5-2"></a>SNP_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, combo_number, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb5-3"><a href="initial-steps.html#cb5-3"></a>disease_combo &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb5-4"><a href="initial-steps.html#cb5-4"></a></span>
+<span id="cb5-5"><a href="initial-steps.html#cb5-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(SNP_number)){</span>
+<span id="cb5-6"><a href="initial-steps.html#cb5-6"></a>  disease_combo[[i]] &lt;-<span class="st"> </span><span class="kw">sample</span>(SNP_location, <span class="dt">size =</span> SNP_number[i], <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb5-7"><a href="initial-steps.html#cb5-7"></a>}</span>
+<span id="cb5-8"><a href="initial-steps.html#cb5-8"></a></span>
+<span id="cb5-9"><a href="initial-steps.html#cb5-9"></a>disease_people_SNP_locations &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb5-10"><a href="initial-steps.html#cb5-10"></a>which_combo_they_get &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>combo_number, n_disease, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="initial-steps.html#cb6-1"></a><span class="co">#helper functions for decomposition.</span></span>
+<span id="cb6-2"><a href="initial-steps.html#cb6-2"></a>helper2 &lt;-<span class="st"> </span><span class="cf">function</span>(char){</span>
+<span id="cb6-3"><a href="initial-steps.html#cb6-3"></a>  other_set &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>),char)</span>
+<span id="cb6-4"><a href="initial-steps.html#cb6-4"></a>  <span class="kw">return</span>(<span class="kw">sample</span>(other_set,<span class="dv">1</span>))</span>
+<span id="cb6-5"><a href="initial-steps.html#cb6-5"></a>}</span>
+<span id="cb6-6"><a href="initial-steps.html#cb6-6"></a></span>
+<span id="cb6-7"><a href="initial-steps.html#cb6-7"></a>helper3 &lt;-<span class="st"> </span><span class="cf">function</span>(char, <span class="dt">p =</span> <span class="fl">0.15</span>){</span>
+<span id="cb6-8"><a href="initial-steps.html#cb6-8"></a>  random &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb6-9"><a href="initial-steps.html#cb6-9"></a>  <span class="cf">if</span> (random <span class="op">&lt;=</span><span class="st"> </span>(<span class="dv">1-3</span><span class="op">*</span>p)){</span>
+<span id="cb6-10"><a href="initial-steps.html#cb6-10"></a>    <span class="kw">return</span>(char)</span>
+<span id="cb6-11"><a href="initial-steps.html#cb6-11"></a>  } <span class="cf">else</span> <span class="cf">if</span> (random <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1-2</span><span class="op">*</span>p){</span>
+<span id="cb6-12"><a href="initial-steps.html#cb6-12"></a>    <span class="kw">return</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>),char)[<span class="dv">1</span>])</span>
+<span id="cb6-13"><a href="initial-steps.html#cb6-13"></a>  } <span class="cf">else</span> <span class="cf">if</span> (random <span class="op">&lt;=</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>p)){</span>
+<span id="cb6-14"><a href="initial-steps.html#cb6-14"></a>    <span class="kw">return</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>),char)[<span class="dv">2</span>])</span>
+<span id="cb6-15"><a href="initial-steps.html#cb6-15"></a>  } <span class="cf">else</span> {</span>
+<span id="cb6-16"><a href="initial-steps.html#cb6-16"></a>    <span class="kw">return</span>(<span class="kw">setdiff</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>),char)[<span class="dv">3</span>])</span>
+<span id="cb6-17"><a href="initial-steps.html#cb6-17"></a>  }</span>
 <span id="cb6-18"><a href="initial-steps.html#cb6-18"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="initial-steps.html#cb7-1"></a><span class="co"># For patients</span></span>
+<span id="cb7-2"><a href="initial-steps.html#cb7-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_disease){</span>
+<span id="cb7-3"><a href="initial-steps.html#cb7-3"></a>  <span class="co"># disease-related SNP mutations first</span></span>
+<span id="cb7-4"><a href="initial-steps.html#cb7-4"></a>  reference_level_SNP_location_copy &lt;-<span class="st"> </span>reference_level_SNP_location</span>
+<span id="cb7-5"><a href="initial-steps.html#cb7-5"></a>  thiscombo &lt;-<span class="st"> </span>disease_combo[[which_combo_they_get[i]]]</span>
+<span id="cb7-6"><a href="initial-steps.html#cb7-6"></a>  index &lt;-<span class="st"> </span><span class="kw">match</span>(thiscombo, SNP_location)</span>
+<span id="cb7-7"><a href="initial-steps.html#cb7-7"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(index)){</span>
+<span id="cb7-8"><a href="initial-steps.html#cb7-8"></a>    reference_level_SNP_location_copy[index[j]] &lt;-<span class="st"> </span><span class="kw">helper2</span>(reference_level_SNP_location[index[j]])</span>
+<span id="cb7-9"><a href="initial-steps.html#cb7-9"></a>  }</span>
+<span id="cb7-10"><a href="initial-steps.html#cb7-10"></a>  </span>
+<span id="cb7-11"><a href="initial-steps.html#cb7-11"></a>  <span class="co"># non-disease-related SNP mutations</span></span>
+<span id="cb7-12"><a href="initial-steps.html#cb7-12"></a>  non_forced_index &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, index)</span>
+<span id="cb7-13"><a href="initial-steps.html#cb7-13"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(non_forced_index)){</span>
+<span id="cb7-14"><a href="initial-steps.html#cb7-14"></a>    reference_level_SNP_location_copy[non_forced_index[k]] &lt;-<span class="st"> </span><span class="kw">helper3</span>(reference_level_SNP_location[non_forced_index[k]],<span class="fl">0.15</span>)</span>
+<span id="cb7-15"><a href="initial-steps.html#cb7-15"></a>  }</span>
+<span id="cb7-16"><a href="initial-steps.html#cb7-16"></a></span>
+<span id="cb7-17"><a href="initial-steps.html#cb7-17"></a>  data[disease_people_row_number[i],][SNP_location] &lt;-<span class="st"> </span>reference_level_SNP_location_copy</span>
+<span id="cb7-18"><a href="initial-steps.html#cb7-18"></a>}</span></code></pre></div>
 </div>
 <div id="sample-mutations-for-non-patients-at-snp-locations" class="section level2">
-<h2><span class="header-section-number">2.3</span> Sample mutations for non-patients at SNP locations</h2>
+<h2><span class="header-section-number">2.4</span> Sample mutations for non-patients at SNP locations</h2>
 <p>We then hypothesize that given a common condition, non-patients are also more likely to have mutations at the SNP locations than at most other locations (e.g. those locations that make human human).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="initial-steps.html#cb7-1"></a><span class="co"># For those who are not set to have disease first (400)</span></span>
-<span id="cb7-2"><a href="initial-steps.html#cb7-2"></a><span class="co"># Loop over 50 genes, each one has some possibility to mutate. (More likely than the other nucleotides on the genome)</span></span>
-<span id="cb7-3"><a href="initial-steps.html#cb7-3"></a></span>
-<span id="cb7-4"><a href="initial-steps.html#cb7-4"></a>non_disease_row_number &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>,disease_people_row_number)</span>
-<span id="cb7-5"><a href="initial-steps.html#cb7-5"></a><span class="cf">for</span> (i <span class="cf">in</span> non_disease_row_number){</span>
-<span id="cb7-6"><a href="initial-steps.html#cb7-6"></a>  <span class="cf">for</span> (j <span class="cf">in</span> SNP_location)</span>
-<span id="cb7-7"><a href="initial-steps.html#cb7-7"></a>    data[i,j] &lt;-<span class="st"> </span><span class="kw">helper3</span>(data[i,j],<span class="fl">0.05</span>)</span>
-<span id="cb7-8"><a href="initial-steps.html#cb7-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="initial-steps.html#cb8-1"></a><span class="co"># For those who are not set to have disease first (400)</span></span>
+<span id="cb8-2"><a href="initial-steps.html#cb8-2"></a><span class="co"># Loop over 50 genes, each one has some possibility to mutate. (More likely than the other nucleotides on the genome)</span></span>
+<span id="cb8-3"><a href="initial-steps.html#cb8-3"></a></span>
+<span id="cb8-4"><a href="initial-steps.html#cb8-4"></a>non_disease_row_number &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>,disease_people_row_number)</span>
+<span id="cb8-5"><a href="initial-steps.html#cb8-5"></a><span class="cf">for</span> (i <span class="cf">in</span> non_disease_row_number){</span>
+<span id="cb8-6"><a href="initial-steps.html#cb8-6"></a>  <span class="cf">for</span> (j <span class="cf">in</span> SNP_location)</span>
+<span id="cb8-7"><a href="initial-steps.html#cb8-7"></a>    data[i,j] &lt;-<span class="st"> </span><span class="kw">helper3</span>(data[i,j],<span class="fl">0.05</span>)</span>
+<span id="cb8-8"><a href="initial-steps.html#cb8-8"></a>}</span></code></pre></div>
 </div>
 <div id="variants-at-non-snp-locations" class="section level2">
-<h2><span class="header-section-number">2.4</span> Variants at non-SNP locations</h2>
+<h2><span class="header-section-number">2.5</span> Variants at non-SNP locations</h2>
 <p>The next step is simulating random noise at non-SNP locations to better mimic properties of gene mutations in real life.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="initial-steps.html#cb8-1"></a>potential_SNP_places &lt;-<span class="st"> </span>SNP_location</span>
-<span id="cb8-2"><a href="initial-steps.html#cb8-2"></a></span>
-<span id="cb8-3"><a href="initial-steps.html#cb8-3"></a>potential_random_change_sites &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span>(loci<span class="op">*</span>locus_length),SNP_location)</span>
-<span id="cb8-4"><a href="initial-steps.html#cb8-4"></a></span>
-<span id="cb8-5"><a href="initial-steps.html#cb8-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n){</span>
-<span id="cb8-6"><a href="initial-steps.html#cb8-6"></a>    random_locus &lt;-<span class="st"> </span><span class="kw">sample</span>(potential_random_change_sites, <span class="dt">size =</span> (loci<span class="op">*</span>locus_length<span class="op">/</span><span class="dv">1000</span>), <span class="dt">replace =</span> <span class="ot">FALSE</span>) <span class="co"># definitely change</span></span>
-<span id="cb8-7"><a href="initial-steps.html#cb8-7"></a>    <span class="cf">for</span>(j <span class="cf">in</span> random_locus){</span>
-<span id="cb8-8"><a href="initial-steps.html#cb8-8"></a>      data[i,j] &lt;-<span class="st"> </span><span class="kw">helper2</span>(data[i,j])</span>
-<span id="cb8-9"><a href="initial-steps.html#cb8-9"></a>      potential_SNP_places &lt;-<span class="st"> </span><span class="kw">c</span>(potential_SNP_places, random_locus)</span>
-<span id="cb8-10"><a href="initial-steps.html#cb8-10"></a>    }</span>
-<span id="cb8-11"><a href="initial-steps.html#cb8-11"></a>}</span>
-<span id="cb8-12"><a href="initial-steps.html#cb8-12"></a></span>
-<span id="cb8-13"><a href="initial-steps.html#cb8-13"></a>potential_SNP_places &lt;-<span class="st"> </span><span class="kw">unique</span>(potential_SNP_places)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="initial-steps.html#cb9-1"></a>potential_SNP_places &lt;-<span class="st"> </span>SNP_location</span>
+<span id="cb9-2"><a href="initial-steps.html#cb9-2"></a></span>
+<span id="cb9-3"><a href="initial-steps.html#cb9-3"></a>potential_random_change_sites &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span>(loci<span class="op">*</span>locus_length),SNP_location)</span>
+<span id="cb9-4"><a href="initial-steps.html#cb9-4"></a></span>
+<span id="cb9-5"><a href="initial-steps.html#cb9-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n){</span>
+<span id="cb9-6"><a href="initial-steps.html#cb9-6"></a>    random_locus &lt;-<span class="st"> </span><span class="kw">sample</span>(potential_random_change_sites, <span class="dt">size =</span> (loci<span class="op">*</span>locus_length<span class="op">/</span><span class="dv">1000</span>), <span class="dt">replace =</span> <span class="ot">FALSE</span>) <span class="co"># definitely change</span></span>
+<span id="cb9-7"><a href="initial-steps.html#cb9-7"></a>    <span class="cf">for</span>(j <span class="cf">in</span> random_locus){</span>
+<span id="cb9-8"><a href="initial-steps.html#cb9-8"></a>      data[i,j] &lt;-<span class="st"> </span><span class="kw">helper2</span>(data[i,j])</span>
+<span id="cb9-9"><a href="initial-steps.html#cb9-9"></a>      potential_SNP_places &lt;-<span class="st"> </span><span class="kw">c</span>(potential_SNP_places, random_locus)</span>
+<span id="cb9-10"><a href="initial-steps.html#cb9-10"></a>    }</span>
+<span id="cb9-11"><a href="initial-steps.html#cb9-11"></a>}</span>
+<span id="cb9-12"><a href="initial-steps.html#cb9-12"></a></span>
+<span id="cb9-13"><a href="initial-steps.html#cb9-13"></a>potential_SNP_places &lt;-<span class="st"> </span><span class="kw">unique</span>(potential_SNP_places)</span></code></pre></div>
 </div>
 <div id="screening" class="section level2">
-<h2><span class="header-section-number">2.5</span> Screening</h2>
-<p>With the mutations that non-patients had at SNP locations, some of them may fall into the “disease” status. We then performed a round of screening for 400 people who were initially categorized without the disease. Surprisingly, we found that a large number of people fall into the “disease” status. We were surprised for two reasons:</p>
+<h2><span class="header-section-number">2.6</span> Screening</h2>
+<p>With the mutations that non-patients had at SNP locations, some of the 400 people may fall into the “disease” status. We then performed a round of screening for 400 people who were initially categorized without the disease. Surprisingly, we found that a large number of people fall into the “disease” status. We were surprised for two reasons:</p>
 <ul>
 <li><p>The probability of mutations at each location is low.</p></li>
 <li><p>Even if many mutations happen for someone, a right “combination of pathways” is needed to achieve the “disease” status, which happens more often than estimated.</p></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="initial-steps.html#cb9-1"></a><span class="co"># Do a round of screening for 400 people who did not initially have the disease</span></span>
-<span id="cb9-2"><a href="initial-steps.html#cb9-2"></a>NewPatient &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb9-3"><a href="initial-steps.html#cb9-3"></a><span class="cf">for</span> (i <span class="cf">in</span> non_disease_row_number){</span>
-<span id="cb9-4"><a href="initial-steps.html#cb9-4"></a>    MutatedSNP &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb9-5"><a href="initial-steps.html#cb9-5"></a>    <span class="cf">for</span>(j <span class="cf">in</span> SNP_location){</span>
-<span id="cb9-6"><a href="initial-steps.html#cb9-6"></a>      <span class="cf">if</span>(<span class="kw">isMutated</span>(i,j)){</span>
-<span id="cb9-7"><a href="initial-steps.html#cb9-7"></a>        MutatedSNP &lt;-<span class="st"> </span><span class="kw">c</span>(MutatedSNP,j)</span>
-<span id="cb9-8"><a href="initial-steps.html#cb9-8"></a>      }</span>
-<span id="cb9-9"><a href="initial-steps.html#cb9-9"></a>    }</span>
-<span id="cb9-10"><a href="initial-steps.html#cb9-10"></a>    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">15</span>){</span>
-<span id="cb9-11"><a href="initial-steps.html#cb9-11"></a>      <span class="cf">if</span>(<span class="kw">all</span>(disease_combo[[k]] <span class="op">%in%</span><span class="st"> </span>MutatedSNP)){</span>
-<span id="cb9-12"><a href="initial-steps.html#cb9-12"></a>        causalPathway &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb9-13"><a href="initial-steps.html#cb9-13"></a>        <span class="cf">for</span>(position <span class="cf">in</span> disease_combo[[k]]){</span>
-<span id="cb9-14"><a href="initial-steps.html#cb9-14"></a>          causalPathway =<span class="st"> </span><span class="kw">c</span>(causalPathway,<span class="kw">helper2</span>(reference[position]))</span>
-<span id="cb9-15"><a href="initial-steps.html#cb9-15"></a>        }</span>
-<span id="cb9-16"><a href="initial-steps.html#cb9-16"></a>        <span class="cf">if</span>(<span class="kw">all</span>(data[i,position] <span class="op">==</span><span class="st"> </span>causalPathway)){</span>
-<span id="cb9-17"><a href="initial-steps.html#cb9-17"></a>          NewPatient &lt;-<span class="st"> </span><span class="kw">c</span>(NewPatient,i)</span>
-<span id="cb9-18"><a href="initial-steps.html#cb9-18"></a>          <span class="cf">break</span></span>
-<span id="cb9-19"><a href="initial-steps.html#cb9-19"></a>        }</span>
-<span id="cb9-20"><a href="initial-steps.html#cb9-20"></a>      }</span>
-<span id="cb9-21"><a href="initial-steps.html#cb9-21"></a>    }</span>
-<span id="cb9-22"><a href="initial-steps.html#cb9-22"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="initial-steps.html#cb10-1"></a>disease_row_final &lt;-<span class="st"> </span><span class="kw">c</span>(disease_people_row_number, NewPatient)</span>
-<span id="cb10-2"><a href="initial-steps.html#cb10-2"></a></span>
-<span id="cb10-3"><a href="initial-steps.html#cb10-3"></a>disease_status_vector &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">FALSE</span>, <span class="dv">500</span>)</span>
-<span id="cb10-4"><a href="initial-steps.html#cb10-4"></a></span>
-<span id="cb10-5"><a href="initial-steps.html#cb10-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">500</span>){</span>
-<span id="cb10-6"><a href="initial-steps.html#cb10-6"></a>  <span class="cf">if</span> (i <span class="op">%in%</span><span class="st"> </span>disease_row_final){</span>
-<span id="cb10-7"><a href="initial-steps.html#cb10-7"></a>    disease_status_vector[i] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
-<span id="cb10-8"><a href="initial-steps.html#cb10-8"></a>  }</span>
-<span id="cb10-9"><a href="initial-steps.html#cb10-9"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="initial-steps.html#cb10-1"></a><span class="co"># Do a round of screening for 400 people who did not initially have the disease</span></span>
+<span id="cb10-2"><a href="initial-steps.html#cb10-2"></a>NewPatient &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb10-3"><a href="initial-steps.html#cb10-3"></a><span class="cf">for</span> (i <span class="cf">in</span> non_disease_row_number){</span>
+<span id="cb10-4"><a href="initial-steps.html#cb10-4"></a>    MutatedSNP &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb10-5"><a href="initial-steps.html#cb10-5"></a>    <span class="cf">for</span>(j <span class="cf">in</span> SNP_location){</span>
+<span id="cb10-6"><a href="initial-steps.html#cb10-6"></a>      <span class="cf">if</span>(<span class="kw">isMutated</span>(i,j)){</span>
+<span id="cb10-7"><a href="initial-steps.html#cb10-7"></a>        MutatedSNP &lt;-<span class="st"> </span><span class="kw">c</span>(MutatedSNP,j)</span>
+<span id="cb10-8"><a href="initial-steps.html#cb10-8"></a>      }</span>
+<span id="cb10-9"><a href="initial-steps.html#cb10-9"></a>    }</span>
+<span id="cb10-10"><a href="initial-steps.html#cb10-10"></a>    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">15</span>){</span>
+<span id="cb10-11"><a href="initial-steps.html#cb10-11"></a>      <span class="cf">if</span>(<span class="kw">all</span>(disease_combo[[k]] <span class="op">%in%</span><span class="st"> </span>MutatedSNP)){</span>
+<span id="cb10-12"><a href="initial-steps.html#cb10-12"></a>        causalPathway &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb10-13"><a href="initial-steps.html#cb10-13"></a>        <span class="cf">for</span>(position <span class="cf">in</span> disease_combo[[k]]){</span>
+<span id="cb10-14"><a href="initial-steps.html#cb10-14"></a>          causalPathway =<span class="st"> </span><span class="kw">c</span>(causalPathway,<span class="kw">helper2</span>(reference[position]))</span>
+<span id="cb10-15"><a href="initial-steps.html#cb10-15"></a>        }</span>
+<span id="cb10-16"><a href="initial-steps.html#cb10-16"></a>        <span class="cf">if</span>(<span class="kw">all</span>(data[i,position] <span class="op">==</span><span class="st"> </span>causalPathway)){</span>
+<span id="cb10-17"><a href="initial-steps.html#cb10-17"></a>          NewPatient &lt;-<span class="st"> </span><span class="kw">c</span>(NewPatient,i)</span>
+<span id="cb10-18"><a href="initial-steps.html#cb10-18"></a>          <span class="cf">break</span></span>
+<span id="cb10-19"><a href="initial-steps.html#cb10-19"></a>        }</span>
+<span id="cb10-20"><a href="initial-steps.html#cb10-20"></a>      }</span>
+<span id="cb10-21"><a href="initial-steps.html#cb10-21"></a>    }</span>
+<span id="cb10-22"><a href="initial-steps.html#cb10-22"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="initial-steps.html#cb11-1"></a>disease_row_final &lt;-<span class="st"> </span><span class="kw">c</span>(disease_people_row_number, NewPatient)</span>
+<span id="cb11-2"><a href="initial-steps.html#cb11-2"></a></span>
+<span id="cb11-3"><a href="initial-steps.html#cb11-3"></a>disease_status_vector &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">FALSE</span>, <span class="dv">500</span>)</span>
+<span id="cb11-4"><a href="initial-steps.html#cb11-4"></a></span>
+<span id="cb11-5"><a href="initial-steps.html#cb11-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">500</span>){</span>
+<span id="cb11-6"><a href="initial-steps.html#cb11-6"></a>  <span class="cf">if</span> (i <span class="op">%in%</span><span class="st"> </span>disease_row_final){</span>
+<span id="cb11-7"><a href="initial-steps.html#cb11-7"></a>    disease_status_vector[i] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb11-8"><a href="initial-steps.html#cb11-8"></a>  }</span>
+<span id="cb11-9"><a href="initial-steps.html#cb11-9"></a>}</span></code></pre></div>
 </div>
 <div id="marginal-regression" class="section level2">
-<h2><span class="header-section-number">2.6</span> Marginal Regression</h2>
+<h2><span class="header-section-number">2.7</span> Marginal Regression</h2>
 <p>Once we have simulated potential variants for everyone at every location, we find all places that at least one person has a variation at, select the places and fit a marginal regression at each location against the disease status.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="initial-steps.html#cb11-1"></a><span class="cf">for</span> (i <span class="cf">in</span> potential_SNP_places){</span>
-<span id="cb11-2"><a href="initial-steps.html#cb11-2"></a>  reference_level_here &lt;-<span class="st"> </span>reference[i]</span>
-<span id="cb11-3"><a href="initial-steps.html#cb11-3"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n){</span>
-<span id="cb11-4"><a href="initial-steps.html#cb11-4"></a>    <span class="cf">if</span> (data[j,i] <span class="op">==</span><span class="st"> </span>reference_level_here){</span>
-<span id="cb11-5"><a href="initial-steps.html#cb11-5"></a>      data[j,i] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
-<span id="cb11-6"><a href="initial-steps.html#cb11-6"></a>    } <span class="cf">else</span> {</span>
-<span id="cb11-7"><a href="initial-steps.html#cb11-7"></a>      data[j,i] &lt;-<span class="st"> </span><span class="ot">FALSE</span></span>
-<span id="cb11-8"><a href="initial-steps.html#cb11-8"></a>    }</span>
-<span id="cb11-9"><a href="initial-steps.html#cb11-9"></a>  }</span>
-<span id="cb11-10"><a href="initial-steps.html#cb11-10"></a>}</span>
-<span id="cb11-11"><a href="initial-steps.html#cb11-11"></a></span>
-<span id="cb11-12"><a href="initial-steps.html#cb11-12"></a>subdata &lt;-<span class="st"> </span>data[,potential_SNP_places]</span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="initial-steps.html#cb12-1"></a>isMutated &lt;-<span class="st"> </span><span class="cf">function</span>(person,position){</span>
-<span id="cb12-2"><a href="initial-steps.html#cb12-2"></a>  <span class="cf">if</span>(data[person,position] <span class="op">==</span><span class="st"> </span>reference[position] ){</span>
-<span id="cb12-3"><a href="initial-steps.html#cb12-3"></a>    <span class="kw">return</span>(<span class="ot">FALSE</span>)</span>
-<span id="cb12-4"><a href="initial-steps.html#cb12-4"></a>  }</span>
-<span id="cb12-5"><a href="initial-steps.html#cb12-5"></a>  <span class="cf">else</span>{</span>
-<span id="cb12-6"><a href="initial-steps.html#cb12-6"></a>    <span class="kw">return</span>(<span class="ot">TRUE</span>)</span>
-<span id="cb12-7"><a href="initial-steps.html#cb12-7"></a>  }</span>
-<span id="cb12-8"><a href="initial-steps.html#cb12-8"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="initial-steps.html#cb13-1"></a><span class="cf">for</span> (i <span class="cf">in</span> potential_SNP_places){</span>
-<span id="cb13-2"><a href="initial-steps.html#cb13-2"></a>  <span class="kw">summary</span>(<span class="kw">lm</span>(disease_status_vector <span class="op">~</span><span class="st"> </span>data[,i]))</span>
-<span id="cb13-3"><a href="initial-steps.html#cb13-3"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="initial-steps.html#cb12-1"></a><span class="cf">for</span> (i <span class="cf">in</span> potential_SNP_places){</span>
+<span id="cb12-2"><a href="initial-steps.html#cb12-2"></a>  reference_level_here &lt;-<span class="st"> </span>reference[i]</span>
+<span id="cb12-3"><a href="initial-steps.html#cb12-3"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n){</span>
+<span id="cb12-4"><a href="initial-steps.html#cb12-4"></a>    <span class="cf">if</span> (data[j,i] <span class="op">==</span><span class="st"> </span>reference_level_here){</span>
+<span id="cb12-5"><a href="initial-steps.html#cb12-5"></a>      data[j,i] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb12-6"><a href="initial-steps.html#cb12-6"></a>    } <span class="cf">else</span> {</span>
+<span id="cb12-7"><a href="initial-steps.html#cb12-7"></a>      data[j,i] &lt;-<span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb12-8"><a href="initial-steps.html#cb12-8"></a>    }</span>
+<span id="cb12-9"><a href="initial-steps.html#cb12-9"></a>  }</span>
+<span id="cb12-10"><a href="initial-steps.html#cb12-10"></a>}</span>
+<span id="cb12-11"><a href="initial-steps.html#cb12-11"></a></span>
+<span id="cb12-12"><a href="initial-steps.html#cb12-12"></a>subdata &lt;-<span class="st"> </span>data[,potential_SNP_places]</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="initial-steps.html#cb13-1"></a>isMutated &lt;-<span class="st"> </span><span class="cf">function</span>(person,position){</span>
+<span id="cb13-2"><a href="initial-steps.html#cb13-2"></a>  <span class="cf">if</span>(data[person,position] <span class="op">==</span><span class="st"> </span>reference[position] ){</span>
+<span id="cb13-3"><a href="initial-steps.html#cb13-3"></a>    <span class="kw">return</span>(<span class="ot">FALSE</span>)</span>
+<span id="cb13-4"><a href="initial-steps.html#cb13-4"></a>  }</span>
+<span id="cb13-5"><a href="initial-steps.html#cb13-5"></a>  <span class="cf">else</span>{</span>
+<span id="cb13-6"><a href="initial-steps.html#cb13-6"></a>    <span class="kw">return</span>(<span class="ot">TRUE</span>)</span>
+<span id="cb13-7"><a href="initial-steps.html#cb13-7"></a>  }</span>
+<span id="cb13-8"><a href="initial-steps.html#cb13-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="initial-steps.html#cb14-1"></a><span class="cf">for</span> (i <span class="cf">in</span> potential_SNP_places){</span>
+<span id="cb14-2"><a href="initial-steps.html#cb14-2"></a>  <span class="kw">summary</span>(<span class="kw">lm</span>(disease_status_vector <span class="op">~</span><span class="st"> </span>data[,i]))</span>
+<span id="cb14-3"><a href="initial-steps.html#cb14-3"></a>}</span></code></pre></div>
 </div>
 <div id="discussion" class="section level2">
-<h2><span class="header-section-number">2.7</span> Discussion</h2>
+<h2><span class="header-section-number">2.8</span> Discussion</h2>
 <p>Problems with this approach, as we realized later, were that:</p>
 <ul>
 <li><p>We assumed genetic variants were the only reason people caused the disease, which was almost never the case.</p></li>

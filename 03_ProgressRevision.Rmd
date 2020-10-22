@@ -7,7 +7,7 @@ When we found out that only SNP locations can be categorized as significant and 
 There are a few notable changes that we implemented in the *Progress and Revision* section.
 
 + We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of $p$ is determined by the biological background that on average the probability of having a mutation at each location is $1/1000$, as described in "What Are Single Nucleotide Polymorphisms (SNPs)?" (n.d.). 
-  + For people whose diseases are caused by genetic factors: the probability of mutations at each of the other locations has a probability of $p = 1/1000$.
+  + For people whose diseases are caused by genetic factors: the probability of mutations at every other location (including SNP locations that were not in their combination) has a probability of $p = 1/1000$.
   + For people whose diseases are caused by non-genetic factors: the probability of mutations at each of the non-SNP locations has a probability of $p = 1/1000$.
   + For people who do not have the disease: the probability of mutations at each of the non-SNP locations has a probability of $p = 1/1000$.
 
@@ -98,16 +98,13 @@ for (i in 1:n_disease){
   mutated_result <- mutater(data[i,],thiscombo)
   data[i,] <- mutated_result[[1]]
   
-  # update the list of mutated positions for person i 
-  #mutatedLst[[i]] = c(thiscombo,mutated_result[[2]])
-  
   # update the list of all positions that mutated
   mutated_position <- c(mutated_position, mutated_result[[2]])
 }
 
 #  for everyone else
 for (k in (n_disease+1):n){
-   # update mutated positions
+  # update mutated positions
   mutated_result <- mutater(data[k,], SNP_location)
   data[k,] <- mutated_result[[1]]
   
@@ -147,6 +144,7 @@ Create the adjacency matrix A that contains all positions where there is at leas
 A = matrix(0,length(mutated_position),length(mutated_position))
 rownames(A) = colnames(sub_data)
 colnames(A) = colnames(sub_data)
+
 for(i in 1:nrow(sub_data)){
   count = sum(sub_data[i,]==TRUE)
   if(count>=2){
@@ -162,11 +160,12 @@ for(i in 1:nrow(sub_data)){
   }
 }
 
-A = as.matrix(forceSymmetric(A,"U"))
+A <- as.matrix(forceSymmetric(A,"U"))
 ```
 
 Calculate the degree of the adjacency matrix. We can understand more of the matrix by calculating the average degree.
 
 ```{r}
-deg = rowSums(A)
+deg <- rowSums(A)
+deg
 ```
