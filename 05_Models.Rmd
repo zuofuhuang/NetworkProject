@@ -8,7 +8,8 @@ Mathematically,let $u(t)$ denotes the unit step function where $$u(t) = \begin{c
 and $b_i = 1$ if i is the source node of interest while $b_i = 0$ otherwise.
 
 The amount of fluid contained by node $i$ at time t is $x_i(t)$ is governed by the flow in and out of it,
-$$\frac{d}{dt}x_i(t) = \sum_j A_{ij}x_j(t)-\sum_jA_{ji}x_i(t)-\gamma x_i(t) $$
+
+$$\frac{d}{dt}x_i(t) = \sum_j A_{ij}x_j(t)-\sum_jA_{ji}x_i(t)-\gamma x_i(t)$$
 As $t\to \infty$, the fluid distribution approaches to its equilibrium distribution at which the influence of node $i$ to other nodes is measured by $$L_\gamma^{-1}\vec{b_i}$$
 where $\vec{b_i}$ is the standard basis with 1 at its $i^{th}$ entry. Here, $L_\gamma = L+\gamma I = S-A+\gamma I$ is the shifted graph Laplacian by $\gamma$ where $S$ is the diagonal matrix whose diagonal entries are the corresponding degrees. In practice, we normalize A symmetrically by $S^{-\frac{1}{2}}AS^{-\frac{1}{2}}$ such that the edge weights between two nodes are normalized by the degrees and replace $S$ correspondingly to obtain the Laplacian (Qi et al. 2008). 
 
@@ -50,7 +51,7 @@ inv_L_gamma <- solve(L_gamma)
 ```
 
 ```{r}
-# compute symmetric importance score using Enhanced Influence MWodel
+# compute symmetric importance score using Enhanced Influence Model
 W <- matrix(NA, nrow(A),ncol(A))
 for(i in 1:(nrow(A)-1)){
   for(j in (i+1):nrow(A)){

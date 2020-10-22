@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Enhanced Influence Models | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 5 Enhanced Influence Models | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Enhanced Influence Models | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -189,8 +189,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Here we imagine that the importance of nodes flows along edges. Initially, query nodes are selected to serve as sources where fluid is pumped in at a constant rate which then diffuses through the network. In addition, we assume that fluid leaks out of each node at a constant rate <span class="math inline">\(\gamma\)</span>. Intuitively, large <span class="math inline">\(\gamma\)</span> means faster rate of loss and therefore shorter diffusive paths. Essentially, the paths reflects diffusion of random walkers from a source. At equilibrium, there is no net flow in the entire network. The more interaction a node has with the query nodes, the more fluid it will contain at the equilibrium (Qi et al., 2008). Following the procedure in previous literature (Vandin, Upfal, and Raphael, 2011), we set <span class="math inline">\(\gamma = 5\)</span>, which is approximately the average degree of a node in our network.</p>
 <p>Mathematically,let <span class="math inline">\(u(t)\)</span> denotes the unit step function where <span class="math display">\[u(t) = \begin{cases}0 \;\text{ if }\;t&lt;0\\1 \;\text{ if }\;t&gt;0 \end{cases},\]</span>
 and <span class="math inline">\(b_i = 1\)</span> if i is the source node of interest while <span class="math inline">\(b_i = 0\)</span> otherwise.</p>
-<p>The amount of fluid contained by node <span class="math inline">\(i\)</span> at time t is <span class="math inline">\(x_i(t)\)</span> is governed by the flow in and out of it,
-<span class="math display">\[\frac{d}{dt}x_i(t) = \sum_j A_{ij}x_j(t)-\sum_jA_{ji}x_i(t)-\gamma x_i(t) \]</span>
+<p>The amount of fluid contained by node <span class="math inline">\(i\)</span> at time t is <span class="math inline">\(x_i(t)\)</span> is governed by the flow in and out of it,</p>
+<p><span class="math display">\[\frac{d}{dt}x_i(t) = \sum_j A_{ij}x_j(t)-\sum_jA_{ji}x_i(t)-\gamma x_i(t)\]</span>
 As <span class="math inline">\(t\to \infty\)</span>, the fluid distribution approaches to its equilibrium distribution at which the influence of node <span class="math inline">\(i\)</span> to other nodes is measured by <span class="math display">\[L_\gamma^{-1}\vec{b_i}\]</span>
 where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 1 at its <span class="math inline">\(i^{th}\)</span> entry. Here, <span class="math inline">\(L_\gamma = L+\gamma I = S-A+\gamma I\)</span> is the shifted graph Laplacian by <span class="math inline">\(\gamma\)</span> where <span class="math inline">\(S\)</span> is the diagonal matrix whose diagonal entries are the corresponding degrees. In practice, we normalize A symmetrically by <span class="math inline">\(S^{-\frac{1}{2}}AS^{-\frac{1}{2}}\)</span> such that the edge weights between two nodes are normalized by the degrees and replace <span class="math inline">\(S\)</span> correspondingly to obtain the Laplacian (Qi et al. 2008).</p>
 <p>Here, the <span class="math inline">\(ij\)</span> entry of <span class="math inline">\(L_\gamma^{-1}\)</span> gives the influence of <span class="math inline">\(j\)</span> on <span class="math inline">\(i\)</span>, which may or may not equal to the <span class="math inline">\(ji\)</span> entry of <span class="math inline">\(L_\gamma^{-1}\)</span>. To better interpret the result, we define the mutual influence between i and j to be <span class="math inline">\(\tilde{i}(i,j) = \min(L_\gamma^{-1}[i,j],L_\gamma^{-1}[j,i])\)</span>. (Vandin, Upfal, and Raphael, 2011)</p>
@@ -224,7 +224,7 @@ where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 
 <span id="cb28-18"><a href="enhanced-influence-models.html#cb28-18"></a>gamma &lt;-<span class="st"> </span><span class="dv">5</span></span>
 <span id="cb28-19"><a href="enhanced-influence-models.html#cb28-19"></a>L_gamma &lt;-<span class="st"> </span>S_normalized<span class="op">+</span><span class="kw">diag</span>(gamma,<span class="kw">nrow</span>(A))<span class="op">-</span>A_normalized</span>
 <span id="cb28-20"><a href="enhanced-influence-models.html#cb28-20"></a>inv_L_gamma &lt;-<span class="st"> </span><span class="kw">solve</span>(L_gamma)</span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="enhanced-influence-models.html#cb29-1"></a><span class="co"># compute symmetric importance score using Enhanced Influence MWodel</span></span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="enhanced-influence-models.html#cb29-1"></a><span class="co"># compute symmetric importance score using Enhanced Influence Model</span></span>
 <span id="cb29-2"><a href="enhanced-influence-models.html#cb29-2"></a>W &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="kw">nrow</span>(A),<span class="kw">ncol</span>(A))</span>
 <span id="cb29-3"><a href="enhanced-influence-models.html#cb29-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
 <span id="cb29-4"><a href="enhanced-influence-models.html#cb29-4"></a>  <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
@@ -393,10 +393,10 @@ The major component in the network is as follows:
 <span id="cb38-27"><a href="enhanced-influence-models.html#cb38-27"></a>}</span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="enhanced-influence-models.html#cb39-1"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.09</span>, <span class="fl">0.01</span>)</span>
 <span id="cb39-2"><a href="enhanced-influence-models.html#cb39-2"></a><span class="kw">sapply</span>(x, aveNumComp_s,<span class="dt">s=</span><span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 115.3 131.3  57.5  11.0   2.8   2.4   2.1   0.0   0.0</code></pre>
+<pre><code>## [1]  99.3 115.9  48.3   8.0   3.1   1.2   1.2   0.0   0.0</code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="enhanced-influence-models.html#cb41-1"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.09</span>, <span class="fl">0.01</span>)</span>
 <span id="cb41-2"><a href="enhanced-influence-models.html#cb41-2"></a><span class="kw">sapply</span>(x, aveNumComp_s,<span class="dt">s=</span><span class="dv">2</span>)</span></code></pre></div>
-<pre><code>## [1] 162.0 220.9 167.5  67.4  49.5  43.9   3.6   0.3   0.0</code></pre>
+<pre><code>## [1] 160.5 215.2 147.3  69.9  61.9  56.1   3.9   2.0   1.3</code></pre>
 
 </div>
 </div>
