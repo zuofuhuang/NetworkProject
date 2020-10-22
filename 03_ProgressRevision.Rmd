@@ -6,7 +6,7 @@ When we found out that only SNP locations can be categorized as significant and 
 
 There are a few notable changes that we implemented in the *Progress and Revision* section.
 
-+ We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of $p$ is determined by the biological background that on average the probability of having a mutation at each location is $1/1000$, as described in “United Arab Emirates Architecture” (n.d.). 
++ We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of $p$ is determined by the biological background that on average the probability of having a mutation at each location is $1/1000$, as described in "What Are Single Nucleotide Polymorphisms (SNPs)?" (n.d.). 
   + For people whose diseases are caused by genetic factors: the probability of mutations at each of the other locations has a probability of $p = 1/1000$.
   + For people whose diseases are caused by non-genetic factors: the probability of mutations at each of the non-SNP locations has a probability of $p = 1/1000$.
   + For people who do not have the disease: the probability of mutations at each of the non-SNP locations has a probability of $p = 1/1000$.

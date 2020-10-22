@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Progress and Revision | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -189,7 +189,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When we found out that only SNP locations can be categorized as significant and other loci are exclusively “non-significant”, we realized that we are getting too far into simulation. Although it seemed that every step we take is justified, the simulated data seem unrealistic and overfitting for our scenario. As we were conduting a more extensive literature review process in the hope of shedding light on our next simulation steps, we came across the paper <strong>Discovery of Mutated Subnetworks Associated with Clinical Data in Cancer (Vandin et. al, 2012)</strong>. Section 3.1 of the paper contains a description of how the data is simulated in a slightly different setting.</p>
 <p>There are a few notable changes that we implemented in the <em>Progress and Revision</em> section.</p>
 <ul>
-<li><p>We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of <span class="math inline">\(p\)</span> is determined by the biological background that on average the probability of having a mutation at each location is <span class="math inline">\(1/1000\)</span>, as described in “United Arab Emirates Architecture” (n.d.).</p>
+<li><p>We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of <span class="math inline">\(p\)</span> is determined by the biological background that on average the probability of having a mutation at each location is <span class="math inline">\(1/1000\)</span>, as described in “What Are Single Nucleotide Polymorphisms (SNPs)?” (n.d.).</p>
 <ul>
 <li>For people whose diseases are caused by genetic factors: the probability of mutations at each of the other locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
 <li>For people whose diseases are caused by non-genetic factors: the probability of mutations at each of the non-SNP locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
