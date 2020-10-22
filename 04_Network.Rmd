@@ -94,4 +94,14 @@ $$\text{Figure 4.1: Top 12 nodes with the highest degree, eigenvector centrality
 
 ## Preliminary Conclusions
 
-Here comes the questionL
+In this chapter, we found the exact 12 SNP locations that make up variant combinations. Network Science is powerful!
+
+Here comes the question: Why don't we simply use degree centrality and eigenvector centrality to detect the SNP locations then? Why don't we stop here?
+
+There are three reasons:
+
+1. Our goal is to not only find which mutations cause diseases, but also which combinations cause diseases. The centrality measures we have do not allow us to infer the structure of the subnetwork of 12 nodes.
+
+2. Our simulation uses co-occurrence counts to build edges, while in reality there could be more intrinsic ways to determine edges between SNPs.
+
+3. We choose the top 12 nodes for centrality measures because we know the underlying truth that there should be 12 SNP locations from our simulation. It is difficult to find a cutoff without knowing the exact number of SNP locations involved, provided that a distinguishable gap in centrality measures (in this case, between 12th and 13th) does not exist.

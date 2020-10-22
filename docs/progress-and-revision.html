@@ -151,14 +151,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="network-construction.html"><a href="network-construction.html#network-construction-process"><i class="fa fa-check"></i><b>4.1</b> Network Construction Process</a></li>
 <li class="chapter" data-level="4.2" data-path="network-construction.html"><a href="network-construction.html#analysis"><i class="fa fa-check"></i><b>4.2</b> Analysis</a></li>
 <li class="chapter" data-level="4.3" data-path="network-construction.html"><a href="network-construction.html#centrality-measures-report"><i class="fa fa-check"></i><b>4.3</b> Centrality Measures Report</a></li>
+<li class="chapter" data-level="4.4" data-path="network-construction.html"><a href="network-construction.html#preliminary-conclusions"><i class="fa fa-check"></i><b>4.4</b> Preliminary Conclusions</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html"><i class="fa fa-check"></i><b>5</b> Enhanced Influence Models</a><ul>
-<li class="chapter" data-level="5.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#graph-diffusion-kernel"><i class="fa fa-check"></i><b>5.1</b> Graph Diffusion Kernel</a></li>
-<li class="chapter" data-level="5.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#enhanced-influence-model"><i class="fa fa-check"></i><b>5.2</b> Enhanced Influence Model</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#determine-value-for-cold-edge-threshold-delta"><i class="fa fa-check"></i><b>5.2.1</b> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></a></li>
-<li class="chapter" data-level="5.2.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#alternative-situation"><i class="fa fa-check"></i><b>5.2.2</b> Alternative Situation</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#code"><i class="fa fa-check"></i><b>5.3</b> Code</a></li>
+<li class="chapter" data-level="5" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html"><i class="fa fa-check"></i><b>5</b> Enhanced Influence Model</a><ul>
+<li class="chapter" data-level="5.1" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#graph-diffusion-kernel"><i class="fa fa-check"></i><b>5.1</b> Graph Diffusion Kernel</a></li>
+<li class="chapter" data-level="5.2" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#enhanced-influence-model-1"><i class="fa fa-check"></i><b>5.2</b> Enhanced Influence Model</a></li>
+<li class="chapter" data-level="5.3" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#determine-value-for-cold-edge-threshold-delta"><i class="fa fa-check"></i><b>5.3</b> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></a></li>
+<li class="chapter" data-level="5.4" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#alternative-situation"><i class="fa fa-check"></i><b>5.4</b> Alternative Situation</a></li>
+<li class="chapter" data-level="5.5" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#code"><i class="fa fa-check"></i><b>5.5</b> Code</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html"><i class="fa fa-check"></i><b>6</b> Discussion and Future Work</a><ul>
 <li class="chapter" data-level="6.1" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#what-did-we-achieve"><i class="fa fa-check"></i><b>6.1</b> What did we achieve?</a></li>
@@ -324,9 +324,200 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-17"><a href="progress-and-revision.html#cb21-17"></a>  }</span>
 <span id="cb21-18"><a href="progress-and-revision.html#cb21-18"></a>}</span>
 <span id="cb21-19"><a href="progress-and-revision.html#cb21-19"></a></span>
-<span id="cb21-20"><a href="progress-and-revision.html#cb21-20"></a>A =<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(A,<span class="st">&quot;U&quot;</span>))</span></code></pre></div>
+<span id="cb21-20"><a href="progress-and-revision.html#cb21-20"></a>A &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(A,<span class="st">&quot;U&quot;</span>))</span></code></pre></div>
 <p>Calculate the degree of the adjacency matrix. We can understand more of the matrix by calculating the average degree.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="progress-and-revision.html#cb22-1"></a>deg =<span class="st"> </span><span class="kw">rowSums</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="progress-and-revision.html#cb22-1"></a>deg &lt;-<span class="st"> </span><span class="kw">rowSums</span>(A)</span>
+<span id="cb22-2"><a href="progress-and-revision.html#cb22-2"></a>deg</span></code></pre></div>
+<pre><code>##  X636 X1303  X178  X834 X1173 X1320 X2683 X2427  X768  X614  X143  X743 X1255 
+##   163    96   146   196    79   146   175   179   167   100     9     8     8 
+## X1517 X2615 X1056 X1672 X2478 X2606  X402 X1532  X109  X378 X1156 X1219 X2950 
+##     8     8     7     7     7    20    11     8     9    12    12    12     9 
+## X2996  X282 X1012 X1025 X2270  X139  X286 X2939  X661  X673 X1414 X2934  X288 
+##    16     7     7     7     9     6     6     6    10     7     7     7     8 
+##  X747 X1344 X1419 X2671  X672 X2590 X1697 X1575 X2063 X2640  X766 X1260 X1416 
+##    13     8    13     8     5    16     4     7    10    10     8     5     7 
+## X2342 X2796  X620 X1622 X2561 X2894  X202 X1407 X1573 X2516  X371  X505 X1089 
+##     7    18     9    19    10     9     7    17     7     7     9     9     9 
+## X1741 X2753 X1283 X1518  X220  X316 X2137  X349  X431 X2037 X2887   X46  X781 
+##    14     9     5     7     6     9    12     7     7    12     7     8     8 
+## X1288 X2081 X2593 X1079 X1708 X2649   X26 X1026 X1809 X1968 X1341 X2076 X1237 
+##     8     8    15     6    14     6    20     7     7     7     6     6     5 
+## X2175 X1992 X2780 X1097 X1966 X1988 X2421 X2563  X310 X1837 X2407   X70 X1154 
+##    16     5     5     8     8     8     8     8    14    11     6     7     9 
+## X1296 X2118  X307 X1324 X1942 X2979  X736 X1024 X2433  X575 X1137 X2678 X2930 
+##     7    20    10     7     7     7     6     6     6    18     7    14     7 
+##  X451  X538 X1646 X1817 X1911  X309  X908 X1476 X2304  X494  X500 X1256 X2252 
+##    11    11     8     8     5    11     8    13    11    11     7     7     7 
+##   X61  X543  X647  X899  X168 X1900 X2002  X175  X227  X264 X1943 X2453 X1187 
+##     7     7     7     7    18     8     8     9    22     9     9     9     8 
+## X1759 X1924 X2209  X423 X1973 X2261 X2851 X1213 X1895  X323 X1629 X1643 X1784 
+##     8     8    10     6    10     4     4     6     6    13    13    13    13 
+## X1851 X2436 X2464 X2808  X344  X681 X1662 X1710 X2597 X2665   X83  X453  X489 
+##    13    13    13    17     9     9     9     9     9     9     9     9     9 
+## X1196 X2100   X41  X247 X1443 X1776 X2302 X2883  X115  X342 X1209 X2539  X967 
+##     9    16    14    12     9    11     9    17     8     7     7     7     7 
+## X1128 X1203 X2157  X107 X1273 X1564 X2585 X2685  X420  X725 X1271 X1319 X1421 
+##     3     3     3     9     6     8     4     4    10    10    10    10    10 
+## X1447 X1654 X1789 X2497 X2783  X104  X839 X1904 X2316 X2546  X942 X1172  X814 
+##    16    15    10    14    10     4     4     7     4     8     1     5     0 
+## X1001 X1201 X1034 X1556 X2533 X2922  X579 X2059 X2681 X2720    X7 X2173 X2398 
+##     6     6     3     3     3     3    12     4     4     9     6     3     6 
+## X1050 X2017  X403  X848  X897 X1174 X2856 X2946 X2852 X2929  X919 X2914  X891 
+##     2     2     5     5     5     5     5     5    10     3     1     1     3 
+## X1232 X1798 X2341  X235 X1598  X341 X1286 X1512 X2725 X1455 X2205 X2377 X2503 
+##     3     3     3     1     1     2     2     2     1     7     8     5     5 
+## X2595 X2824 X2476 X1420 X2412 X1179 X1207 X2882  X611 X1916 X1984  X317  X444 
+##    12     5     4     1     9     2     4     2     2     2     4     7     7 
+## X1017 X1155 X2129 X2214 X2380  X303  X562 X2442 X2836  X449 X1887  X370 X2821 
+##     7    10    13     7     7     6     6     3     3     2     6    10     1 
+##  X836 X1969 X2036  X141  X508  X345  X287  X700 X1168 X2033 X2423  X598 X1974 
+##     2     2     7     1     1     0     2     2     2     1     6     0    11 
+## X2470 X2844  X521  X832 X1116 X1182 X2829  X374 X2657  X954 X1442  X318 X2024 
+##     2     2     7     4     4     4     4     1     2     3     5     4    15 
+## X2165 X2479 X1311 X1665 X2963 X1057 X1619 X2435  X146 X1015   X56 X1305 X1485 
+##     4     4     4     2     2     1     5     2     2     2     0     2     6 
+## X2664 X1208 X1509 X1376 X1449 X2555 X2752 X2771  X238 X2727 X2758 X1143 X2957 
+##     2     7     2     4     4     4     4     4     2     7     2     1     1 
+##  X137 X2543  X273 X1897 X2364  X353 X1197 X1323 X2619 X1679 X2084    X9  X993 
+##     1     4     2     7     9     4     3     4     3     1     0     1     1 
+##  X644 X1169 X1448 X2098 X1014 X1152  X443  X895 X1338 X1424 X1888 X2626 X2876 
+##     3     3     3     6     3     1     9     6     6     6    13     6     6 
+##   X47   X32 X1005 X1606 X1760   X25 X1171 X1460 X2995 X1935 X2265 X2680 X2791 
+##     0     3     3     3     3     9     4     4     9     4     4     4     4 
+##  X870 X1194  X501 X2153  X738 X2251  X240  X653 X1099 X2738 X2901  X842 X1639 
+##     2     0     4    10     2     1     5     3     5     3     0     3     5 
+## X1664 X2730   X72  X827 X1527 X1581 X1593 X2448 X2800   X60  X635  X677 X2404 
+##     3     6     6     6     8     6     7     6     6     3     1     2     5 
+##   X35   X37  X116 X1362 X1822 X2845  X605 X2103 X1465 X2201 X2719  X416 X1062 
+##     5     5     5     8     5     8     5     1     3     3     7     3     3 
+## X1820 X2568 X1841 X2357 X2461  X664  X902 X1149 X1864 X2977 X1160 X2697  X779 
+##     3     8     7     5     6     1     1     2     5     2     1     3     2 
+##  X892 X2756  X419  X487 X1711  X272  X780 X2200 X2348   X84  X686 X1879 X2898 
+##     2     4     2     2     2     8     4     8     4     8     3     3     3 
+##  X296  X351  X409  X454  X876 X1756 X2170 X2865  X245  X567 X2172  X590 X1589 
+##     7    12    10     7     7     7     7     7     2     2     2     2     2 
+## X2548 X2318 X1797 X2635  X197 X1293  X465  X532  X101 X1046 X1698 X2430 X2716 
+##     5     0     1     1    12     3     1     1     7     9    11     7     7 
+## X2755   X77 X1250 X1791 X2296 X2604   X15 X2320 X2831  X882 X1252 X1703 X2367 
+##    15    13     4     4     4     9     2     2     2     4     4     4     8 
+## X2512 X2693 X2809 X1854 X2385  X210  X315  X907 X1150 X2116 X2130 X2617 X2051 
+##     4     4     6     3     6    10    11     8     8    12     8    10     0 
+##  X599 X2871 X1534 X1693   X10   X66  X224 X1342 X1496 X2222  X963 X1241 X1387 
+##     9     1     1     1     5     5     5     5     5     5     7     2     2 
+##  X393  X492  X249 X1827 X2074 X2399 X2193  X211 X2199 X1198 X1926  X106  X663 
+##     1     1     4     4     4     4     0     1     1     4     0     3     3 
+## X1549 X2007 X1482 X1651  X313   X34 X1123 X1507 X2869  X250  X628 X1363 X1979 
+##     3     3     1     1     0     5     3     3     5     1     4     4    11 
+## X2792 X2811   X43  X486 X1506 X2378   X68 X1107 X2878  X871 X1596 X2542   X55 
+##     4     4     2     2     2     3     4     4     4     2     2    11     5 
+## X1400 X2072 X2091 X2468 X1896 X2392 X2530  X826  X878   X74  X935 X1345 X2411 
+##     1     1     1     3     2     2     2     1    10     3     3     8     3 
+##   X40  X511  X600 X1368 X2858 X1355 X2132 X2658 X2973 X1533 X2376 X2594  X442 
+##     4     4     4     4     7     3     3     3     3     2     2     2     2 
+##  X497 X2618  X813 X1389 X1063 X1330 X1751 X2249 X2675 X2782  X328 X1481 X2710 
+##     4     2     8     3     3     3     7     3     2     5     2    10     2 
+##    X6 X1054  X702 X1125 X1456 X1614 X1257 X1438 X1648 X1925  X721 X1609 X2330 
+##     0     2     3     8     3     3     3     3     3     3     2     2     2 
+## X1167 X1430 X1395 X2139 X2884 X2932  X167 X1510 X1956  X815 X1371 X1645 X1764 
+##     1     3     2     2     5     1     3     3     3     2    14    10     5 
+## X2297 X2547 X2241  X996 X1106 X2389   X85   X92  X988 X1466 X1742 X2225 X2331 
+##     9     5     1     6     2     2     8    15     8    12     8     8     8 
+## X2498  X510  X763 X2026 X1825 X2441  X564 X2759 X2842 X1625 X2117 X1735 X2763 
+##     9     5     2     0     5     6     2     4     1     2     2     1     3 
+##   X98 X1115 X1989 X2581  X150  X469 X2772 X2917  X846 X1243  X683 X1899 X1462 
+##     3     3     3     7     0     3     9     3     1     1     2     2     2 
+## X1826 X2496 X1314 X1779 X2401 X1315 X1810   X94 X2962  X470 X1215 X1561 X1574 
+##     2     2     2     2     7     2     2     1     1     4     4     6     4 
+## X1845   X51 X2141 X1270 X2588  X557 X1637  X573 X2167 X2361  X266 X2127 X2896 
+##     4     4     4     1     1     2     5     3     3     3     2     2     2 
+##  X758 X2499  X729 X1120 X2737  X401 X1310  X601 X1814 X1875 X2279 X2390 X2814 
+##     1     1     2     2     2     7     3     8     7    12     7     7    14 
+##  X621  X773 X1666 X1824 X2631  X185 X1003  X518  X589 X2079 X2446 X1060 X1445 
+##     5     5     9     5     5     2     2     3     3     3     3     5     6 
+## X1691 X2230 X2269  X132 X2027 X2888 X1457 X1930 X2070 X2960 X1068  X634 X2011 
+##     8     5     5     2     6     2     4     4     8     4     2     3     3 
+## X2886 X1450 X2733  X680  X879 X2739  X749 X1059 X1186 X1692 X2890   X57  X685 
+##     3     3     3     1     5     5     6     6     6     9     6     4     4 
+##  X968 X1928 X1952 X2473  X117  X764 X1954  X642 X1030 X1871 X2259  X607 X1808 
+##     5     4     3     6     2    12     2     9     5     7     5     2     4 
+## X1964 X2190 X2426 X2801  X230  X717  X793 X1739  X135 X1958  X491  X948 X1312 
+##     4     4     4     4     3     4     3     3     1     1     3     3     3 
+## X1444  X221 X2114 X2451 X2480  X757  X189 X2785 X1413 X2406  X389 X1158 X1189 
+##     3     0     2     5     2     0     0     2     2     7     5     5     5 
+## X2219  X705 X1347 X2853  X645  X946 X1786  X476 X2768 X1565 X2921  X267  X604 
+##     5     2     4     2     3     3     3     2     2     4    11     3     3 
+##  X762 X1423 X1963 X2494 X1058 X2012 X2254 X2959  X578 X1246 X1634 X2418  X789 
+##     3     3     1     6     3     3     3     1     3     3     3     3     5 
+## X2724  X280  X648 X1109 X2233  X558 X2069 X2740 X2770 X1240 X1425 X2460 X2964 
+##     5     3     3     3     3     4     4     4     4     1     5     1     1 
+##  X861  X980 X1985 X2528  X380 X1933 X2731 X2832  X256 X1505 X1610 X1804 X2672 
+##     0     4     7     6     5     5     5     8     6     6     7     6     6 
+## X2774  X429 X1337 X1520 X1594 X2767 X2936  X630 X1584 X2822 X1477  X395  X531 
+##     6     1     4     2     4     4     4     8     3     6     0     2     9 
+## X1938  X458  X950 X1021   X81 X1042 X1140 X1688 X1073 X1074  X641 X1768 X2106 
+##     4     2     2     4     5     6     5     7     2     2     5     5     5 
+## X2849   X30  X231 X1300 X1503 X2835  X509  X845 X1010 X2408 X1307 X1677 X2777 
+##     5     1     4     8     4     4     5     5     8     3     2     2     6 
+## X2827  X624 X1987  X193  X606  X561 X1621 X1839 X2472  X435 X1668 X2071 X2239 
+##     2     1     1     4    10     3     3     3     3    10     3     3     3 
+##    X5  X883 X2186 X1276 X2163 X2280  X874 X2088 X1707  X343 X1163 X2038 X2862 
+##     3     3     3     2     1     1     3     3     4     3     3     2     2 
+##  X233 X1230 X1418  X699 X1548 X2402  X886  X716 X1399 X2889 X1181 X2326  X424 
+##     3     2     2     3     3     3     1     4     4     4     5     8     7 
+## X1346 X1592  X147  X350 X1569 X1780 X2044 X2236 X2425  X257 X2663 X2605 X2109 
+##     3     3     2     2     5     5     5     5     5     1     1     3     1 
+##  X379  X806 X1121 X2956  X331  X788 X2197 X1541 X2257 X2534 X1410 X1431  X658 
+##     4     9     4     7     4     4     9     2     2     2     2     2     4 
+##  X889 X1525  X276 X1280  X284 X2490 X2933   X21  X171 X1239 X1359 X1746 X1765 
+##     4     4     2     2     3     3     3     3     3     3     5     5     5 
+## X2181 X2235 X1960 X1185 X1802 X2140  X655  X739 X2951  X334  X969  X460  X737 
+##     5     5     0     2     2     7     5     5     5     3     3     9     4 
+## X1572 X1657 X1722  X157  X651 X1267 X2055 X2136 X2300 X2144 X2345 X1092 X1114 
+##     5     4    11     7    13     7     7     7     7     1     1     4     1 
+##  X187  X436  X480  X894 X1673 X1847 X1522  X252 X1190 X1329 X2207  X523 X2621 
+##     7     7     7     7     7     7     0     5     5     5     8     1     1 
+##  X234 X1842 X2510  X847 X1087 X2713 X1238 X2090 X2133  X718 X1733 X2005 X2351 
+##     6     4     4     2     2     2     0     2     1     3     3     3     3 
+##  X617 X2187 X1009   X69  X751  X366 X1071 X1777  X332 X2171 X1133 X2911  X612 
+##     7     2     1     3     8     5     5     5     2     5     4     1     2 
+## X2112 X2227  X386 X1582 X2180 X2747 X1644  X204  X615 X1997 X2974 X2840  X504 
+##     2     2     4     4     4     4     1     5    11     2     2     1     1 
+##  X772 X1136 X2110  X367 X2998  X215 X1038 X2048   X65 X1077 X2857  X818 X1069 
+##     1     1     1     2     2     3     7     3     2     2     2     2     3 
+## X2633 X1110 X1861 X2492 X2525  X396 X1626  X181  X785 X1411 X1358 X1690 X1944 
+##     2     4     4     4     2     1     1     3     3     3     3     3     3 
+##  X760 X1388 X1901  X463 X1184 X2189 X2253 X2147 X2670 X2843  X966 X1104 X1878 
+##     2     2     2     4     4     4     4     3     3     3     5     5     5 
+##  X514 X1141 X1704 X2242   X52  X265 X2358  X910  X629 X2288  X205  X472 X2699 
+##     6     6     6     6     2     2     2     0     2     4     4     4     9 
+##  X524  X347  X750  X212  X356  X299 X2061  X865  X207 X1028 X2668 X1922 X2034 
+##     0     6     3     2     2     1     1     0     2     2     2     1     3 
+##  X930 X2456 X1907 X2324  X123  X333 X1304 X1972 X1647  X795 X2030 X2303  X369 
+##     1     1     2     2     1     1     1     1     2     2     2     2     2 
+## X2554  X586  X833 X1583 X1998 X2391  X616 X1277  X920 X1364 X2360 X2825 X1427 
+##     2     7     7     7     7     7     5     5     3     3     3     3     5 
+## X2474 X2507 X2751 X2958 X2847 X2403 X2694 X2206   X91 X1378 X1402  X860 X1142 
+##     5     5     5     5     2     3     3     2     2     2     4     5     2 
+## X1951  X188 X2443 X1291 X2644  X549 X2764 X1539 X1131 X1493 X2517  X722 X1734 
+##     2     2     2     1     1     3     3     1     2     2     7     4     4 
+## X2311 X2447 X1661  X608  X321 X1090 X2065  X455 X1587 X2092 X2577 X1086 X2695 
+##     4     7     1     1     0     1     1     3     3     3     0     1     1 
+## X2793  X162 X1638 X2458 X2703  X196 X2484   X54 X1615 X2272 X2085 X1994 X2317 
+##     2     4     4     4     4     2     2     2     2     2     2     2     2 
+## X2047 X2444  X400  X975  X368 X2195 X2350  X209 X2328  X971  X923 X1715 X1580 
+##     5     5     1     1     2     2     2     1     1     0     2     2     1 
+## X1796 X2893 X2192 X2058   X86  X134 X2943   X67   X79  X360  X921 X1882 X2989 
+##     2     2     2     0     3     3     3     2     2     2     2     2     2 
+##  X254  X928 X1853 X2149  X411  X759 X1799 X1815 X2053 X2538  X279 X2701  X994 
+##     4     4     4     1     4     4     4     4     4     1     1     1     3 
+## X1858  X767 X2138 X2947  X807 X1067 X1816 X1829 X1398   X89 X1292 X2569 X2573 
+##     3     3     3     7     3     3     2     2     1     5     5     5     5 
+##  X355  X528 X2592 X1754 X1856 X2509 X2646  X581  X473  X657  X394 X2294  X597 
+##     2     2     2     4     4     4     4     1     1     1     1     1     2 
+## X2580 X2828  X782 X1909 X2050  X709 X1126 X1701 X2610  X375 X1578 X1088 X2652 
+##     2     0     5     5     5     3     3     4     4     4     4     4     4 
+##  X853 X2386  X140  X512 X1790 X1835   X42  X812 X1247  X493 X1151 X1259 
+##     2     2     3     3     3     3     3     3     3     2     2     2</code></pre>
 
 </div>
 </div>

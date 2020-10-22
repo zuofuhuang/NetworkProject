@@ -151,14 +151,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="network-construction.html"><a href="network-construction.html#network-construction-process"><i class="fa fa-check"></i><b>4.1</b> Network Construction Process</a></li>
 <li class="chapter" data-level="4.2" data-path="network-construction.html"><a href="network-construction.html#analysis"><i class="fa fa-check"></i><b>4.2</b> Analysis</a></li>
 <li class="chapter" data-level="4.3" data-path="network-construction.html"><a href="network-construction.html#centrality-measures-report"><i class="fa fa-check"></i><b>4.3</b> Centrality Measures Report</a></li>
+<li class="chapter" data-level="4.4" data-path="network-construction.html"><a href="network-construction.html#preliminary-conclusions"><i class="fa fa-check"></i><b>4.4</b> Preliminary Conclusions</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html"><i class="fa fa-check"></i><b>5</b> Enhanced Influence Models</a><ul>
-<li class="chapter" data-level="5.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#graph-diffusion-kernel"><i class="fa fa-check"></i><b>5.1</b> Graph Diffusion Kernel</a></li>
-<li class="chapter" data-level="5.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#enhanced-influence-model"><i class="fa fa-check"></i><b>5.2</b> Enhanced Influence Model</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#determine-value-for-cold-edge-threshold-delta"><i class="fa fa-check"></i><b>5.2.1</b> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></a></li>
-<li class="chapter" data-level="5.2.2" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#alternative-situation"><i class="fa fa-check"></i><b>5.2.2</b> Alternative Situation</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="enhanced-influence-models.html"><a href="enhanced-influence-models.html#code"><i class="fa fa-check"></i><b>5.3</b> Code</a></li>
+<li class="chapter" data-level="5" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html"><i class="fa fa-check"></i><b>5</b> Enhanced Influence Model</a><ul>
+<li class="chapter" data-level="5.1" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#graph-diffusion-kernel"><i class="fa fa-check"></i><b>5.1</b> Graph Diffusion Kernel</a></li>
+<li class="chapter" data-level="5.2" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#enhanced-influence-model-1"><i class="fa fa-check"></i><b>5.2</b> Enhanced Influence Model</a></li>
+<li class="chapter" data-level="5.3" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#determine-value-for-cold-edge-threshold-delta"><i class="fa fa-check"></i><b>5.3</b> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></a></li>
+<li class="chapter" data-level="5.4" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#alternative-situation"><i class="fa fa-check"></i><b>5.4</b> Alternative Situation</a></li>
+<li class="chapter" data-level="5.5" data-path="enhanced-influence-model.html"><a href="enhanced-influence-model.html#code"><i class="fa fa-check"></i><b>5.5</b> Code</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html"><i class="fa fa-check"></i><b>6</b> Discussion and Future Work</a><ul>
 <li class="chapter" data-level="6.1" data-path="discussion-and-future-work.html"><a href="discussion-and-future-work.html#what-did-we-achieve"><i class="fa fa-check"></i><b>6.1</b> What did we achieve?</a></li>
@@ -189,7 +189,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="genetics-background" class="section level2">
 <h2><span class="header-section-number">2.1</span> Genetics Background</h2>
 <p>The human genome contains roughly 234,000 exons, 80% of which contain fewer than 200 base pairs in length. However, mutations in these exons contain a majority of mutations that are related to diseases. Our setting is structured in this context.</p>
-<p>Suppose we have a disease. It is reasonable to assume that we know where the mutations related to this disease approximately are along the genome. As shown below, we guess that 1000 loci (specific position where a gene is located) could harbor the disease-related mutations. We assumed that each locus contains 200 base pairs (a pair of complementary bases in a double-stranded DNA: A-T, G-C).</p>
+<p>Suppose we have a disease. It is reasonable to assume that we know where the mutations related to this disease approximately are along the genome. We guess that 1000 loci (specific position where a gene is located) could harbor the disease-related mutations. In addition, we assume that each locus on average contains 200 base pairs (a pair of complementary bases in a double-stranded DNA: A-T, G-C), which corresponds to <code>locus_length &lt;- 200</code> in the code.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="initial-steps.html#cb1-1"></a>loci &lt;-<span class="st"> </span><span class="dv">1000</span></span>
 <span id="cb1-2"><a href="initial-steps.html#cb1-2"></a>locus_length &lt;-<span class="st"> </span><span class="dv">200</span></span></code></pre></div>
 </div>

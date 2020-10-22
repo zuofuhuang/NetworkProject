@@ -6,7 +6,7 @@ Our initial thought was that Genome-Wide Association Studies data is readily ava
 
 The human genome contains roughly 234,000 exons, 80% of which contain fewer than 200 base pairs in length. However, mutations in these exons contain a majority of mutations that are related to diseases. Our setting is structured in this context.
 
-Suppose we have a disease. It is reasonable to assume that we know where the mutations related to this disease approximately are along the genome. As shown below, we guess that 1000 loci (specific position where a gene is located) could harbor the disease-related mutations. We assumed that each locus contains 200 base pairs (a pair of complementary bases in a double-stranded DNA: A-T, G-C).
+Suppose we have a disease. It is reasonable to assume that we know where the mutations related to this disease approximately are along the genome. We guess that 1000 loci (specific position where a gene is located) could harbor the disease-related mutations. In addition, we assume that each locus on average contains 200 base pairs (a pair of complementary bases in a double-stranded DNA: A-T, G-C), which corresponds to `locus_length <- 200` in the code.
 
 ```{r eval=FALSE}
 loci <- 1000

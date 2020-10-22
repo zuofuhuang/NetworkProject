@@ -1,4 +1,6 @@
-# Enhanced Influence Models
+# Enhanced Influence Model
+
+After constructing a network using our simulated data, we moved on to use the Enhanced Influence Model to identify significant subnetworks within the graph that shed light on genetic causal pathways. We will first introduce the graph diffusion kernel as the first step to measure the extent of mutual interaction between genes in our network.
 
 ## Graph Diffusion Kernel
 
@@ -11,19 +13,19 @@ The amount of fluid contained by node $i$ at time t is $x_i(t)$ is governed by t
 
 $$\frac{d}{dt}x_i(t) = \sum_j A_{ij}x_j(t)-\sum_jA_{ji}x_i(t)-\gamma x_i(t)$$
 As $t\to \infty$, the fluid distribution approaches to its equilibrium distribution at which the influence of node $i$ to other nodes is measured by $$L_\gamma^{-1}\vec{b_i}$$
-where $\vec{b_i}$ is the standard basis with 1 at its $i^{th}$ entry. Here, $L_\gamma = L+\gamma I = S-A+\gamma I$ is the shifted graph Laplacian by $\gamma$ where $S$ is the diagonal matrix whose diagonal entries are the corresponding degrees. In practice, we normalize A symmetrically by $S^{-\frac{1}{2}}AS^{-\frac{1}{2}}$ such that the edge weights between two nodes are normalized by the degrees and replace $S$ correspondingly to obtain the Laplacian (Qi et al. 2008). 
+where $\vec{b_i}$ is the standard basis with 1 at its $i^{th}$ entry. Here, $L_\gamma = S-A+\gamma I$ is the shifted graph Laplacian by $\gamma$ where $S$ is the diagonal matrix whose diagonal entries are the corresponding degrees. In practice, we normalize A symmetrically by $S^{-\frac{1}{2}}AS^{-\frac{1}{2}}$ such that the edge weights between two nodes are normalized by the degrees and replace $S$ correspondingly to obtain the Laplacian (Qi et al. 2008). 
 
 Here, the $ij$ entry of $L_\gamma^{-1}$ gives the influence of $j$ on $i$, which may or may not equal to the $ji$ entry of $L_\gamma^{-1}$. To better interpret the result, we define the mutual influence between i and j to be $\tilde{i}(i,j) = \min(L_\gamma^{-1}[i,j],L_\gamma^{-1}[j,i])$. (Vandin, Upfal, and Raphael, 2011)
 
 ## Enhanced Influence Model
 
-Enhanced Influence Model is an efficient algorithm to identify a significantly mutated subnetwork with respect to gene interactions. (Vandin, Upfal, and Raphael, 2011)
+Enhanced Influence Model is an efficient algorithm to identify a significantly mutated subnetwork with respect to gene interactions by incorporating considerations of both the topology of the network and significance of individual genes with respect to the disease (Vandin, Upfal, and Raphael, 2011). Below are the key procedures involved in the Enhanced Influence Model:
 
-+ Let $\sigma_i$ be a score for gene $i$, as measured by $\sigma_i = -2\log(p_i)$ where $p_i$ is the p-value obtained from marginal regression. 
++ Recall from Chapter 4, marginal regression gives a p-value, $p_i$ for each gene $i$. We then assign a score $\sigma_i$ to a gene $i$ where $\sigma_i = -2\log(p_i)$.
 
 + For each pair of genes ($i$,$j$), their mutual interaction is measured by $w(i,j) = \max(\sigma_i,\sigma_j)*\tilde{i}(i,j)$ (Vandin et al., 2011). 
 
-+ Next, we remove all edges with weights smaller than a threshold $\delta$ to obtain a subgraph. The connected components remained are candidates for genetic pathways.
++ Next, we remove all edges with weights smaller than a threshold $\delta$ to obtain a subgraph. In Section 5.3, we shall exhibit a method to determine this cold-edge threshold $\delta$. The connected components remained are candidates for genetic pathways.
 
 The code below shows how we construct the enhanced influence model from scratch.
 
@@ -131,21 +133,36 @@ getNumComp <- function(edges,nodes,s){
 getNumComp(HotEdges,nodes,3)
 ```
 
-### Determine Value for Cold-Edge Threshold $\delta$
+## Determine Value for Cold-Edge Threshold $\delta$
 
-We start with simulating 50 datasets under $H_0^P$ by permuting observed disease status. (Vandin et. al, 2012) Then for a small value of $s$, where often $s \in \{3,4,5\}$, we choose the first $\delta$ that gives the largest number of subnetworks of size at least $s$. Given the size of our network, we use $s = 3$. The $\delta$ value is $0.02$.
+In this section, we illustrate a way to determine the value for $\delta$. We start with simulating 50 datasets under $H_0^P$ by permuting observed disease status. (Vandin et. al, 2012) Then, for a small value of $s$, where often $s \in \{3,4,5\}$, we choose the first $\delta$ that gives the largest number of subnetworks of size at least $s$. Given the size of our network, we use $s = 3$. Table 5.1 report the number of connected components of size at least 3 as a function of $\delta$.
 
-Since increasing $\delta$ gives us more conservative criteria, we also consider the following values: $1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08$.
 
-For different $\delta$ values, we construct graphs for the major component in each network. In the ideal scenario, we expect that the major component contains and only contains the SNP locations involved in genetic pathways. This is one way that we could use to evaluate our results. 
+```{r,echo=FALSE}
+delta.lst = seq(0.01,0.09,0.01)
+numComp.lst = c(100.3, 118.1,  50.2 , 10.5 ,  2.4 ,  2.4  , 2.4 ,  0.0 ,  0.0)
+tab2=as.data.frame(rbind(delta.lst,numComp.lst))
+colnames(tab2) = NULL
+rownames(tab2) = c("delta value","Num.Components, Size>3")
 
-Intuitively, nodes get a lot bigger as $\delta$ increases. This is because we have fewer nodes in the major component.
+kbl(tab2,  col.names = NA,escape = F) %>%
+  kable_styling()%>%
+kable_paper("striped",full_width = F)
+```
+
+
+According to Vandin (2012), an empirical choice is using a first $\delta$ that gives the maximum number of connected components of size at least 3, which gives $\delta = 0.02$ in our case. Since increasing $\delta$ gives us more conservative criteria, we also consider the following values: $1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08$. In fact, if $\delta_1 >\delta_2$, then the connected components of size at least 3 obtained using $\delta_2$ will be a subnetwork of those obbtained using $\delta_1$.
+
+For different $\delta$ values above, we construct graphs for the major component in each network, as shown by Figures 5.1 (a) - (e). In the ideal scenario, we expect that the major component contains and only contains the SNP locations involved in genetic pathways. This is one way that we could use to evaluate our results. 
+
+Intuitively, as we raise the value for $\delta$, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts.
 
 <center>
 ![](delta_major.png){
 width=50% }
 </center>
 $$\text{Figure 5.1(a): Major component of the network of mutated genes when delta = 0.02}$$
+$$\text{Nodes Sized by Closeness Centrality}$$
 
 <center>
 ![](1.5delta_major.png){
@@ -180,7 +197,7 @@ width=50% }
 
 $$\text{Figure 5.2: Modularity Class Breakdown within the Major Component when delta = 0.04}$$
 
-### Alternative Situation
+## Alternative Situation
 
 In the previous section, we find that our method is confused about which modularity class a certain node belongs to. We hypothesize that this may be due to that the node makes up more than one combination of pathway interactions. We wonder if the problem will arise when each mutation only contributes to one pathway combination (denoted as Scenario B). If the problem universally happens, we need to analyze its cause.
 
@@ -277,12 +294,12 @@ aveNumComp_s <- function(delta, s=3){
 }
 ```
 
-```{r}
+```{r eval=FALSE}
 x <- seq(0.01,0.09, 0.01)
 sapply(x, aveNumComp_s,s=3)
 ```
 
-```{r}
+```{r eval=FALSE}
 x <- seq(0.01,0.09, 0.01)
 sapply(x, aveNumComp_s,s=2)
 ```
