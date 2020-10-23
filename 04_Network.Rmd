@@ -89,8 +89,8 @@ dt$`Betweeness Centrality` = cell_spec(dt$`Betweeness Centrality`, color = ifels
 kbl(dt, escape = F) %>%
   kable_styling()
 ```
-
-$$\text{Figure 4.1: Top 12 nodes with the highest degree, eigenvector centrality, closeness centrality and betweenness centrality}$$
+\vspace{}
+$$\text{Tabble 4.1: Top 12 nodes with the highest degree, eigenvector centrality, closeness centrality and betweenness centrality}$$
 
 ## Preliminary Conclusions
 

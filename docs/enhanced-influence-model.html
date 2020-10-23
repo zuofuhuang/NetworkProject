@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Enhanced Influence Model | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 5 Enhanced Influence Model | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Enhanced Influence Model | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -355,9 +355,10 @@ Num.Components, Size&gt;3
 </tr>
 </tbody>
 </table>
-<p>According to Vandin (2012), an empirical choice is using a first <span class="math inline">\(\delta\)</span> that gives the maximum number of connected components of size at least 3, which gives <span class="math inline">\(\delta = 0.02\)</span> in our case. Since increasing <span class="math inline">\(\delta\)</span> gives us more conservative criteria, we also consider the following values: <span class="math inline">\(1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08\)</span>. In fact, if <span class="math inline">\(\delta_1 &gt;\delta_2\)</span>, then the connected components of size at least 3 obtained using <span class="math inline">\(\delta_2\)</span> will be a subnetwork of those obbtained using <span class="math inline">\(\delta_1\)</span>.</p>
-<p>For different <span class="math inline">\(\delta\)</span> values above, we construct graphs for the major component in each network, as shown by Figures 5.1 (a) - (e). In the ideal scenario, we expect that the major component contains and only contains the SNP locations involved in genetic pathways. This is one way that we could use to evaluate our results.</p>
-<p>Intuitively, as we raise the value for <span class="math inline">\(\delta\)</span>, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts.</p>
+
+<p><span class="math display">\[\text{Table 5.1: Number of Components of Size at Least 3 as a Function of} \;\delta\]</span></p>
+<p>According to Vandin (2012), an empirical choice is using a first <span class="math inline">\(\delta\)</span> that gives the maximum number of connected components of size at least 3, which gives <span class="math inline">\(\delta = 0.02\)</span> in our case. Since increasing <span class="math inline">\(\delta\)</span> gives us more conservative criteria, we also consider the following values: <span class="math inline">\(1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08\)</span>. In fact, if <span class="math inline">\(\delta_1 &gt;\delta_2\)</span>, then the connected components of size at least 3 obtained using <span class="math inline">\(\delta_2\)</span> will be subnetworks of those obtained using <span class="math inline">\(\delta_1\)</span>.</p>
+<p>We applied the above <span class="math inline">\(\delta\)</span> values to filter the edges and obtained 5 graphs using the graph presented in Chapter 4. Intuitively, as we raise the value for <span class="math inline">\(\delta\)</span>, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts. We expect the the true causal pathways will be among the connected components after applying the Enhanced Influence Model and filtering the edges. Figures 5.1 (a) - (e) shows their corresponding major components, which contained the 4 genetic causal pathways listed in Chapter 4.</p>
 <center>
 <img src="delta_major.png" style="width:50.0%" />
 </center>
@@ -388,16 +389,95 @@ Num.Components, Size&gt;3
 <div id="alternative-situation" class="section level2">
 <h2><span class="header-section-number">5.4</span> Alternative Situation</h2>
 <p>In the previous section, we find that our method is confused about which modularity class a certain node belongs to. We hypothesize that this may be due to that the node makes up more than one combination of pathway interactions. We wonder if the problem will arise when each mutation only contributes to one pathway combination (denoted as Scenario B). If the problem universally happens, we need to analyze its cause.</p>
-<p>We repeated the process, with a twist in the construction of the original dataset. The full network of mutated genes looks like this:</p>
+<p>We repeated the process, with a twist in the construction of the original dataset. We simulated a dataset where no two pathways share a SNP location. Random simulation gives the following 4 causal genetic pathways:</p>
+<ol style="list-style-type: decimal">
+<li><p>X2608, X182, X1443, X624, X2422</p></li>
+<li><p>X2454, X1099, X350, X2548, X883</p></li>
+<li><p>X31, X2725, X608, X471</p></li>
+<li><p>X815, X2108, X2494, X2812, X1245</p></li>
+</ol>
+<p>Figure 5.3 shows the full network of SNP locations where at least one mutation occurs where the purple part is the largest connected component.</p>
 <p><img src="mod2_full.png" />
 <span class="math display">\[\text{Figure 5.3: Figure Full Network of Mutated Genes under Scenario B}\]</span>
  </p>
-The major component in the network is as follows:
+<table class="table lightable-paper lightable-striped" style='margin-left: auto; margin-right: auto; font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<tbody>
+<tr>
+<td style="text-align:left;">
+delta value
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Components, Size&gt;3
+</td>
+<td style="text-align:right;">
+100.30
+</td>
+<td style="text-align:right;">
+118.10
+</td>
+<td style="text-align:right;">
+50.20
+</td>
+<td style="text-align:right;">
+10.50
+</td>
+<td style="text-align:right;">
+2.40
+</td>
+<td style="text-align:right;">
+2.40
+</td>
+<td style="text-align:right;">
+2.40
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+</tbody>
+</table>
+
+<p><span class="math display">\[\text{Table 5.2: Number of Components of Size at Least 3 as a Function of} \;\delta \;\text{under Scenario B}\]</span>
+The empirical choice <span class="math inline">\(\delta&#39; = 0.04\)</span> gives the first mamimum average number of connected components of size at least 3. Experimenting with <span class="math inline">\(\delta = 1.5\delta&#39;\)</span> and <span class="math inline">\(\delta = 2\delta&#39;\)</span> shows that <span class="math inline">\(\delta = 2\delta&#39;=0.08\)</span> gives a perfect fit.</p>
+<p>Figure 5.4 shows the filtered network obtained from Figure 5.3 using <span class="math inline">\(\delta = 0.08\)</span>. Observe that there is no single major connected components. However, all four pathways exist as independent connected components that are colored in Figure 5.4. Figure 5.5 shows the the filtered graph for the four components. All 4 pathwaysa re identified, which supplies proof for the validity of our method.</p>
+<p><img src="mod2_HotEdges0.08.png" /></p>
+<p><span class="math display">\[\text{Figure 5.4: Resulted Network using}\; \delta=0.08 \;\text{under Scenario B}\]</span></p>
 <center>
 <img src="mod2_hotedge_2delta_0.08_major.png" style="width:50.0%" />
 </center>
-<p><span class="math display">\[\text{Figure 5.4: Modularity Class Breakdown within the Major Component under Scenario B}\]</span></p>
-<p>Our modularity class breakdown exactly replicates the combinations of pathways that cause the disease. This supplies proof for the validity of our method.</p>
+<p><span class="math display">\[\text{Figure 5.5: All 4 Pathways Identified under Scenario B}\]</span></p>
 </div>
 <div id="code" class="section level2">
 <h2><span class="header-section-number">5.5</span> Code</h2>

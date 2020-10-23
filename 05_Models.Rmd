@@ -149,13 +149,13 @@ kbl(tab2,  col.names = NA,escape = F) %>%
   kable_styling()%>%
 kable_paper("striped",full_width = F)
 ```
+\vspace{}
+$$\text{Table 5.1: Number of Components of Size at Least 3 as a Function of} \;\delta$$
 
+According to Vandin (2012), an empirical choice is using a first $\delta$ that gives the maximum number of connected components of size at least 3, which gives $\delta = 0.02$ in our case. Since increasing $\delta$ gives us more conservative criteria, we also consider the following values: $1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08$. In fact, if $\delta_1 >\delta_2$, then the connected components of size at least 3 obtained using $\delta_2$ will be subnetworks of those obtained using $\delta_1$.
 
-According to Vandin (2012), an empirical choice is using a first $\delta$ that gives the maximum number of connected components of size at least 3, which gives $\delta = 0.02$ in our case. Since increasing $\delta$ gives us more conservative criteria, we also consider the following values: $1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08$. In fact, if $\delta_1 >\delta_2$, then the connected components of size at least 3 obtained using $\delta_2$ will be a subnetwork of those obbtained using $\delta_1$.
+We applied the above $\delta$ values to filter the edges and obtained 5 graphs using the graph presented in Chapter 4. Intuitively, as we raise the value for $\delta$, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts. We expect the the true causal pathways will be among the connected components after applying the Enhanced Influence Model and filtering the edges. Figures 5.1 (a) - (e) shows their corresponding major components, which contained the 4 genetic causal pathways listed in Chapter 4.
 
-For different $\delta$ values above, we construct graphs for the major component in each network, as shown by Figures 5.1 (a) - (e). In the ideal scenario, we expect that the major component contains and only contains the SNP locations involved in genetic pathways. This is one way that we could use to evaluate our results. 
-
-Intuitively, as we raise the value for $\delta$, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts.
 
 <center>
 ![](delta_major.png){
@@ -197,25 +197,56 @@ width=50% }
 
 $$\text{Figure 5.2: Modularity Class Breakdown within the Major Component when delta = 0.04}$$
 
+
 ## Alternative Situation
 
 In the previous section, we find that our method is confused about which modularity class a certain node belongs to. We hypothesize that this may be due to that the node makes up more than one combination of pathway interactions. We wonder if the problem will arise when each mutation only contributes to one pathway combination (denoted as Scenario B). If the problem universally happens, we need to analyze its cause.
 
-We repeated the process, with a twist in the construction of the original dataset. The full network of mutated genes looks like this:
+We repeated the process, with a twist in the construction of the original dataset. We simulated a dataset where no two pathways share a SNP location. Random simulation gives the following 4 causal genetic pathways:
+
+1) X2608, X182, X1443, X624, X2422
+
+2) X2454, X1099, X350, X2548, X883
+
+3) X31, X2725, X608, X471
+
+4) X815, X2108, X2494, X2812, X1245
+
+Figure 5.3 shows the full network of SNP locations where at least one mutation occurs where the purple part is the largest connected component.
 
 ![](mod2_full.png)
 $$\text{Figure 5.3: Figure Full Network of Mutated Genes under Scenario B}$$
 &nbsp;
 
-The major component in the network is as follows:
+```{r,echo=FALSE}
+delta.lst = seq(0.01,0.09,0.01)
+numComp.lst2 = c(66.4,83.5, 132.6, 141.1, 118.2 , 76.0 , 56.8,  36.0 , 13.5)
+tab3=as.data.frame(rbind(delta.lst,numComp.lst))
+colnames(tab3) = NULL
+rownames(tab3) = c("delta value","Num.Components, Size>3")
+
+kbl(tab3,  col.names = NA,escape = F) %>%
+  kable_styling()%>%
+kable_paper("striped",full_width = F)
+```
+\vspace{}
+$$\text{Table 5.2: Number of Components of Size at Least 3 as a Function of} \;\delta \;\text{under Scenario B}$$
+The empirical choice $\delta' = 0.04$ gives the first mamimum average number of connected components of size at least 3. Experimenting with $\delta = 1.5\delta'$ and $\delta = 2\delta'$ shows that $\delta = 2\delta'=0.08$ gives a perfect fit.
+
+Figure 5.4 shows the filtered network obtained from Figure 5.3 using $\delta = 0.08$. Observe that there is no single major connected components. However, all four pathways exist as independent connected components that are colored in Figure 5.4. Figure 5.5 shows the the filtered graph for the four components. All 4 pathwaysa re identified, which supplies proof for the validity of our method.
+
+
+![](mod2_HotEdges0.08.png)
+
+
+$$\text{Figure 5.4: Resulted Network using}\; \delta=0.08 \;\text{under Scenario B}$$
+
 <center>
 ![](mod2_hotedge_2delta_0.08_major.png){
 width=50% }
 </center>
 
-$$\text{Figure 5.4: Modularity Class Breakdown within the Major Component under Scenario B}$$
-
-Our modularity class breakdown exactly replicates the combinations of pathways that cause the disease. This supplies proof for the validity of our method.
+$$\text{Figure 5.5: All 4 Pathways Identified under Scenario B}$$
 
 ## Code
 
