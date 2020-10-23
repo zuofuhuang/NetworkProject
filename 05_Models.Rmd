@@ -139,7 +139,7 @@ getNumComp(HotEdges,nodes,3)
 
 ## Determine Value for Cold-Edge Threshold $\delta$
 
-In this section, we illustrate a way to determine the value for $\delta$. We start with simulating 50 datasets under $H_0^P$ by permuting observed disease status. (Vandin et. al, 2012) Then, for a small value of $s$, where often $s \in \{3,4,5\}$, we choose the first $\delta$ that gives the largest number of subnetworks of size at least $s$. Given the size of our network, we use $s = 3$. Table 5.1 report the number of connected components of size at least 3 as a function of $\delta$.
+In this section, we illustrate a way to determine the value for $\delta$. We start with simulating 50 datasets under the null hypothesis where no genetic pathway is related to the disease status by permuting observed disease status in order to preserve possible correlations between occurrences of mutations (Vandin et. al, 2012).Then, for a small value of $s$, where often $s \in \{3,4,5\}$, we choose the first $\delta$ that gives the largest number of subnetworks of size at least $s$. The value $s$ is chosen such that under the null hypothesis the number of connected components found of size at least s is statistically significant. Given the size of our network, we use $s = 3$. Table 5.1 report the number of connected components of size at least 3 as a function of $\delta$.
 
 
 ```{r,echo=FALSE}
@@ -305,13 +305,13 @@ aveNumComp_s <- function(delta, s=3){
   # list of adjacency matrices for HotNet for 50 datasets under the null hypothesis
   # under the given threshold delta
   Hotnet.lst = list()
-  for(k in 1:10){
+  for(k in 1:50){
     Hotnet.lst[[k]] = removeColdEdge(A_normalized,W.lst[[k]],delta)
     Hotnet.lst[[k]] = as.matrix(forceSymmetric(Hotnet.lst[[k]],"U"))
   }
 
   HotEdges.lst = list()
-  for(k in 1:10){
+  for(k in 1:50){
     colnames(Hotnet.lst[[k]]) = position
     rownames(Hotnet.lst[[k]]) = position
     HotEdges.lst[[k]]= melt(Hotnet.lst[[k]]) %>% 
@@ -321,8 +321,8 @@ aveNumComp_s <- function(delta, s=3){
       filter(Weight != 0)%>%select(-Weight)
   }
 
-  numComp_s = rep(0,10)
-  for(k in 1:10){
+  numComp_s = rep(0,50)
+  for(k in 1:50){
     numComp_s[k] = getNumComp(HotEdges.lst[[k]],nodes,s)
     
   }
