@@ -185,10 +185,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="enhanced-influence-model" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Enhanced Influence Model</h1>
-<p>After constructing a network using our simulated data, we moved on to use the Enhanced Influence Model to identify significant subnetworks within the graph that shed light on genetic causal pathways. We will first introduce the graph diffusion kernel as the first step to measure the extent of mutual interaction between genes in our network.</p>
+<p>After having a primary look at the network constructed using our simulated data, we moved on to use the Enhanced Influence Model to identify significant subnetworks within the graph that shed light on genetic causal pathways, which takes into consideration both the significance of individual genes with respect to the disease as well as the network topology.</p>
 <div id="graph-diffusion-kernel" class="section level2">
 <h2><span class="header-section-number">5.1</span> Graph Diffusion Kernel</h2>
-<p>Here we imagine that the importance of nodes flows along edges. Initially, query nodes are selected to serve as sources where fluid is pumped in at a constant rate which then diffuses through the network. In addition, we assume that fluid leaks out of each node at a constant rate <span class="math inline">\(\gamma\)</span>. Intuitively, large <span class="math inline">\(\gamma\)</span> means faster rate of loss and therefore shorter diffusive paths. Essentially, the paths reflects diffusion of random walkers from a source. At equilibrium, there is no net flow in the entire network. The more interaction a node has with the query nodes, the more fluid it will contain at the equilibrium (Qi et al., 2008). Following the procedure in previous literature (Vandin, Upfal, and Raphael, 2011), we set <span class="math inline">\(\gamma = 5\)</span>, which is approximately the average degree of a node in our network.</p>
+<p>We computed the graph diffusion kernel as the first step to apply the Enhanced Influence Model, which measure the extent of mutual interaction between genes in our network. Note that the obtained graph diffusion kernel is solely dependent on our network structure.</p>
+<p>The idea of graph diffusion kernels bears resemblance to random walks from a source.Here we imagine that the importance of nodes flows along edges. Initially, query nodes are selected to serve as sources where fluid is pumped in at a constant rate that flows along edges. In addition, we assume that fluid leaks out of each node at a constant rate <span class="math inline">\(\gamma\)</span>. Intuitively, large <span class="math inline">\(\gamma\)</span> means faster rate of loss and therefore shorter diffusive paths.</p>
+<p>At equilibrium, there is no net flow in the entire network. The more interaction a node has with the query nodes, the more fluid it will contain at the equilibrium (Qi et al., 2008). Following the procedure in previous literature (Vandin, Upfal, and Raphael, 2011), we set <span class="math inline">\(\gamma = 5\)</span>, which is approximately the average degree of a node in our network.</p>
 <p>Mathematically,let <span class="math inline">\(u(t)\)</span> denotes the unit step function where <span class="math display">\[u(t) = \begin{cases}0 \;\text{ if }\;t&lt;0\\1 \;\text{ if }\;t&gt;0 \end{cases},\]</span>
 and <span class="math inline">\(b_i = 1\)</span> if i is the source node of interest while <span class="math inline">\(b_i = 0\)</span> otherwise.</p>
 <p>The amount of fluid contained by node <span class="math inline">\(i\)</span> at time t is <span class="math inline">\(x_i(t)\)</span> is governed by the flow in and out of it,</p>
@@ -287,7 +289,7 @@ where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 
 <div id="determine-value-for-cold-edge-threshold-delta" class="section level2">
 <h2><span class="header-section-number">5.3</span> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></h2>
 <p>In this section, we illustrate a way to determine the value for <span class="math inline">\(\delta\)</span>. We start with simulating 50 datasets under <span class="math inline">\(H_0^P\)</span> by permuting observed disease status. (Vandin et. al, 2012) Then, for a small value of <span class="math inline">\(s\)</span>, where often <span class="math inline">\(s \in \{3,4,5\}\)</span>, we choose the first <span class="math inline">\(\delta\)</span> that gives the largest number of subnetworks of size at least <span class="math inline">\(s\)</span>. Given the size of our network, we use <span class="math inline">\(s = 3\)</span>. Table 5.1 report the number of connected components of size at least 3 as a function of <span class="math inline">\(\delta\)</span>.</p>
-<table class="table lightable-paper lightable-striped" style='margin-left: auto; margin-right: auto; font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<table class=" lightable-material lightable-striped" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <tbody>
 <tr>
 <td style="text-align:left;">
@@ -358,7 +360,7 @@ Num.Components, Size&gt;3
 
 <p><span class="math display">\[\text{Table 5.1: Number of Components of Size at Least 3 as a Function of} \;\delta\]</span></p>
 <p>According to Vandin (2012), an empirical choice is using a first <span class="math inline">\(\delta\)</span> that gives the maximum number of connected components of size at least 3, which gives <span class="math inline">\(\delta = 0.02\)</span> in our case. Since increasing <span class="math inline">\(\delta\)</span> gives us more conservative criteria, we also consider the following values: <span class="math inline">\(1.5\delta = 0.03, 2\delta = 0.04, 3\delta = 0.06, 4\delta = 0.08\)</span>. In fact, if <span class="math inline">\(\delta_1 &gt;\delta_2\)</span>, then the connected components of size at least 3 obtained using <span class="math inline">\(\delta_2\)</span> will be subnetworks of those obtained using <span class="math inline">\(\delta_1\)</span>.</p>
-<p>We applied the above <span class="math inline">\(\delta\)</span> values to filter the edges and obtained 5 graphs using the graph presented in Chapter 4. Intuitively, as we raise the value for <span class="math inline">\(\delta\)</span>, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts. We expect the the true causal pathways will be among the connected components after applying the Enhanced Influence Model and filtering the edges. Figures 5.1 (a) - (e) shows their corresponding major components, which contained the 4 genetic causal pathways listed in Chapter 4.</p>
+<p>We applied the above <span class="math inline">\(\delta\)</span> values to filter the edges and obtained 5 graphs using the graph presented in Chapter 4. Intuitively, as we raise the value for <span class="math inline">\(\delta\)</span>, there will be more isolated nodes and the size of major component will decrease as it gets decomposed into smaller parts. We expect the the true causal pathways will be among the connected components after applying the Enhanced Influence Model and filtering the edges. Figures 5.1 (a) - (e) shows their corresponding major components, which contained the 4 genetic causal pathways listed in Chapter 4. Nodes are sized by closeness centrality throughout our analysis.</p>
 <center>
 <img src="delta_major.png" style="width:50.0%" />
 </center>
@@ -385,6 +387,8 @@ Num.Components, Size&gt;3
 <img src="mod1_hotedge0.04_closeness.png" style="width:50.0%" />
 </center>
 <p><span class="math display">\[\text{Figure 5.2: Modularity Class Breakdown within the Major Component when delta = 0.04}\]</span></p>
+<p>Figure 5.2 shows after modularity decomposition, our algorithm successfully captures most of the structures of the 4 pre-selected genetic pathways we listed in Chapter 4.2. The pink modularity class corresponds perfectly to the first pathway (X2699, X1320, X520, X2881); out of the 5 nodes classified in the orange modularity class, 4 of them come from the second pathway (X2766, X1237, X2075, X521, X526) and 4 from the third pathway (X526, X2766, X2106, X2075, X1533); the 3 nodes in the green modularity class are 3 of the 5 SNP locations from the fourth pathway (X2699, X521, X2881, X1533, X1627). Note that nodes with high closeness centralities such as X521, X1533, and X2699 happen to be those SNP locations shared by multiple pathways.</p>
+<p>The fact that the fourth pathway captured by our algorithm appears to be most imperfect one might be explained by the fact that 3 of its components are shared with other pathways. As our algorithm obtains subgraphs by removing edges, we conjecture that shared SNP locations by multiple pathways makes the it hard for the algorithm to make a perfect division between pathways. To confirm our thought, we simulated dataset under a simplied situation where no two pathways share a mutural SNP location and presented the results below.</p>
 </div>
 <div id="alternative-situation" class="section level2">
 <h2><span class="header-section-number">5.4</span> Alternative Situation</h2>
@@ -400,7 +404,7 @@ Num.Components, Size&gt;3
 <p><img src="mod2_full.png" />
 <span class="math display">\[\text{Figure 5.3: Figure Full Network of Mutated Genes under Scenario B}\]</span>
  </p>
-<table class="table lightable-paper lightable-striped" style='margin-left: auto; margin-right: auto; font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<table class=" lightable-material lightable-striped" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <tbody>
 <tr>
 <td style="text-align:left;">
