@@ -228,18 +228,13 @@ Figure 5.3 shows the full network of SNP locations where at least one mutation o
 $$\text{Figure 5.3: Figure Full Network of Mutated Genes under Scenario B}$$
 &nbsp;
 
-```{r,echo=FALSE}
-delta.lst = seq(0.01,0.09,0.01)
-numComp.lst2 = c(66.4,83.5, 132.6, 141.1, 118.2 , 76.0 , 56.8,  36.0 , 13.5)
-tab3=as.data.frame(rbind(delta.lst,numComp.lst))
-colnames(tab3) = NULL
-rownames(tab3) = c("delta value","Num.Components, Size>3")
+Repeating the procedures we took in Chapter 5.3 for Scenario B gives the results below as summarized by Table 5.2:
 
-kbl(tab3,  col.names = NA,escape = F) %>%
-kable_material("striped")
-```
-\vspace{}
-$$\text{Table 5.2: Number of Components of Size at Least 3 as a Function of} \;\delta \;\text{under Scenario B}$$
+<center>
+![](Table5.2.png){
+width=100% }
+</center>
+
 The empirical choice $\delta' = 0.04$ gives the first mamimum average number of connected components of size at least 3. Experimenting with $\delta = 1.5\delta'$ and $\delta = 2\delta'$ shows that $\delta = 2\delta'=0.08$ gives a perfect fit.
 
 Figure 5.4 shows the filtered network obtained from Figure 5.3 using $\delta = 0.08$. Observe that there is no single major connected components. However, all four pathways exist as independent connected components that are colored in Figure 5.4. Figure 5.5 shows the the filtered graph for the four components. All 4 pathwaysa re identified, which supplies proof for the validity of our method.

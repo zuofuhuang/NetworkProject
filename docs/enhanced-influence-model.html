@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Enhanced Influence Model | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 5 Enhanced Influence Model | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Enhanced Influence Model | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -337,77 +337,11 @@ where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 
 <p><img src="mod2_full.png" />
 <span class="math display">\[\text{Figure 5.3: Figure Full Network of Mutated Genes under Scenario B}\]</span>
  </p>
-<table class=" lightable-material lightable-striped" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
-<tbody>
-<tr>
-<td style="text-align:left;">
-delta value
-</td>
-<td style="text-align:right;">
-0.01
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.03
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:right;">
-0.07
-</td>
-<td style="text-align:right;">
-0.08
-</td>
-<td style="text-align:right;">
-0.09
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Num.Components, Size&gt;3
-</td>
-<td style="text-align:right;">
-100.30
-</td>
-<td style="text-align:right;">
-118.10
-</td>
-<td style="text-align:right;">
-50.20
-</td>
-<td style="text-align:right;">
-10.50
-</td>
-<td style="text-align:right;">
-2.40
-</td>
-<td style="text-align:right;">
-2.40
-</td>
-<td style="text-align:right;">
-2.40
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-</tbody>
-</table>
-
-<p><span class="math display">\[\text{Table 5.2: Number of Components of Size at Least 3 as a Function of} \;\delta \;\text{under Scenario B}\]</span>
-The empirical choice <span class="math inline">\(\delta&#39; = 0.04\)</span> gives the first mamimum average number of connected components of size at least 3. Experimenting with <span class="math inline">\(\delta = 1.5\delta&#39;\)</span> and <span class="math inline">\(\delta = 2\delta&#39;\)</span> shows that <span class="math inline">\(\delta = 2\delta&#39;=0.08\)</span> gives a perfect fit.</p>
+<p>Repeating the procedures we took in Chapter 5.3 for Scenario B gives the results below as summarized by Table 5.2:</p>
+<center>
+<img src="Table5.2.png" style="width:100.0%" />
+</center>
+<p>The empirical choice <span class="math inline">\(\delta&#39; = 0.04\)</span> gives the first mamimum average number of connected components of size at least 3. Experimenting with <span class="math inline">\(\delta = 1.5\delta&#39;\)</span> and <span class="math inline">\(\delta = 2\delta&#39;\)</span> shows that <span class="math inline">\(\delta = 2\delta&#39;=0.08\)</span> gives a perfect fit.</p>
 <p>Figure 5.4 shows the filtered network obtained from Figure 5.3 using <span class="math inline">\(\delta = 0.08\)</span>. Observe that there is no single major connected components. However, all four pathways exist as independent connected components that are colored in Figure 5.4. Figure 5.5 shows the the filtered graph for the four components. All 4 pathwaysa re identified, which supplies proof for the validity of our method.</p>
 <p><img src="mod2_HotEdges0.08.png" /></p>
 <p><span class="math display">\[\text{Figure 5.4: Resulted Network using}\; \delta=0.08 \;\text{under Scenario B}\]</span></p>
