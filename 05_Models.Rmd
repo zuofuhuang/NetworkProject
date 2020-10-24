@@ -296,7 +296,7 @@ $$\text{Figure 5.3: Figure Full Network of Mutated Genes under Scenario B}$$
 Repeating the procedures we took in Chapter 5.3 for Scenario B gives the results below as summarized by Table 5.2:
 
 <center>
-![](Table5.2.png){
+![](Table 5.2.png){
 width=100% }
 </center>
 
