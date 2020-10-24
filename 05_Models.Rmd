@@ -300,7 +300,7 @@ Repeating the procedures we took in Chapter 5.3 for Scenario B gives the results
 width=100% }
 </center>
 
-The empirical choice $\delta' = 0.04$ gives the first mamimum average number of connected components of size at least 3. Experimenting with $\delta = 1.5\delta'$ and $\delta = 2\delta'$ shows that $\delta = 2\delta'=0.08$ gives a perfect fit.
+The empirical choice $\delta' = 0.04$ gives the first maximum average number of connected components of size at least 3. Experimenting with $\delta = 1.5\delta'$ and $\delta = 2\delta'$ shows that $\delta = 2\delta'=0.08$ gives a perfect fit.
 
 Figure 5.4 shows the filtered network obtained from Figure 5.3 using $\delta = 0.08$. Observe that there is no single major connected components. However, all four pathways exist as independent connected components that are colored in Figure 5.4. Figure 5.5 shows the the filtered graph for the four components. All 4 pathways are identified, which supplies proof for the validity of our method.
 
