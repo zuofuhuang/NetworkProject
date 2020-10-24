@@ -50,8 +50,6 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -207,80 +205,80 @@ where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 
 <li><p>Next, we remove all edges with weights smaller than a threshold <span class="math inline">\(\delta\)</span> to obtain a subgraph. In Section 5.3, we shall exhibit a method to determine this cold-edge threshold <span class="math inline">\(\delta\)</span>. The connected components remained are candidates for genetic pathways.</p></li>
 </ul>
 <p>The code below shows how we construct the enhanced influence model from scratch.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="enhanced-influence-model.html#cb26-1"></a><span class="co"># normalize A</span></span>
-<span id="cb26-2"><a href="enhanced-influence-model.html#cb26-2"></a>A_normalized &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">nrow</span>(A),<span class="kw">nrow</span>(A))</span>
-<span id="cb26-3"><a href="enhanced-influence-model.html#cb26-3"></a></span>
-<span id="cb26-4"><a href="enhanced-influence-model.html#cb26-4"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
-<span id="cb26-5"><a href="enhanced-influence-model.html#cb26-5"></a>  <span class="cf">for</span>(j <span class="cf">in</span> i<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
-<span id="cb26-6"><a href="enhanced-influence-model.html#cb26-6"></a>    <span class="cf">if</span>(deg[i]<span class="op">!=</span><span class="dv">0</span> <span class="op">&amp;&amp;</span><span class="st"> </span>deg[j]<span class="op">!=</span><span class="dv">0</span>){</span>
-<span id="cb26-7"><a href="enhanced-influence-model.html#cb26-7"></a>      A_normalized[i,j] &lt;-<span class="st"> </span>A[i,j]<span class="op">/</span><span class="kw">sqrt</span>(deg[i]<span class="op">*</span>deg[j])</span>
-<span id="cb26-8"><a href="enhanced-influence-model.html#cb26-8"></a>    }</span>
-<span id="cb26-9"><a href="enhanced-influence-model.html#cb26-9"></a>  }</span>
-<span id="cb26-10"><a href="enhanced-influence-model.html#cb26-10"></a>}</span>
-<span id="cb26-11"><a href="enhanced-influence-model.html#cb26-11"></a></span>
-<span id="cb26-12"><a href="enhanced-influence-model.html#cb26-12"></a>A_normalized &lt;-<span class="st"> </span><span class="kw">forceSymmetric</span>(A_normalized,<span class="st">&quot;U&quot;</span>)</span>
-<span id="cb26-13"><a href="enhanced-influence-model.html#cb26-13"></a>A_normalized &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(A_normalized)</span>
-<span id="cb26-14"><a href="enhanced-influence-model.html#cb26-14"></a></span>
-<span id="cb26-15"><a href="enhanced-influence-model.html#cb26-15"></a><span class="co"># normalize the corresponding degree matrix S</span></span>
-<span id="cb26-16"><a href="enhanced-influence-model.html#cb26-16"></a>S_normalized &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">rowSums</span>(A_normalized))</span>
-<span id="cb26-17"><a href="enhanced-influence-model.html#cb26-17"></a></span>
-<span id="cb26-18"><a href="enhanced-influence-model.html#cb26-18"></a>gamma &lt;-<span class="st"> </span><span class="dv">5</span></span>
-<span id="cb26-19"><a href="enhanced-influence-model.html#cb26-19"></a>L_gamma &lt;-<span class="st"> </span>S_normalized<span class="op">+</span><span class="kw">diag</span>(gamma,<span class="kw">nrow</span>(A))<span class="op">-</span>A_normalized</span>
-<span id="cb26-20"><a href="enhanced-influence-model.html#cb26-20"></a>inv_L_gamma &lt;-<span class="st"> </span><span class="kw">solve</span>(L_gamma)</span>
-<span id="cb26-21"><a href="enhanced-influence-model.html#cb26-21"></a></span>
-<span id="cb26-22"><a href="enhanced-influence-model.html#cb26-22"></a><span class="co"># compute symmetric importance score using Enhanced Influence Model</span></span>
-<span id="cb26-23"><a href="enhanced-influence-model.html#cb26-23"></a>W &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="kw">nrow</span>(A),<span class="kw">ncol</span>(A))</span>
-<span id="cb26-24"><a href="enhanced-influence-model.html#cb26-24"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
-<span id="cb26-25"><a href="enhanced-influence-model.html#cb26-25"></a>  <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
-<span id="cb26-26"><a href="enhanced-influence-model.html#cb26-26"></a>    W[i,j] &lt;-<span class="st"> </span><span class="kw">min</span>(inv_L_gamma[i,j],inv_L_gamma[j,i])<span class="op">*</span><span class="kw">max</span>(mutations_score[i],mutations_score[j])</span>
-<span id="cb26-27"><a href="enhanced-influence-model.html#cb26-27"></a>  }</span>
-<span id="cb26-28"><a href="enhanced-influence-model.html#cb26-28"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="enhanced-influence-model.html#cb27-1"></a><span class="co"># helper function to remove cold_edge</span></span>
-<span id="cb27-2"><a href="enhanced-influence-model.html#cb27-2"></a>removeColdEdge &lt;-<span class="st"> </span><span class="cf">function</span>(mat,W,delta){</span>
-<span id="cb27-3"><a href="enhanced-influence-model.html#cb27-3"></a>  hotnet &lt;-<span class="st"> </span>mat</span>
-<span id="cb27-4"><a href="enhanced-influence-model.html#cb27-4"></a></span>
-<span id="cb27-5"><a href="enhanced-influence-model.html#cb27-5"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
-<span id="cb27-6"><a href="enhanced-influence-model.html#cb27-6"></a>    <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
-<span id="cb27-7"><a href="enhanced-influence-model.html#cb27-7"></a>      <span class="cf">if</span>(W[i,j] <span class="op">&lt;</span><span class="st"> </span>delta){</span>
-<span id="cb27-8"><a href="enhanced-influence-model.html#cb27-8"></a>        hotnet[i,j] &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb27-9"><a href="enhanced-influence-model.html#cb27-9"></a>      }</span>
-<span id="cb27-10"><a href="enhanced-influence-model.html#cb27-10"></a>    }</span>
-<span id="cb27-11"><a href="enhanced-influence-model.html#cb27-11"></a>  }</span>
-<span id="cb27-12"><a href="enhanced-influence-model.html#cb27-12"></a>  <span class="kw">return</span>(hotnet)</span>
-<span id="cb27-13"><a href="enhanced-influence-model.html#cb27-13"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="enhanced-influence-model.html#cb28-1"></a><span class="co"># get the filtered network</span></span>
-<span id="cb28-2"><a href="enhanced-influence-model.html#cb28-2"></a>Hotnet &lt;-<span class="st"> </span><span class="kw">removeColdEdge</span>(A_normalized,W,<span class="fl">0.04</span>)</span>
-<span id="cb28-3"><a href="enhanced-influence-model.html#cb28-3"></a>Hotnet &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(Hotnet,<span class="st">&quot;U&quot;</span>))</span>
-<span id="cb28-4"><a href="enhanced-influence-model.html#cb28-4"></a><span class="kw">colnames</span>(Hotnet) &lt;-<span class="st"> </span>position</span>
-<span id="cb28-5"><a href="enhanced-influence-model.html#cb28-5"></a><span class="kw">rownames</span>(Hotnet) &lt;-<span class="st"> </span>position</span>
-<span id="cb28-6"><a href="enhanced-influence-model.html#cb28-6"></a></span>
-<span id="cb28-7"><a href="enhanced-influence-model.html#cb28-7"></a><span class="co"># convert the adjacency matrix to an edge list</span></span>
-<span id="cb28-8"><a href="enhanced-influence-model.html#cb28-8"></a>HotEdges &lt;-<span class="st"> </span><span class="kw">melt</span>(Hotnet) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb28-9"><a href="enhanced-influence-model.html#cb28-9"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value) <span class="op">%&gt;%</span></span>
-<span id="cb28-10"><a href="enhanced-influence-model.html#cb28-10"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb28-11"><a href="enhanced-influence-model.html#cb28-11"></a><span class="st">  </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb28-12"><a href="enhanced-influence-model.html#cb28-12"></a><span class="st">  </span><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span></span>
-<span id="cb28-13"><a href="enhanced-influence-model.html#cb28-13"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Weight)</span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="enhanced-influence-model.html#cb29-1"></a><span class="co"># helper function that returns the number of connected components of size &gt;s</span></span>
-<span id="cb29-2"><a href="enhanced-influence-model.html#cb29-2"></a>getNumComp &lt;-<span class="st"> </span><span class="cf">function</span>(edges,nodes,s){</span>
-<span id="cb29-3"><a href="enhanced-influence-model.html#cb29-3"></a>  edges.copy =<span class="st"> </span>edges</span>
-<span id="cb29-4"><a href="enhanced-influence-model.html#cb29-4"></a>  edges.copy =<span class="st"> </span>edges.copy<span class="op">%&gt;%</span><span class="kw">select</span>(Source,Target)</span>
-<span id="cb29-5"><a href="enhanced-influence-model.html#cb29-5"></a>  <span class="kw">colnames</span>(edges.copy) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;from&quot;</span>,<span class="st">&quot;to&quot;</span>)</span>
-<span id="cb29-6"><a href="enhanced-influence-model.html#cb29-6"></a></span>
-<span id="cb29-7"><a href="enhanced-influence-model.html#cb29-7"></a>  g &lt;-<span class="st"> </span><span class="kw">graph_from_data_frame</span>(edges.copy, <span class="dt">directed=</span><span class="ot">FALSE</span>, <span class="dt">vertices=</span>nodes)</span>
-<span id="cb29-8"><a href="enhanced-influence-model.html#cb29-8"></a>  clu &lt;-<span class="st"> </span><span class="kw">components</span>(g)</span>
-<span id="cb29-9"><a href="enhanced-influence-model.html#cb29-9"></a>  res &lt;-<span class="st"> </span><span class="kw">groups</span>(clu)</span>
-<span id="cb29-10"><a href="enhanced-influence-model.html#cb29-10"></a>  count &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb29-11"><a href="enhanced-influence-model.html#cb29-11"></a>  </span>
-<span id="cb29-12"><a href="enhanced-influence-model.html#cb29-12"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(res)){</span>
-<span id="cb29-13"><a href="enhanced-influence-model.html#cb29-13"></a>    <span class="cf">if</span>(<span class="kw">length</span>(res[[i]]) <span class="op">&gt;=</span><span class="st"> </span>s){</span>
-<span id="cb29-14"><a href="enhanced-influence-model.html#cb29-14"></a>      count &lt;-<span class="st"> </span>count<span class="op">+</span><span class="dv">1</span></span>
-<span id="cb29-15"><a href="enhanced-influence-model.html#cb29-15"></a>    }</span>
-<span id="cb29-16"><a href="enhanced-influence-model.html#cb29-16"></a>  }</span>
-<span id="cb29-17"><a href="enhanced-influence-model.html#cb29-17"></a>  <span class="kw">return</span>(count)</span>
-<span id="cb29-18"><a href="enhanced-influence-model.html#cb29-18"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="enhanced-influence-model.html#cb30-1"></a><span class="co"># The number of components is 13.</span></span>
-<span id="cb30-2"><a href="enhanced-influence-model.html#cb30-2"></a><span class="kw">getNumComp</span>(HotEdges,nodes,<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="enhanced-influence-model.html#cb1-1"></a><span class="co"># normalize A</span></span>
+<span id="cb1-2"><a href="enhanced-influence-model.html#cb1-2"></a>A_normalized &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">nrow</span>(A),<span class="kw">nrow</span>(A))</span>
+<span id="cb1-3"><a href="enhanced-influence-model.html#cb1-3"></a></span>
+<span id="cb1-4"><a href="enhanced-influence-model.html#cb1-4"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
+<span id="cb1-5"><a href="enhanced-influence-model.html#cb1-5"></a>  <span class="cf">for</span>(j <span class="cf">in</span> i<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
+<span id="cb1-6"><a href="enhanced-influence-model.html#cb1-6"></a>    <span class="cf">if</span>(deg[i]<span class="op">!=</span><span class="dv">0</span> <span class="op">&amp;&amp;</span><span class="st"> </span>deg[j]<span class="op">!=</span><span class="dv">0</span>){</span>
+<span id="cb1-7"><a href="enhanced-influence-model.html#cb1-7"></a>      A_normalized[i,j] &lt;-<span class="st"> </span>A[i,j]<span class="op">/</span><span class="kw">sqrt</span>(deg[i]<span class="op">*</span>deg[j])</span>
+<span id="cb1-8"><a href="enhanced-influence-model.html#cb1-8"></a>    }</span>
+<span id="cb1-9"><a href="enhanced-influence-model.html#cb1-9"></a>  }</span>
+<span id="cb1-10"><a href="enhanced-influence-model.html#cb1-10"></a>}</span>
+<span id="cb1-11"><a href="enhanced-influence-model.html#cb1-11"></a></span>
+<span id="cb1-12"><a href="enhanced-influence-model.html#cb1-12"></a>A_normalized &lt;-<span class="st"> </span><span class="kw">forceSymmetric</span>(A_normalized,<span class="st">&quot;U&quot;</span>)</span>
+<span id="cb1-13"><a href="enhanced-influence-model.html#cb1-13"></a>A_normalized &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(A_normalized)</span>
+<span id="cb1-14"><a href="enhanced-influence-model.html#cb1-14"></a></span>
+<span id="cb1-15"><a href="enhanced-influence-model.html#cb1-15"></a><span class="co"># normalize the corresponding degree matrix S</span></span>
+<span id="cb1-16"><a href="enhanced-influence-model.html#cb1-16"></a>S_normalized &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">rowSums</span>(A_normalized))</span>
+<span id="cb1-17"><a href="enhanced-influence-model.html#cb1-17"></a></span>
+<span id="cb1-18"><a href="enhanced-influence-model.html#cb1-18"></a>gamma &lt;-<span class="st"> </span><span class="dv">5</span></span>
+<span id="cb1-19"><a href="enhanced-influence-model.html#cb1-19"></a>L_gamma &lt;-<span class="st"> </span>S_normalized<span class="op">+</span><span class="kw">diag</span>(gamma,<span class="kw">nrow</span>(A))<span class="op">-</span>A_normalized</span>
+<span id="cb1-20"><a href="enhanced-influence-model.html#cb1-20"></a>inv_L_gamma &lt;-<span class="st"> </span><span class="kw">solve</span>(L_gamma)</span>
+<span id="cb1-21"><a href="enhanced-influence-model.html#cb1-21"></a></span>
+<span id="cb1-22"><a href="enhanced-influence-model.html#cb1-22"></a><span class="co"># compute symmetric importance score using Enhanced Influence Model</span></span>
+<span id="cb1-23"><a href="enhanced-influence-model.html#cb1-23"></a>W &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="kw">nrow</span>(A),<span class="kw">ncol</span>(A))</span>
+<span id="cb1-24"><a href="enhanced-influence-model.html#cb1-24"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
+<span id="cb1-25"><a href="enhanced-influence-model.html#cb1-25"></a>  <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
+<span id="cb1-26"><a href="enhanced-influence-model.html#cb1-26"></a>    W[i,j] &lt;-<span class="st"> </span><span class="kw">min</span>(inv_L_gamma[i,j],inv_L_gamma[j,i])<span class="op">*</span><span class="kw">max</span>(mutations_score[i],mutations_score[j])</span>
+<span id="cb1-27"><a href="enhanced-influence-model.html#cb1-27"></a>  }</span>
+<span id="cb1-28"><a href="enhanced-influence-model.html#cb1-28"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="enhanced-influence-model.html#cb2-1"></a><span class="co"># helper function to remove cold_edge</span></span>
+<span id="cb2-2"><a href="enhanced-influence-model.html#cb2-2"></a>removeColdEdge &lt;-<span class="st"> </span><span class="cf">function</span>(mat,W,delta){</span>
+<span id="cb2-3"><a href="enhanced-influence-model.html#cb2-3"></a>  hotnet &lt;-<span class="st"> </span>mat</span>
+<span id="cb2-4"><a href="enhanced-influence-model.html#cb2-4"></a></span>
+<span id="cb2-5"><a href="enhanced-influence-model.html#cb2-5"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
+<span id="cb2-6"><a href="enhanced-influence-model.html#cb2-6"></a>    <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
+<span id="cb2-7"><a href="enhanced-influence-model.html#cb2-7"></a>      <span class="cf">if</span>(W[i,j] <span class="op">&lt;</span><span class="st"> </span>delta){</span>
+<span id="cb2-8"><a href="enhanced-influence-model.html#cb2-8"></a>        hotnet[i,j] &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb2-9"><a href="enhanced-influence-model.html#cb2-9"></a>      }</span>
+<span id="cb2-10"><a href="enhanced-influence-model.html#cb2-10"></a>    }</span>
+<span id="cb2-11"><a href="enhanced-influence-model.html#cb2-11"></a>  }</span>
+<span id="cb2-12"><a href="enhanced-influence-model.html#cb2-12"></a>  <span class="kw">return</span>(hotnet)</span>
+<span id="cb2-13"><a href="enhanced-influence-model.html#cb2-13"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="enhanced-influence-model.html#cb3-1"></a><span class="co"># get the filtered network</span></span>
+<span id="cb3-2"><a href="enhanced-influence-model.html#cb3-2"></a>Hotnet &lt;-<span class="st"> </span><span class="kw">removeColdEdge</span>(A_normalized,W,<span class="fl">0.04</span>)</span>
+<span id="cb3-3"><a href="enhanced-influence-model.html#cb3-3"></a>Hotnet &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(Hotnet,<span class="st">&quot;U&quot;</span>))</span>
+<span id="cb3-4"><a href="enhanced-influence-model.html#cb3-4"></a><span class="kw">colnames</span>(Hotnet) &lt;-<span class="st"> </span>position</span>
+<span id="cb3-5"><a href="enhanced-influence-model.html#cb3-5"></a><span class="kw">rownames</span>(Hotnet) &lt;-<span class="st"> </span>position</span>
+<span id="cb3-6"><a href="enhanced-influence-model.html#cb3-6"></a></span>
+<span id="cb3-7"><a href="enhanced-influence-model.html#cb3-7"></a><span class="co"># convert the adjacency matrix to an edge list</span></span>
+<span id="cb3-8"><a href="enhanced-influence-model.html#cb3-8"></a>HotEdges &lt;-<span class="st"> </span><span class="kw">melt</span>(Hotnet) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-9"><a href="enhanced-influence-model.html#cb3-9"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value) <span class="op">%&gt;%</span></span>
+<span id="cb3-10"><a href="enhanced-influence-model.html#cb3-10"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-11"><a href="enhanced-influence-model.html#cb3-11"></a><span class="st">  </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-12"><a href="enhanced-influence-model.html#cb3-12"></a><span class="st">  </span><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span></span>
+<span id="cb3-13"><a href="enhanced-influence-model.html#cb3-13"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Weight)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="enhanced-influence-model.html#cb4-1"></a><span class="co"># helper function that returns the number of connected components of size &gt;s</span></span>
+<span id="cb4-2"><a href="enhanced-influence-model.html#cb4-2"></a>getNumComp &lt;-<span class="st"> </span><span class="cf">function</span>(edges,nodes,s){</span>
+<span id="cb4-3"><a href="enhanced-influence-model.html#cb4-3"></a>  edges.copy =<span class="st"> </span>edges</span>
+<span id="cb4-4"><a href="enhanced-influence-model.html#cb4-4"></a>  edges.copy =<span class="st"> </span>edges.copy<span class="op">%&gt;%</span><span class="kw">select</span>(Source,Target)</span>
+<span id="cb4-5"><a href="enhanced-influence-model.html#cb4-5"></a>  <span class="kw">colnames</span>(edges.copy) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;from&quot;</span>,<span class="st">&quot;to&quot;</span>)</span>
+<span id="cb4-6"><a href="enhanced-influence-model.html#cb4-6"></a></span>
+<span id="cb4-7"><a href="enhanced-influence-model.html#cb4-7"></a>  g &lt;-<span class="st"> </span><span class="kw">graph_from_data_frame</span>(edges.copy, <span class="dt">directed=</span><span class="ot">FALSE</span>, <span class="dt">vertices=</span>nodes)</span>
+<span id="cb4-8"><a href="enhanced-influence-model.html#cb4-8"></a>  clu &lt;-<span class="st"> </span><span class="kw">components</span>(g)</span>
+<span id="cb4-9"><a href="enhanced-influence-model.html#cb4-9"></a>  res &lt;-<span class="st"> </span><span class="kw">groups</span>(clu)</span>
+<span id="cb4-10"><a href="enhanced-influence-model.html#cb4-10"></a>  count &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb4-11"><a href="enhanced-influence-model.html#cb4-11"></a>  </span>
+<span id="cb4-12"><a href="enhanced-influence-model.html#cb4-12"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(res)){</span>
+<span id="cb4-13"><a href="enhanced-influence-model.html#cb4-13"></a>    <span class="cf">if</span>(<span class="kw">length</span>(res[[i]]) <span class="op">&gt;=</span><span class="st"> </span>s){</span>
+<span id="cb4-14"><a href="enhanced-influence-model.html#cb4-14"></a>      count &lt;-<span class="st"> </span>count<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb4-15"><a href="enhanced-influence-model.html#cb4-15"></a>    }</span>
+<span id="cb4-16"><a href="enhanced-influence-model.html#cb4-16"></a>  }</span>
+<span id="cb4-17"><a href="enhanced-influence-model.html#cb4-17"></a>  <span class="kw">return</span>(count)</span>
+<span id="cb4-18"><a href="enhanced-influence-model.html#cb4-18"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="enhanced-influence-model.html#cb5-1"></a><span class="co"># The number of components is 13.</span></span>
+<span id="cb5-2"><a href="enhanced-influence-model.html#cb5-2"></a><span class="kw">getNumComp</span>(HotEdges,nodes,<span class="dv">3</span>)</span></code></pre></div>
 </div>
 <div id="determine-value-for-cold-edge-threshold-delta" class="section level2">
 <h2><span class="header-section-number">5.3</span> Determine Value for Cold-Edge Threshold <span class="math inline">\(\delta\)</span></h2>
@@ -319,77 +317,77 @@ where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 
 <p>Figure 5.2 shows after modularity decomposition, our algorithm successfully captures most of the structures of the 4 pre-selected genetic pathways we listed in Chapter 4.2. The pink modularity class corresponds perfectly to the first pathway (X2699, X1320, X520, X2881); out of the 5 nodes classified in the orange modularity class, 4 of them come from the second pathway (X2766, X1237, X2075, X521, X526) and 4 from the third pathway (X526, X2766, X2106, X2075, X1533); the 3 nodes in the green modularity class are 3 of the 5 SNP locations from the fourth pathway (X2699, X521, X2881, X1533, X1627). Note that nodes with high closeness centralities such as X521, X1533, and X2699 happen to be those SNP locations shared by multiple pathways.</p>
 <p>The fact that the fourth pathway captured by our algorithm appears to be most imperfect one might be explained by the fact that 3 of its components are shared with other pathways. As our algorithm obtains subgraphs by removing edges, we conjecture that shared SNP locations by multiple pathways makes the it hard for the algorithm to make a perfect division between pathways. To confirm our thought, we simulated 50 dataset under a simplified situation where no two pathways share a mutual SNP location and presented the results below.</p>
 <p>We used the codes below to help determine an appropriate value for the threshold <span class="math inline">\(\delta\)</span>:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="enhanced-influence-model.html#cb31-1"></a><span class="co"># generate 50 datasets under the null hypothesis</span></span>
-<span id="cb31-2"><a href="enhanced-influence-model.html#cb31-2"></a>disease_status_mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>,<span class="dv">50</span>,<span class="dv">500</span>)</span>
-<span id="cb31-3"><a href="enhanced-influence-model.html#cb31-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-4"><a href="enhanced-influence-model.html#cb31-4"></a>  disease_status_mat[i,] &lt;-<span class="st"> </span><span class="kw">permute</span>(disease_status_vector)</span>
-<span id="cb31-5"><a href="enhanced-influence-model.html#cb31-5"></a>}</span>
-<span id="cb31-6"><a href="enhanced-influence-model.html#cb31-6"></a></span>
-<span id="cb31-7"><a href="enhanced-influence-model.html#cb31-7"></a><span class="co"># compute scores for each gene in the 50 datasets</span></span>
-<span id="cb31-8"><a href="enhanced-influence-model.html#cb31-8"></a>pVal.lst &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb31-9"><a href="enhanced-influence-model.html#cb31-9"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-10"><a href="enhanced-influence-model.html#cb31-10"></a>  res &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb31-11"><a href="enhanced-influence-model.html#cb31-11"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(position)){</span>
-<span id="cb31-12"><a href="enhanced-influence-model.html#cb31-12"></a>    outcome &lt;-<span class="st"> &quot;disease_status_mat[k,]&quot;</span></span>
-<span id="cb31-13"><a href="enhanced-influence-model.html#cb31-13"></a>    variable &lt;-<span class="st"> </span>position[i]</span>
-<span id="cb31-14"><a href="enhanced-influence-model.html#cb31-14"></a>    f &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(outcome, </span>
-<span id="cb31-15"><a href="enhanced-influence-model.html#cb31-15"></a>        <span class="kw">paste</span>(variable), </span>
-<span id="cb31-16"><a href="enhanced-influence-model.html#cb31-16"></a>        <span class="dt">sep =</span> <span class="st">&quot; ~ &quot;</span>))</span>
-<span id="cb31-17"><a href="enhanced-influence-model.html#cb31-17"></a>    model &lt;-<span class="st"> </span><span class="kw">lm</span>(f, <span class="dt">data =</span> sub_data)</span>
-<span id="cb31-18"><a href="enhanced-influence-model.html#cb31-18"></a>    res &lt;-<span class="st"> </span><span class="kw">c</span>(res,<span class="kw">summary</span>(model)<span class="op">$</span>coefficient[,<span class="dv">4</span>][<span class="dv">2</span>])</span>
-<span id="cb31-19"><a href="enhanced-influence-model.html#cb31-19"></a>    pVal.lst[[k]] =<span class="st"> </span>res</span>
-<span id="cb31-20"><a href="enhanced-influence-model.html#cb31-20"></a>  }</span>
-<span id="cb31-21"><a href="enhanced-influence-model.html#cb31-21"></a>  </span>
-<span id="cb31-22"><a href="enhanced-influence-model.html#cb31-22"></a>}</span>
-<span id="cb31-23"><a href="enhanced-influence-model.html#cb31-23"></a>score.lst =<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb31-24"><a href="enhanced-influence-model.html#cb31-24"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-25"><a href="enhanced-influence-model.html#cb31-25"></a>  score.lst[[k]] =<span class="st"> </span><span class="dv">-2</span><span class="op">*</span><span class="kw">log</span>(pVal.lst[[k]])</span>
-<span id="cb31-26"><a href="enhanced-influence-model.html#cb31-26"></a>}</span>
-<span id="cb31-27"><a href="enhanced-influence-model.html#cb31-27"></a></span>
-<span id="cb31-28"><a href="enhanced-influence-model.html#cb31-28"></a><span class="co"># apply the Enhanced Influence Model to the 50 datasets</span></span>
-<span id="cb31-29"><a href="enhanced-influence-model.html#cb31-29"></a>W.lst =<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb31-30"><a href="enhanced-influence-model.html#cb31-30"></a></span>
-<span id="cb31-31"><a href="enhanced-influence-model.html#cb31-31"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-32"><a href="enhanced-influence-model.html#cb31-32"></a>  W.lst[[k]] =<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="kw">nrow</span>(A),<span class="kw">ncol</span>(A))</span>
-<span id="cb31-33"><a href="enhanced-influence-model.html#cb31-33"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
-<span id="cb31-34"><a href="enhanced-influence-model.html#cb31-34"></a>    <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
-<span id="cb31-35"><a href="enhanced-influence-model.html#cb31-35"></a>      W.lst[[k]][i,j] =<span class="st"> </span><span class="kw">min</span>(inv_L_gamma[i,j],inv_L_gamma[j,i])<span class="op">*</span><span class="kw">max</span>(score.lst[[k]][i],score.lst[[k]][j])</span>
-<span id="cb31-36"><a href="enhanced-influence-model.html#cb31-36"></a>    }</span>
-<span id="cb31-37"><a href="enhanced-influence-model.html#cb31-37"></a>  }</span>
-<span id="cb31-38"><a href="enhanced-influence-model.html#cb31-38"></a>}</span>
-<span id="cb31-39"><a href="enhanced-influence-model.html#cb31-39"></a></span>
-<span id="cb31-40"><a href="enhanced-influence-model.html#cb31-40"></a><span class="co"># a helper function that returns the average number of connected components</span></span>
-<span id="cb31-41"><a href="enhanced-influence-model.html#cb31-41"></a><span class="co"># of size greater than s under the null hypothesis using delta</span></span>
-<span id="cb31-42"><a href="enhanced-influence-model.html#cb31-42"></a>aveNumComp_s &lt;-<span class="st"> </span><span class="cf">function</span>(delta, <span class="dt">s=</span><span class="dv">3</span>){</span>
-<span id="cb31-43"><a href="enhanced-influence-model.html#cb31-43"></a></span>
-<span id="cb31-44"><a href="enhanced-influence-model.html#cb31-44"></a>  Hotnet.lst =<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb31-45"><a href="enhanced-influence-model.html#cb31-45"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-46"><a href="enhanced-influence-model.html#cb31-46"></a>    Hotnet.lst[[k]] =<span class="st"> </span><span class="kw">removeColdEdge</span>(A_normalized,W.lst[[k]],delta)</span>
-<span id="cb31-47"><a href="enhanced-influence-model.html#cb31-47"></a>    Hotnet.lst[[k]] =<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(Hotnet.lst[[k]],<span class="st">&quot;U&quot;</span>))</span>
-<span id="cb31-48"><a href="enhanced-influence-model.html#cb31-48"></a>  }</span>
-<span id="cb31-49"><a href="enhanced-influence-model.html#cb31-49"></a></span>
-<span id="cb31-50"><a href="enhanced-influence-model.html#cb31-50"></a>  HotEdges.lst =<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb31-51"><a href="enhanced-influence-model.html#cb31-51"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-52"><a href="enhanced-influence-model.html#cb31-52"></a>    <span class="kw">colnames</span>(Hotnet.lst[[k]]) =<span class="st"> </span>position</span>
-<span id="cb31-53"><a href="enhanced-influence-model.html#cb31-53"></a>    <span class="kw">rownames</span>(Hotnet.lst[[k]]) =<span class="st"> </span>position</span>
-<span id="cb31-54"><a href="enhanced-influence-model.html#cb31-54"></a>    HotEdges.lst[[k]]=<span class="st"> </span><span class="kw">melt</span>(Hotnet.lst[[k]]) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-55"><a href="enhanced-influence-model.html#cb31-55"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value)<span class="op">%&gt;%</span></span>
-<span id="cb31-56"><a href="enhanced-influence-model.html#cb31-56"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-57"><a href="enhanced-influence-model.html#cb31-57"></a><span class="st">      </span><span class="kw">select</span>(Source, Target, Type,Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-58"><a href="enhanced-influence-model.html#cb31-58"></a><span class="st">      </span><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)<span class="op">%&gt;%</span><span class="kw">select</span>(<span class="op">-</span>Weight)</span>
-<span id="cb31-59"><a href="enhanced-influence-model.html#cb31-59"></a>  }</span>
-<span id="cb31-60"><a href="enhanced-influence-model.html#cb31-60"></a></span>
-<span id="cb31-61"><a href="enhanced-influence-model.html#cb31-61"></a>  numComp_s =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">50</span>)</span>
-<span id="cb31-62"><a href="enhanced-influence-model.html#cb31-62"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
-<span id="cb31-63"><a href="enhanced-influence-model.html#cb31-63"></a>    numComp_s[k] =<span class="st"> </span><span class="kw">getNumComp</span>(HotEdges.lst[[k]],nodes,s)</span>
-<span id="cb31-64"><a href="enhanced-influence-model.html#cb31-64"></a>    </span>
-<span id="cb31-65"><a href="enhanced-influence-model.html#cb31-65"></a>  }</span>
-<span id="cb31-66"><a href="enhanced-influence-model.html#cb31-66"></a>  <span class="kw">return</span>(<span class="kw">mean</span>(numComp_s))</span>
-<span id="cb31-67"><a href="enhanced-influence-model.html#cb31-67"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="enhanced-influence-model.html#cb32-1"></a><span class="co"># Compute the average number of connected components of size&gt;3</span></span>
-<span id="cb32-2"><a href="enhanced-influence-model.html#cb32-2"></a><span class="co"># as a function of delta ranging from 0.01 to 0.09</span></span>
-<span id="cb32-3"><a href="enhanced-influence-model.html#cb32-3"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.09</span>, <span class="fl">0.01</span>)</span>
-<span id="cb32-4"><a href="enhanced-influence-model.html#cb32-4"></a><span class="kw">sapply</span>(x, aveNumComp_s,<span class="dt">s=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="enhanced-influence-model.html#cb6-1"></a><span class="co"># generate 50 datasets under the null hypothesis</span></span>
+<span id="cb6-2"><a href="enhanced-influence-model.html#cb6-2"></a>disease_status_mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>,<span class="dv">50</span>,<span class="dv">500</span>)</span>
+<span id="cb6-3"><a href="enhanced-influence-model.html#cb6-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-4"><a href="enhanced-influence-model.html#cb6-4"></a>  disease_status_mat[i,] &lt;-<span class="st"> </span><span class="kw">permute</span>(disease_status_vector)</span>
+<span id="cb6-5"><a href="enhanced-influence-model.html#cb6-5"></a>}</span>
+<span id="cb6-6"><a href="enhanced-influence-model.html#cb6-6"></a></span>
+<span id="cb6-7"><a href="enhanced-influence-model.html#cb6-7"></a><span class="co"># compute scores for each gene in the 50 datasets</span></span>
+<span id="cb6-8"><a href="enhanced-influence-model.html#cb6-8"></a>pVal.lst &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb6-9"><a href="enhanced-influence-model.html#cb6-9"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-10"><a href="enhanced-influence-model.html#cb6-10"></a>  res &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb6-11"><a href="enhanced-influence-model.html#cb6-11"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(position)){</span>
+<span id="cb6-12"><a href="enhanced-influence-model.html#cb6-12"></a>    outcome &lt;-<span class="st"> &quot;disease_status_mat[k,]&quot;</span></span>
+<span id="cb6-13"><a href="enhanced-influence-model.html#cb6-13"></a>    variable &lt;-<span class="st"> </span>position[i]</span>
+<span id="cb6-14"><a href="enhanced-influence-model.html#cb6-14"></a>    f &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(outcome, </span>
+<span id="cb6-15"><a href="enhanced-influence-model.html#cb6-15"></a>        <span class="kw">paste</span>(variable), </span>
+<span id="cb6-16"><a href="enhanced-influence-model.html#cb6-16"></a>        <span class="dt">sep =</span> <span class="st">&quot; ~ &quot;</span>))</span>
+<span id="cb6-17"><a href="enhanced-influence-model.html#cb6-17"></a>    model &lt;-<span class="st"> </span><span class="kw">lm</span>(f, <span class="dt">data =</span> sub_data)</span>
+<span id="cb6-18"><a href="enhanced-influence-model.html#cb6-18"></a>    res &lt;-<span class="st"> </span><span class="kw">c</span>(res,<span class="kw">summary</span>(model)<span class="op">$</span>coefficient[,<span class="dv">4</span>][<span class="dv">2</span>])</span>
+<span id="cb6-19"><a href="enhanced-influence-model.html#cb6-19"></a>    pVal.lst[[k]] =<span class="st"> </span>res</span>
+<span id="cb6-20"><a href="enhanced-influence-model.html#cb6-20"></a>  }</span>
+<span id="cb6-21"><a href="enhanced-influence-model.html#cb6-21"></a>  </span>
+<span id="cb6-22"><a href="enhanced-influence-model.html#cb6-22"></a>}</span>
+<span id="cb6-23"><a href="enhanced-influence-model.html#cb6-23"></a>score.lst =<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb6-24"><a href="enhanced-influence-model.html#cb6-24"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-25"><a href="enhanced-influence-model.html#cb6-25"></a>  score.lst[[k]] =<span class="st"> </span><span class="dv">-2</span><span class="op">*</span><span class="kw">log</span>(pVal.lst[[k]])</span>
+<span id="cb6-26"><a href="enhanced-influence-model.html#cb6-26"></a>}</span>
+<span id="cb6-27"><a href="enhanced-influence-model.html#cb6-27"></a></span>
+<span id="cb6-28"><a href="enhanced-influence-model.html#cb6-28"></a><span class="co"># apply the Enhanced Influence Model to the 50 datasets</span></span>
+<span id="cb6-29"><a href="enhanced-influence-model.html#cb6-29"></a>W.lst =<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb6-30"><a href="enhanced-influence-model.html#cb6-30"></a></span>
+<span id="cb6-31"><a href="enhanced-influence-model.html#cb6-31"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-32"><a href="enhanced-influence-model.html#cb6-32"></a>  W.lst[[k]] =<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="kw">nrow</span>(A),<span class="kw">ncol</span>(A))</span>
+<span id="cb6-33"><a href="enhanced-influence-model.html#cb6-33"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(A)<span class="op">-</span><span class="dv">1</span>)){</span>
+<span id="cb6-34"><a href="enhanced-influence-model.html#cb6-34"></a>    <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span><span class="kw">nrow</span>(A)){</span>
+<span id="cb6-35"><a href="enhanced-influence-model.html#cb6-35"></a>      W.lst[[k]][i,j] =<span class="st"> </span><span class="kw">min</span>(inv_L_gamma[i,j],inv_L_gamma[j,i])<span class="op">*</span><span class="kw">max</span>(score.lst[[k]][i],score.lst[[k]][j])</span>
+<span id="cb6-36"><a href="enhanced-influence-model.html#cb6-36"></a>    }</span>
+<span id="cb6-37"><a href="enhanced-influence-model.html#cb6-37"></a>  }</span>
+<span id="cb6-38"><a href="enhanced-influence-model.html#cb6-38"></a>}</span>
+<span id="cb6-39"><a href="enhanced-influence-model.html#cb6-39"></a></span>
+<span id="cb6-40"><a href="enhanced-influence-model.html#cb6-40"></a><span class="co"># a helper function that returns the average number of connected components</span></span>
+<span id="cb6-41"><a href="enhanced-influence-model.html#cb6-41"></a><span class="co"># of size greater than s under the null hypothesis using delta</span></span>
+<span id="cb6-42"><a href="enhanced-influence-model.html#cb6-42"></a>aveNumComp_s &lt;-<span class="st"> </span><span class="cf">function</span>(delta, <span class="dt">s=</span><span class="dv">3</span>){</span>
+<span id="cb6-43"><a href="enhanced-influence-model.html#cb6-43"></a></span>
+<span id="cb6-44"><a href="enhanced-influence-model.html#cb6-44"></a>  Hotnet.lst =<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb6-45"><a href="enhanced-influence-model.html#cb6-45"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-46"><a href="enhanced-influence-model.html#cb6-46"></a>    Hotnet.lst[[k]] =<span class="st"> </span><span class="kw">removeColdEdge</span>(A_normalized,W.lst[[k]],delta)</span>
+<span id="cb6-47"><a href="enhanced-influence-model.html#cb6-47"></a>    Hotnet.lst[[k]] =<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(Hotnet.lst[[k]],<span class="st">&quot;U&quot;</span>))</span>
+<span id="cb6-48"><a href="enhanced-influence-model.html#cb6-48"></a>  }</span>
+<span id="cb6-49"><a href="enhanced-influence-model.html#cb6-49"></a></span>
+<span id="cb6-50"><a href="enhanced-influence-model.html#cb6-50"></a>  HotEdges.lst =<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb6-51"><a href="enhanced-influence-model.html#cb6-51"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-52"><a href="enhanced-influence-model.html#cb6-52"></a>    <span class="kw">colnames</span>(Hotnet.lst[[k]]) =<span class="st"> </span>position</span>
+<span id="cb6-53"><a href="enhanced-influence-model.html#cb6-53"></a>    <span class="kw">rownames</span>(Hotnet.lst[[k]]) =<span class="st"> </span>position</span>
+<span id="cb6-54"><a href="enhanced-influence-model.html#cb6-54"></a>    HotEdges.lst[[k]]=<span class="st"> </span><span class="kw">melt</span>(Hotnet.lst[[k]]) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-55"><a href="enhanced-influence-model.html#cb6-55"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value)<span class="op">%&gt;%</span></span>
+<span id="cb6-56"><a href="enhanced-influence-model.html#cb6-56"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-57"><a href="enhanced-influence-model.html#cb6-57"></a><span class="st">      </span><span class="kw">select</span>(Source, Target, Type,Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-58"><a href="enhanced-influence-model.html#cb6-58"></a><span class="st">      </span><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)<span class="op">%&gt;%</span><span class="kw">select</span>(<span class="op">-</span>Weight)</span>
+<span id="cb6-59"><a href="enhanced-influence-model.html#cb6-59"></a>  }</span>
+<span id="cb6-60"><a href="enhanced-influence-model.html#cb6-60"></a></span>
+<span id="cb6-61"><a href="enhanced-influence-model.html#cb6-61"></a>  numComp_s =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">50</span>)</span>
+<span id="cb6-62"><a href="enhanced-influence-model.html#cb6-62"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</span>
+<span id="cb6-63"><a href="enhanced-influence-model.html#cb6-63"></a>    numComp_s[k] =<span class="st"> </span><span class="kw">getNumComp</span>(HotEdges.lst[[k]],nodes,s)</span>
+<span id="cb6-64"><a href="enhanced-influence-model.html#cb6-64"></a>    </span>
+<span id="cb6-65"><a href="enhanced-influence-model.html#cb6-65"></a>  }</span>
+<span id="cb6-66"><a href="enhanced-influence-model.html#cb6-66"></a>  <span class="kw">return</span>(<span class="kw">mean</span>(numComp_s))</span>
+<span id="cb6-67"><a href="enhanced-influence-model.html#cb6-67"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="enhanced-influence-model.html#cb7-1"></a><span class="co"># Compute the average number of connected components of size&gt;3</span></span>
+<span id="cb7-2"><a href="enhanced-influence-model.html#cb7-2"></a><span class="co"># as a function of delta ranging from 0.01 to 0.09</span></span>
+<span id="cb7-3"><a href="enhanced-influence-model.html#cb7-3"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.09</span>, <span class="fl">0.01</span>)</span>
+<span id="cb7-4"><a href="enhanced-influence-model.html#cb7-4"></a><span class="kw">sapply</span>(x, aveNumComp_s,<span class="dt">s=</span><span class="dv">3</span>)</span></code></pre></div>
 </div>
 <div id="alternative-situation" class="section level2">
 <h2><span class="header-section-number">5.4</span> Alternative Situation</h2>
@@ -407,9 +405,10 @@ where <span class="math inline">\(\vec{b_i}\)</span> is the standard basis with 
  </p>
 <p>Repeating the procedures we took in Chapter 5.3 for Scenario B gives the results below as summarized by Table 5.2:</p>
 <center>
-<img src="Table%205.2.png" style="width:100.0%" />
+<img src="Table%205.2.png" style="width:85.0%" />
 </center>
-<p>The empirical choice <span class="math inline">\(\delta&#39; = 0.04\)</span> gives the first maximum average number of connected components of size at least 3. Experimenting with <span class="math inline">\(\delta = 1.5\delta&#39;\)</span> and <span class="math inline">\(\delta = 2\delta&#39;\)</span> shows that <span class="math inline">\(\delta = 2\delta&#39;=0.08\)</span> gives a perfect fit.</p>
+<p><span class="math display">\[\text{Table 5.2: Number of Components of Size &gt; 3 as a Function of} \;\delta \;\text{under Scenario B}\]</span>
+The empirical choice <span class="math inline">\(\delta&#39; = 0.04\)</span> gives the first maximum average number of connected components of size at least 3. Experimenting with <span class="math inline">\(\delta = 1.5\delta&#39;\)</span> and <span class="math inline">\(\delta = 2\delta&#39;\)</span> shows that <span class="math inline">\(\delta = 2\delta&#39;=0.08\)</span> gives a perfect fit.</p>
 <p>Figure 5.4 shows the filtered network obtained from Figure 5.3 using <span class="math inline">\(\delta = 0.08\)</span>. Observe that there is no single major connected components. However, all four pathways exist as independent connected components that are colored in Figure 5.4. Figure 5.5 shows the the filtered graph for the four components. All 4 pathways are identified, which supplies proof for the validity of our method.</p>
 <p><img src="mod2_HotEdges0.08.png" /></p>
 <p><span class="math display">\[\text{Figure 5.4: Resulted Network using}\; \delta=0.08 \;\text{under Scenario B}\]</span></p>
