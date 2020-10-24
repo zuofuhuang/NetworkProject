@@ -4,7 +4,7 @@
 
 Below are the steps for calculating the "gene score" of each location that quantifies the degree of association between a base position and the disease/trait of interest. A higher score means a stronger association.
 
-For each position $g$, we performed marginal regression and obtain a p-value, $p_g$. Every position then is assigned a score $\sigma(g) = -2log(p_g)$ (Vandin et al., 2012). Two positions share an edge if they occur together, and the edge weight is their co-occurrence number.
+For each position $g$, we perform marginal regression and obtain a p-value, $p_g$. Every position then is assigned a score $\sigma(g) = -2log(p_g)$ (Vandin et al., 2012). Two positions share an edge if they occur together, and the edge weight is their co-occurrence number.
 
 ```{r}
 # record p values for each position
@@ -27,13 +27,17 @@ mutations_score <- -2*log(mutations_pVal)
 
 
 ```{r}
-edges = melt(A) %>% rename(Source = Var1, Target = Var2, Weight = value)%>%mutate(Type = "Undirected") %>% select(Source, Target, Type, Weight) %>% 
-filter(Weight != 0)
+edges <- melt(A) %>% 
+  rename(Source = Var1, Target = Var2, Weight = value) %>%
+  mutate(Type = "Undirected") %>% 
+  select(Source, Target, Type, Weight) %>% 
+  filter(Weight != 0)
 
-nodes = as.data.frame(colnames(sub_data))%>%mutate(Lable= colnames(sub_data))
-colnames(nodes) = c("Id","Lable")
+nodes <- as.data.frame(colnames(sub_data)) %>%
+  mutate(Label = colnames(sub_data))
+colnames(nodes) <- c("Id","Label")
 
-A.dat = as.data.frame(A)
+A.dat <- as.data.frame(A)
 ```
 
 ## Analysis
@@ -90,7 +94,7 @@ kbl(dt, escape = F) %>%
   kable_styling()
 ```
 \vspace{}
-$$\text{Tabble 4.1: Top 12 nodes with the highest degree, eigenvector centrality, closeness centrality and betweenness centrality}$$
+$$\text{Table 4.1: Top 12 nodes with the highest degree, eigenvector, closeness and betweenness centrality}$$
 
 ## Preliminary Conclusions
 

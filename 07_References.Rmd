@@ -9,10 +9,3 @@
 4. Qi, Y., Suhail, Y., Lin, Y. Y., Boeke, J. D., & Bader, J. S. (2008). Finding friends and enemies in an enemies-only network: a graph diffusion kernel for predicting novel genetic interactions and co-complex membership from yeast genetic interactions. Genome research, 18(12), 1991-2004. https://doi.org/10.1101/gr.077693.108
 
 5. What Are Single Nucleotide Polymorphisms (SNPs)? (n.d.). Retrieved from https://medlineplus.gov/genetics/understanding/genomicresearch/snp/
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> fc9bc3389f10c78caadaa9d56096928a52c78f21

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 Network Construction | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 4 Network Construction | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Network Construction | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -188,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="network-construction-process" class="section level2">
 <h2><span class="header-section-number">4.1</span> Network Construction Process</h2>
 <p>Below are the steps for calculating the “gene score” of each location that quantifies the degree of association between a base position and the disease/trait of interest. A higher score means a stronger association.</p>
-<p>For each position <span class="math inline">\(g\)</span>, we performed marginal regression and obtain a p-value, <span class="math inline">\(p_g\)</span>. Every position then is assigned a score <span class="math inline">\(\sigma(g) = -2log(p_g)\)</span> (Vandin et al., 2012). Two positions share an edge if they occur together, and the edge weight is their co-occurrence number.</p>
+<p>For each position <span class="math inline">\(g\)</span>, we perform marginal regression and obtain a p-value, <span class="math inline">\(p_g\)</span>. Every position then is assigned a score <span class="math inline">\(\sigma(g) = -2log(p_g)\)</span> (Vandin et al., 2012). Two positions share an edge if they occur together, and the edge weight is their co-occurrence number.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="network-construction.html#cb24-1"></a><span class="co"># record p values for each position</span></span>
 <span id="cb24-2"><a href="network-construction.html#cb24-2"></a>mutations_pVal =<span class="st"> </span><span class="kw">c</span>()</span>
 <span id="cb24-3"><a href="network-construction.html#cb24-3"></a>disease_status_vector =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>,n<span class="op">/</span><span class="dv">2</span>),<span class="kw">rep</span>(<span class="dv">0</span>,n<span class="op">/</span><span class="dv">2</span>)) <span class="co"># Arbitrarily assign the first half with disease</span></span>
@@ -205,13 +205,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb24-14"><a href="network-construction.html#cb24-14"></a></span>
 <span id="cb24-15"><a href="network-construction.html#cb24-15"></a><span class="co"># compute score for each mutated position</span></span>
 <span id="cb24-16"><a href="network-construction.html#cb24-16"></a>mutations_score &lt;-<span class="st"> </span><span class="dv">-2</span><span class="op">*</span><span class="kw">log</span>(mutations_pVal)</span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="network-construction.html#cb25-1"></a>edges =<span class="st"> </span><span class="kw">melt</span>(A) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value)<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb25-2"><a href="network-construction.html#cb25-2"></a><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
-<span id="cb25-3"><a href="network-construction.html#cb25-3"></a></span>
-<span id="cb25-4"><a href="network-construction.html#cb25-4"></a>nodes =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">colnames</span>(sub_data))<span class="op">%&gt;%</span><span class="kw">mutate</span>(<span class="dt">Lable=</span> <span class="kw">colnames</span>(sub_data))</span>
-<span id="cb25-5"><a href="network-construction.html#cb25-5"></a><span class="kw">colnames</span>(nodes) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Id&quot;</span>,<span class="st">&quot;Lable&quot;</span>)</span>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="network-construction.html#cb25-1"></a>edges &lt;-<span class="st"> </span><span class="kw">melt</span>(A) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb25-2"><a href="network-construction.html#cb25-2"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Source =</span> Var1, <span class="dt">Target =</span> Var2, <span class="dt">Weight =</span> value) <span class="op">%&gt;%</span></span>
+<span id="cb25-3"><a href="network-construction.html#cb25-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Type =</span> <span class="st">&quot;Undirected&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb25-4"><a href="network-construction.html#cb25-4"></a><span class="st">  </span><span class="kw">select</span>(Source, Target, Type, Weight) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb25-5"><a href="network-construction.html#cb25-5"></a><span class="st">  </span><span class="kw">filter</span>(Weight <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb25-6"><a href="network-construction.html#cb25-6"></a></span>
-<span id="cb25-7"><a href="network-construction.html#cb25-7"></a>A.dat =<span class="st"> </span><span class="kw">as.data.frame</span>(A)</span></code></pre></div>
+<span id="cb25-7"><a href="network-construction.html#cb25-7"></a>nodes &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">colnames</span>(sub_data)) <span class="op">%&gt;%</span></span>
+<span id="cb25-8"><a href="network-construction.html#cb25-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Label =</span> <span class="kw">colnames</span>(sub_data))</span>
+<span id="cb25-9"><a href="network-construction.html#cb25-9"></a><span class="kw">colnames</span>(nodes) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Id&quot;</span>,<span class="st">&quot;Label&quot;</span>)</span>
+<span id="cb25-10"><a href="network-construction.html#cb25-10"></a></span>
+<span id="cb25-11"><a href="network-construction.html#cb25-11"></a>A.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(A)</span></code></pre></div>
 </div>
 <div id="analysis" class="section level2">
 <h2><span class="header-section-number">4.2</span> Analysis</h2>
@@ -461,7 +465,7 @@ Betweeness Centrality
 </tbody>
 </table>
 
-<p><span class="math display">\[\text{Tabble 4.1: Top 12 nodes with the highest degree, eigenvector centrality, closeness centrality and betweenness centrality}\]</span></p>
+<p><span class="math display">\[\text{Table 4.1: Top 12 nodes with the highest degree, eigenvector, closeness and betweenness centrality}\]</span></p>
 </div>
 <div id="preliminary-conclusions" class="section level2">
 <h2><span class="header-section-number">4.4</span> Preliminary Conclusions</h2>

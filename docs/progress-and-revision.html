@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Progress and Revision | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Progress and Revision | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -187,18 +187,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Progress and Revision</h1>
 <div id="rationale" class="section level2">
 <h2><span class="header-section-number">3.1</span> Rationale</h2>
-<p>When we found out that only SNP locations can be categorized as significant and other loci are exclusively “non-significant”, we realized that we are getting too far into simulation. Although it seemed that every step we take is justified, the simulated data seem unrealistic and overfitting for our scenario. As we were conduting a more extensive literature review process in the hope of shedding light on our next simulation steps, we came across the paper <strong>Discovery of Mutated Subnetworks Associated with Clinical Data in Cancer (Vandin et. al, 2012)</strong>. Section 3.1 of the paper contains a description of how the data is simulated in a slightly different setting.</p>
+<p>When we found out that only SNP locations can be categorized as significant and other loci are exclusively “non-significant”, we realized that we are getting too far into simulation. Although it seemed that every step we take is justified, the simulated data seem unrealistic and overfitting for our scenario. As we were conducting a more extensive literature review process in the hope of shedding light on the next simulation steps, we came across the paper <strong>Discovery of Mutated Subnetworks Associated with Clinical Data in Cancer (Vandin et. al, 2012)</strong>. Section 3.1 of the paper contains a description of how the data is simulated in a slightly different setting.</p>
 <p>There are a few notable changes that we implemented in the <em>Progress and Revision</em> section.</p>
 <ul>
-<li><p>We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of <span class="math inline">\(p\)</span> is determined by the biological background that on average the probability of having a mutation at each location is <span class="math inline">\(1/1000\)</span>, as described in “What Are Single Nucleotide Polymorphisms (SNPs)?” (n.d.).</p>
+<li><p>We argue that a common disease can be caused by both genetic variants and external environmental factors, as opposed to the genetic variations alone in our previous simulations. Therefore, we can pre-determine the number of people whose diseases are caused by genetic factors (as the paper suggested, 20% of people who carry the disease). The value of <span class="math inline">\(p\)</span> is determined by the biological background that on average the probability of having a mutation at each location is <span class="math inline">\(1/1000\)</span>, as described in <strong>What Are Single Nucleotide Polymorphisms (SNPs)? (n.d.)</strong>.</p>
 <ul>
 <li>For people whose diseases are caused by genetic factors: the probability of mutations at every other location (including SNP locations that were not in their combination) has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
 <li>For people whose diseases are caused by non-genetic factors: the probability of mutations at each of the non-SNP locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
 <li>For people who do not have the disease: the probability of mutations at each of the non-SNP locations has a probability of <span class="math inline">\(p = 1/1000\)</span>.</li>
 </ul></li>
-<li><p>For the purpose of the simulation, we combine the group of people whose disease are caused by non-genetic factors and the group of people who do not carry the disease. Suppose we have a total of 500 people, half of which do not carry the disease. Then the total number of people whose disease are caused by genetic factors is 10% of the total population, as seen in <em>n_disease &lt;- 0.1n</em> in the <em>Update Code</em> section below.</p></li>
+<li><p>For the purpose of the simulation, we combine the group of people whose diseases are caused by non-genetic factors and the group of people who do not carry the disease. Suppose we have a total of 500 people, half of which do not carry the disease. Then the total number of people whose disease are caused by genetic factors is 10% of the total population, as seen in <code>n_disease &lt;- 0.1*n</code> in the <em>Update Code</em> section below.</p></li>
 <li><p>We determine that there are 4 combinations of genetic pathways that cause the disease (which is much more realistic than 15 pathways). Each of the pathway contains a random group of 4-5 variants chosen from 15 SNP locations. The variant could be present in more than one pathway or none of the pathways.</p></li>
-<li><p>We replace the multiplication of loci and locus_length with a total positions of 3000. We argue that reducing the number of loci at first does not change our inference process. As we test the validity of the approach, we then have the freedom of increasing the dimension (column) of the dataset or incorporating another disease/trait and the corresponding genetic pathways in our analysis.</p></li>
+<li><p>We replace the multiplication of <code>loci</code> and <code>locus_length</code> with a total position of 3000. We argue that reducing the number of loci does not change our inference process. As we test the validity of the approach, we then have the freedom of increasing the dimension (column) of the dataset or incorporating another disease/trait and its corresponding genetic pathways in our analysis.</p></li>
 </ul>
 </div>
 <div id="updated-code" class="section level2">
@@ -248,55 +248,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="progress-and-revision.html#cb18-1"></a><span class="co"># all mutated positions</span></span>
 <span id="cb18-2"><a href="progress-and-revision.html#cb18-2"></a>mutated_position &lt;-<span class="st"> </span>SNP_location</span>
 <span id="cb18-3"><a href="progress-and-revision.html#cb18-3"></a></span>
-<span id="cb18-4"><a href="progress-and-revision.html#cb18-4"></a><span class="co"># keep track of mutated positions for each subject</span></span>
-<span id="cb18-5"><a href="progress-and-revision.html#cb18-5"></a><span class="co"># to record co-occurrence frequency of mutations</span></span>
-<span id="cb18-6"><a href="progress-and-revision.html#cb18-6"></a></span>
-<span id="cb18-7"><a href="progress-and-revision.html#cb18-7"></a><span class="co"># For causal-pathway-related patients</span></span>
-<span id="cb18-8"><a href="progress-and-revision.html#cb18-8"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_disease){</span>
-<span id="cb18-9"><a href="progress-and-revision.html#cb18-9"></a>  </span>
-<span id="cb18-10"><a href="progress-and-revision.html#cb18-10"></a>  <span class="co"># disease-related SNP mutations first</span></span>
-<span id="cb18-11"><a href="progress-and-revision.html#cb18-11"></a>  reference_level_SNP_location_copy &lt;-<span class="st"> </span>reference_level_SNP_location</span>
-<span id="cb18-12"><a href="progress-and-revision.html#cb18-12"></a>  </span>
-<span id="cb18-13"><a href="progress-and-revision.html#cb18-13"></a>  thiscombo &lt;-<span class="st"> </span>disease_combo[[which_combo_they_get[i]]]</span>
-<span id="cb18-14"><a href="progress-and-revision.html#cb18-14"></a></span>
-<span id="cb18-15"><a href="progress-and-revision.html#cb18-15"></a>  index &lt;-<span class="st"> </span><span class="kw">match</span>(thiscombo, SNP_location)</span>
-<span id="cb18-16"><a href="progress-and-revision.html#cb18-16"></a></span>
-<span id="cb18-17"><a href="progress-and-revision.html#cb18-17"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(index)){</span>
-<span id="cb18-18"><a href="progress-and-revision.html#cb18-18"></a>    reference_level_SNP_location_copy[index[j]] &lt;-<span class="st"> </span><span class="kw">helper</span>(reference_level_SNP_location[index[j]])</span>
-<span id="cb18-19"><a href="progress-and-revision.html#cb18-19"></a>  }</span>
-<span id="cb18-20"><a href="progress-and-revision.html#cb18-20"></a>  </span>
-<span id="cb18-21"><a href="progress-and-revision.html#cb18-21"></a>  data[disease_people_row_number[i],][SNP_location] &lt;-<span class="st"> </span>reference_level_SNP_location_copy</span>
+<span id="cb18-4"><a href="progress-and-revision.html#cb18-4"></a><span class="co"># keep track of mutated positions for each subject to record co-occurrence frequency of mutations</span></span>
+<span id="cb18-5"><a href="progress-and-revision.html#cb18-5"></a></span>
+<span id="cb18-6"><a href="progress-and-revision.html#cb18-6"></a><span class="co"># For causal-pathway-related patients</span></span>
+<span id="cb18-7"><a href="progress-and-revision.html#cb18-7"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_disease){</span>
+<span id="cb18-8"><a href="progress-and-revision.html#cb18-8"></a>  <span class="co"># disease-related SNP mutations first</span></span>
+<span id="cb18-9"><a href="progress-and-revision.html#cb18-9"></a>  reference_level_SNP_location_copy &lt;-<span class="st"> </span>reference_level_SNP_location</span>
+<span id="cb18-10"><a href="progress-and-revision.html#cb18-10"></a>  thiscombo &lt;-<span class="st"> </span>disease_combo[[which_combo_they_get[i]]]</span>
+<span id="cb18-11"><a href="progress-and-revision.html#cb18-11"></a>  index &lt;-<span class="st"> </span><span class="kw">match</span>(thiscombo, SNP_location)</span>
+<span id="cb18-12"><a href="progress-and-revision.html#cb18-12"></a></span>
+<span id="cb18-13"><a href="progress-and-revision.html#cb18-13"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(index)){</span>
+<span id="cb18-14"><a href="progress-and-revision.html#cb18-14"></a>    reference_level_SNP_location_copy[index[j]] &lt;-<span class="st"> </span><span class="kw">helper</span>(reference_level_SNP_location[index[j]])</span>
+<span id="cb18-15"><a href="progress-and-revision.html#cb18-15"></a>  }</span>
+<span id="cb18-16"><a href="progress-and-revision.html#cb18-16"></a>  </span>
+<span id="cb18-17"><a href="progress-and-revision.html#cb18-17"></a>  data[disease_people_row_number[i],][SNP_location] &lt;-<span class="st"> </span>reference_level_SNP_location_copy</span>
+<span id="cb18-18"><a href="progress-and-revision.html#cb18-18"></a>  </span>
+<span id="cb18-19"><a href="progress-and-revision.html#cb18-19"></a>  <span class="co"># random change</span></span>
+<span id="cb18-20"><a href="progress-and-revision.html#cb18-20"></a>  mutated_result &lt;-<span class="st"> </span><span class="kw">mutater</span>(data[i,],thiscombo)</span>
+<span id="cb18-21"><a href="progress-and-revision.html#cb18-21"></a>  data[i,] &lt;-<span class="st"> </span>mutated_result[[<span class="dv">1</span>]]</span>
 <span id="cb18-22"><a href="progress-and-revision.html#cb18-22"></a>  </span>
-<span id="cb18-23"><a href="progress-and-revision.html#cb18-23"></a>  </span>
-<span id="cb18-24"><a href="progress-and-revision.html#cb18-24"></a>  <span class="co"># random change</span></span>
-<span id="cb18-25"><a href="progress-and-revision.html#cb18-25"></a>  mutated_result &lt;-<span class="st"> </span><span class="kw">mutater</span>(data[i,],thiscombo)</span>
-<span id="cb18-26"><a href="progress-and-revision.html#cb18-26"></a>  data[i,] &lt;-<span class="st"> </span>mutated_result[[<span class="dv">1</span>]]</span>
-<span id="cb18-27"><a href="progress-and-revision.html#cb18-27"></a>  </span>
-<span id="cb18-28"><a href="progress-and-revision.html#cb18-28"></a>  <span class="co"># update the list of all positions that mutated</span></span>
-<span id="cb18-29"><a href="progress-and-revision.html#cb18-29"></a>  mutated_position &lt;-<span class="st"> </span><span class="kw">c</span>(mutated_position, mutated_result[[<span class="dv">2</span>]])</span>
-<span id="cb18-30"><a href="progress-and-revision.html#cb18-30"></a>}</span>
-<span id="cb18-31"><a href="progress-and-revision.html#cb18-31"></a></span>
-<span id="cb18-32"><a href="progress-and-revision.html#cb18-32"></a><span class="co">#  for everyone else</span></span>
-<span id="cb18-33"><a href="progress-and-revision.html#cb18-33"></a><span class="cf">for</span> (k <span class="cf">in</span> (n_disease<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>n){</span>
-<span id="cb18-34"><a href="progress-and-revision.html#cb18-34"></a>  <span class="co"># update mutated positions</span></span>
-<span id="cb18-35"><a href="progress-and-revision.html#cb18-35"></a>  mutated_result &lt;-<span class="st"> </span><span class="kw">mutater</span>(data[k,], SNP_location)</span>
-<span id="cb18-36"><a href="progress-and-revision.html#cb18-36"></a>  data[k,] &lt;-<span class="st"> </span>mutated_result[[<span class="dv">1</span>]]</span>
-<span id="cb18-37"><a href="progress-and-revision.html#cb18-37"></a>  </span>
-<span id="cb18-38"><a href="progress-and-revision.html#cb18-38"></a>  mutated_position &lt;-<span class="st"> </span><span class="kw">c</span>(mutated_position, mutated_result[[<span class="dv">2</span>]])</span>
-<span id="cb18-39"><a href="progress-and-revision.html#cb18-39"></a>}</span>
-<span id="cb18-40"><a href="progress-and-revision.html#cb18-40"></a></span>
-<span id="cb18-41"><a href="progress-and-revision.html#cb18-41"></a>mutated_position &lt;-<span class="st"> </span><span class="kw">unique</span>(mutated_position)</span></code></pre></div>
+<span id="cb18-23"><a href="progress-and-revision.html#cb18-23"></a>  <span class="co"># update the list of all positions that mutated</span></span>
+<span id="cb18-24"><a href="progress-and-revision.html#cb18-24"></a>  mutated_position &lt;-<span class="st"> </span><span class="kw">c</span>(mutated_position, mutated_result[[<span class="dv">2</span>]])</span>
+<span id="cb18-25"><a href="progress-and-revision.html#cb18-25"></a>}</span>
+<span id="cb18-26"><a href="progress-and-revision.html#cb18-26"></a></span>
+<span id="cb18-27"><a href="progress-and-revision.html#cb18-27"></a><span class="co"># for everyone else</span></span>
+<span id="cb18-28"><a href="progress-and-revision.html#cb18-28"></a><span class="cf">for</span> (k <span class="cf">in</span> (n_disease<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>n){</span>
+<span id="cb18-29"><a href="progress-and-revision.html#cb18-29"></a>  <span class="co"># update mutated positions</span></span>
+<span id="cb18-30"><a href="progress-and-revision.html#cb18-30"></a>  mutated_result &lt;-<span class="st"> </span><span class="kw">mutater</span>(data[k,], SNP_location)</span>
+<span id="cb18-31"><a href="progress-and-revision.html#cb18-31"></a>  data[k,] &lt;-<span class="st"> </span>mutated_result[[<span class="dv">1</span>]]</span>
+<span id="cb18-32"><a href="progress-and-revision.html#cb18-32"></a>  </span>
+<span id="cb18-33"><a href="progress-and-revision.html#cb18-33"></a>  mutated_position &lt;-<span class="st"> </span><span class="kw">c</span>(mutated_position, mutated_result[[<span class="dv">2</span>]])</span>
+<span id="cb18-34"><a href="progress-and-revision.html#cb18-34"></a>}</span>
+<span id="cb18-35"><a href="progress-and-revision.html#cb18-35"></a></span>
+<span id="cb18-36"><a href="progress-and-revision.html#cb18-36"></a>mutated_position &lt;-<span class="st"> </span><span class="kw">unique</span>(mutated_position)</span></code></pre></div>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="progress-and-revision.html#cb19-1"></a><span class="co"># Delete the locations among the 15 pre-identified locations that are not selected to be part of a causal pathway</span></span>
 <span id="cb19-2"><a href="progress-and-revision.html#cb19-2"></a>del &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
 <span id="cb19-3"><a href="progress-and-revision.html#cb19-3"></a><span class="cf">for</span>(p <span class="cf">in</span> mutated_position){</span>
 <span id="cb19-4"><a href="progress-and-revision.html#cb19-4"></a>  count &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb19-5"><a href="progress-and-revision.html#cb19-5"></a></span>
-<span id="cb19-6"><a href="progress-and-revision.html#cb19-6"></a>  <span class="cf">if</span>(<span class="kw">all</span>(data[,p]<span class="op">==</span>reference[p])){</span>
-<span id="cb19-7"><a href="progress-and-revision.html#cb19-7"></a>      del &lt;-<span class="st"> </span><span class="kw">c</span>(del,p)</span>
-<span id="cb19-8"><a href="progress-and-revision.html#cb19-8"></a>  }</span>
-<span id="cb19-9"><a href="progress-and-revision.html#cb19-9"></a>}</span>
-<span id="cb19-10"><a href="progress-and-revision.html#cb19-10"></a></span>
-<span id="cb19-11"><a href="progress-and-revision.html#cb19-11"></a>mutated_position &lt;-<span class="st"> </span><span class="kw">setdiff</span>(mutated_position,del)</span></code></pre></div>
+<span id="cb19-5"><a href="progress-and-revision.html#cb19-5"></a>  <span class="cf">if</span>(<span class="kw">all</span>(data[,p]<span class="op">==</span>reference[p])){</span>
+<span id="cb19-6"><a href="progress-and-revision.html#cb19-6"></a>      del &lt;-<span class="st"> </span><span class="kw">c</span>(del,p)</span>
+<span id="cb19-7"><a href="progress-and-revision.html#cb19-7"></a>  }</span>
+<span id="cb19-8"><a href="progress-and-revision.html#cb19-8"></a>}</span>
+<span id="cb19-9"><a href="progress-and-revision.html#cb19-9"></a></span>
+<span id="cb19-10"><a href="progress-and-revision.html#cb19-10"></a>mutated_position &lt;-<span class="st"> </span><span class="kw">setdiff</span>(mutated_position,del)</span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="progress-and-revision.html#cb20-1"></a><span class="co"># Create a subset of the data for all positions with at least one mutation</span></span>
 <span id="cb20-2"><a href="progress-and-revision.html#cb20-2"></a><span class="cf">for</span>(position <span class="cf">in</span> mutated_position){</span>
 <span id="cb20-3"><a href="progress-and-revision.html#cb20-3"></a>  <span class="co"># return true if a mutation happens at the position</span></span>
@@ -305,209 +299,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb20-6"><a href="progress-and-revision.html#cb20-6"></a>sub_data &lt;-<span class="st"> </span>data[,mutated_position]</span>
 <span id="cb20-7"><a href="progress-and-revision.html#cb20-7"></a>position &lt;-<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span></code></pre></div>
 <p>Create the adjacency matrix A that contains all positions where there is at least one mutation across all subjects.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="progress-and-revision.html#cb21-1"></a>A =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">length</span>(mutated_position),<span class="kw">length</span>(mutated_position))</span>
-<span id="cb21-2"><a href="progress-and-revision.html#cb21-2"></a><span class="kw">rownames</span>(A) =<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span>
-<span id="cb21-3"><a href="progress-and-revision.html#cb21-3"></a><span class="kw">colnames</span>(A) =<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="progress-and-revision.html#cb21-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">length</span>(mutated_position),<span class="kw">length</span>(mutated_position))</span>
+<span id="cb21-2"><a href="progress-and-revision.html#cb21-2"></a><span class="kw">rownames</span>(A) &lt;-<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span>
+<span id="cb21-3"><a href="progress-and-revision.html#cb21-3"></a><span class="kw">colnames</span>(A) &lt;-<span class="st"> </span><span class="kw">colnames</span>(sub_data)</span>
 <span id="cb21-4"><a href="progress-and-revision.html#cb21-4"></a></span>
 <span id="cb21-5"><a href="progress-and-revision.html#cb21-5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(sub_data)){</span>
 <span id="cb21-6"><a href="progress-and-revision.html#cb21-6"></a>  count =<span class="st"> </span><span class="kw">sum</span>(sub_data[i,]<span class="op">==</span><span class="ot">TRUE</span>)</span>
-<span id="cb21-7"><a href="progress-and-revision.html#cb21-7"></a>  <span class="cf">if</span>(count<span class="op">&gt;=</span><span class="dv">2</span>){</span>
-<span id="cb21-8"><a href="progress-and-revision.html#cb21-8"></a>    loc =<span class="st">  </span><span class="kw">which</span>(<span class="kw">as.logical</span>(<span class="kw">as.vector</span>(sub_data[i,])),<span class="ot">TRUE</span>)</span>
-<span id="cb21-9"><a href="progress-and-revision.html#cb21-9"></a>    pairs_mat =<span class="st"> </span><span class="kw">combn</span>(loc,<span class="dv">2</span>)</span>
+<span id="cb21-7"><a href="progress-and-revision.html#cb21-7"></a>  <span class="cf">if</span>(count <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>){</span>
+<span id="cb21-8"><a href="progress-and-revision.html#cb21-8"></a>    loc &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">as.logical</span>(<span class="kw">as.vector</span>(sub_data[i,])),<span class="ot">TRUE</span>)</span>
+<span id="cb21-9"><a href="progress-and-revision.html#cb21-9"></a>    pairs_mat &lt;-<span class="st"> </span><span class="kw">combn</span>(loc,<span class="dv">2</span>)</span>
 <span id="cb21-10"><a href="progress-and-revision.html#cb21-10"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(pairs_mat)){</span>
 <span id="cb21-11"><a href="progress-and-revision.html#cb21-11"></a>    </span>
-<span id="cb21-12"><a href="progress-and-revision.html#cb21-12"></a>      r =<span class="st"> </span>pairs_mat[<span class="dv">1</span>,j]</span>
-<span id="cb21-13"><a href="progress-and-revision.html#cb21-13"></a>      c =<span class="st"> </span>pairs_mat[<span class="dv">2</span>,j]</span>
+<span id="cb21-12"><a href="progress-and-revision.html#cb21-12"></a>      r &lt;-<span class="st"> </span>pairs_mat[<span class="dv">1</span>,j]</span>
+<span id="cb21-13"><a href="progress-and-revision.html#cb21-13"></a>      c &lt;-<span class="st"> </span>pairs_mat[<span class="dv">2</span>,j]</span>
 <span id="cb21-14"><a href="progress-and-revision.html#cb21-14"></a></span>
-<span id="cb21-15"><a href="progress-and-revision.html#cb21-15"></a>      A[r,c] =<span class="st"> </span>A[r,c]<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb21-15"><a href="progress-and-revision.html#cb21-15"></a>      A[r,c] &lt;-<span class="st"> </span>A[r,c]<span class="op">+</span><span class="dv">1</span></span>
 <span id="cb21-16"><a href="progress-and-revision.html#cb21-16"></a>    }</span>
 <span id="cb21-17"><a href="progress-and-revision.html#cb21-17"></a>  }</span>
 <span id="cb21-18"><a href="progress-and-revision.html#cb21-18"></a>}</span>
 <span id="cb21-19"><a href="progress-and-revision.html#cb21-19"></a></span>
 <span id="cb21-20"><a href="progress-and-revision.html#cb21-20"></a>A &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">forceSymmetric</span>(A,<span class="st">&quot;U&quot;</span>))</span></code></pre></div>
-<p>Calculate the degree of the adjacency matrix. We can understand more of the matrix by calculating the average degree.</p>
+<p>Calculate the degree of the adjacency matrix. We can develop an intuitive understanding of the matrix by calculating the average degree.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="progress-and-revision.html#cb22-1"></a>deg &lt;-<span class="st"> </span><span class="kw">rowSums</span>(A)</span>
-<span id="cb22-2"><a href="progress-and-revision.html#cb22-2"></a>deg</span></code></pre></div>
-<pre><code>## X1643 X2897 X2915 X2379 X2218 X1262 X2622   X98 X1481 X2031 X1981 X2763 X2806 
-##    94   349   194    61   126   223   159   129    94   255     7    16    10 
-##  X179 X2966  X186  X749  X923   X77 X1302 X1386 X2799 X2968 X1567 X1764 X2195 
-##     5     5     6     6     6     9     9     9     9    19    15    11    14 
-## X2461 X2552  X392  X635 X2137 X2603 X1246 X1636 X1726 X2220 X1989 X2159 X2431 
-##     9    17     8    16     8     8    12     8    18     8    11    12     9 
-##  X759 X1022 X1841 X2334 X2406  X691  X802 X1284 X2305  X412  X526 X2463 X2592 
-##     9     9    15     9     9     8     8     8     8     7     6     8     6 
-## X1504 X1944 X2455 X2922  X409 X1408 X1908  X385 X1354 X1622 X2779  X361  X654 
-##     8     8     8     8     7    20     7     8     8    17    14    10    10 
-## X1378 X2074 X2237 X2962  X952 X2605    X8  X501 X1499 X2267 X2676  X604  X743 
-##    10    10    10    10     5     5    12    12    16    10    14    13    10 
-## X1429 X2857  X896  X953 X1762 X2515 X2677  X558  X991 X2434 X1198 X1648 X2905 
-##    10    16     7     7     7    15     8     5     6    10     7     7     7 
-## X1330 X2111  X137  X222 X2115 X2924 X2964 X1594 X2405 X2894  X727 X1424 X1581 
-##     6     6    14     9     9     9     9     7     7     7    11    11    11 
-## X2183 X2277 X2824 X2923  X708 X1097 X1067 X1691 X2558 X1722  X164  X485 X2700 
-##    11    11    11    14    16     6    12     7     7     7    10     7    10 
-## X1121 X1917 X2371 X1052 X2394 X2511  X357 X1986 X1991 X2866 X2018 X2501 X2687 
-##     7     7     7     7    10    11    18    13     8    10     5     6     6 
-## X2848   X94  X359 X1202 X2579 X1159 X1512  X656 X1574 X1693 X2812  X793 X1934 
-##     6     8     8     8     8     6     6     8     8     8     9     8     8 
-## X1935 X2222  X271  X986 X1739 X1833 X2016 X1127 X2029 X2453  X160  X321  X587 
-##    11     8     9    16    13     9     9     5     8     8    11    11    11 
-##  X974 X1309 X2341 X2577 X1122 X2411 X2836 X1081 X1197 X1820 X2194  X517 X2219 
-##    11    11    15    11     2     2     8     3     3     5     0     0     1 
-## X2366   X80  X457 X2110 X2878 X1012 X2906 X1435 X1800 X1179 X1705 X2171 X2977 
-##     5     3    11     3     3     0     0     1     1     6     4     3     3 
-##  X871 X1563 X2098 X2102 X2986  X609 X1069 X2097  X527 X1558  X767 X1329 X2576 
-##     2     7     3     3     3     5     2     2     1     1     2     2     2 
-## X1469 X1593 X2512 X2540 X2994 X2076 X2578  X351 X1014 X2280 X2435   X31  X319 
-##     5     4     4     4     8     1     2     7     9     3     3     5     5 
-## X1247 X1417 X1514 X2271  X648 X1570  X897 X1165 X2084 X2637 X1600 X2572 X2872 
-##     7     5     5     8     3     0     3     9    11     3     2     2     4 
-##    X5  X705 X2094 X2300 X2438   X15 X2533 X2769  X894 X1887 X2428  X965 X1219 
-##     9     6     5     4     8     2     2     2     2     2     2     3     3 
-## X1310  X273 X1740 X1458 X2145 X1928 X2363  X272 X1778 X2413 X1327 X1518 X1391 
-##     3     1     1     1     5     1     1     2     6     4     4     2     3 
-## X1678 X1886 X2099 X2546 X2581   X78  X260  X828 X2842  X972 X1254 X2454 X1146 
-##     3     4     5     1     1     1     2     2     2     0     1     5     5 
-## X1996 X2182  X368 X1615 X2104  X524 X2051 X2621 X2566  X311  X955 X2535  X374 
-##     2     3     2     3     2     2     2     2     1     8     2     2     9 
-##  X659  X863 X1462 X1716 X2143  X811 X1506 X1845 X2536  X761  X865  X617 X1534 
-##    11     7     5     5     5     3     3     5     4     1     1     5     7 
-## X2148 X2587 X2755 X2791  X199  X946 X1059 X1851  X350 X1308 X2132 X2850 X1298 
-##     5     5    11     8     5     4    10     6     3     3     5     5     1 
-## X2017 X2217   X66  X217  X141  X877 X1582  X815 X1416 X1352 X2117  X318 X1748 
-##     1     1     2     2     0     4     2     3     2     2     7    18     2 
-## X1968 X2560 X2395 X2703  X622  X644 X1675  X122  X343  X331 X1000 X1471 X2078 
-##     2     0     2     2    10     3     3     3     2     4     4     5     4 
-##  X252 X2370   X25 X2255 X2772  X101 X1372 X1257 X2015 X2993  X499 X1543 X2400 
-##     2     5     8     2     4     2     8     2     2     2     2     2     3 
-##   X67 X1738 X1788 X2392 X1072 X1214 X1382 X1699 X1875 X1910 X1997 X2737 X1216 
-##     7     3     3     3     5     5     6     5     5     2     3     2     2 
-## X1767 X2352  X434  X805  X515  X928 X1374 X2502  X548  X943  X316 X1703 X1109 
-##    17     2     2     2     3     4     3     3     1     1     1     1     4 
-## X1508 X1533 X1038 X1301 X1402 X1603 X2141 X2524   X23  X966 X1085 X1734  X478 
-##     1     0     5     9     5     8     5     5     2     2     2     0     7 
-##  X837 X2350 X2433 X2489  X401  X417  X570 X2191  X402  X852 X2550  X539  X975 
-##     8     5     5     5     4     3     3     5     4     4     4     4     9 
-## X1625 X1735 X1959 X1221 X1275 X1562 X1681 X2845  X371 X2937  X227 X1058 X1606 
-##     4     4     4     4     4    10     7     4     1     0     2     2     0 
-##  X274 X2519  X113  X796 X2003 X2283 X2717 X2971 X2880   X39  X642 X1110 X1969 
-##     1     1     6     6     6     6     9     6     4     4     4     4     4 
-## X2446  X801 X1345  X151  X363 X1487 X1890 X1049 X1184 X1476 X2636  X436 X1013 
-##     4     1     1     4     6    10     4     2     4     1     1    11     4 
-## X1697 X2626 X2668  X255  X554  X754 X1188 X1544 X2214 X2741 X1339 X1490  X500 
-##     4     4    10     2     3     2     3    11     4     3     2     2     1 
-## X1488 X2792 X1369 X1746 X1771 X1990 X2932 X1406 X1773 X1181  X585 X1057 X1498 
-##     5     2     0     6     3     3     5     1     1     1     5     5     5 
-## X1857 X1947 X2732  X211  X783 X1076 X1169  X624 X1305 X2648 X2881  X266  X235 
-##    11     7     9     4     6     4     6     2     2     3     2     0     4 
-##  X997 X2149 X1384 X2179 X1608  X551  X449  X795 X1343 X2945  X850 X2516 X2935 
-##     4     4     4     1     0     0     3     3     3     3     3     3     3 
-##  X305 X1088 X1383 X1434 X1467 X1689 X2620 X2719  X809  X844 X2466  X694 X1200 
-##    13     7     7     7     7     7     7     7     2     4     5     3     3 
-## X1753 X2314   X81 X1126 X1346 X1548 X1711 X1925  X914 X2238 X2570 X1805 X2241 
-##     4     3     9     6     4     4     4     4     4    13     4     2     2 
-## X2936 X1009 X1452 X1905  X591 X1665 X2886  X664 X1789  X405  X445  X956 X1263 
-##     2     2     2     5     2     2     7     7     7     0     2     2     6 
-## X1964 X2302 X1400 X1623 X2858 X1547 X2597  X394 X1113 X1418 X1682 X2655 X2776 
-##     2     1     2     2     2     1     1     6    10     6     6     6     6 
-##  X561  X658 X1001 X1782 X1030 X1137 X2286  X354  X208  X230  X381  X491  X294 
-##     0     5     3     3     4     4     4     0     6     4     4    10     1 
-## X1810 X1809 X1242 X2416 X2723 X2973  X326 X1120 X2072 X2121 X1864 X2239 X2849 
-##     1     3     0     2     2     2     3     3     3     3     3     3     3 
-##  X171 X1876 X2354 X2682 X1866  X544 X1680 X1690 X2678  X107  X505  X549 X1669 
-##     4     4     4     4     0     3     4     3     3     4     6     4     4 
-##  X641 X1977 X2625 X2882 X1463 X1916  X595 X2415 X2224 X2275 X2658  X836 X1834 
-##     3     3     3     3     1     1     3     3     1     1     4     2     2 
-## X2843 X1844   X58 X1353 X2483  X303  X464  X778 X2249 X2306  X220 X2718 X2902 
-##     2     1     1     1     2     7     9     5     2     2     2     2     2 
-##  X649 X2206  X450  X497  X546  X993 X1245 X2033 X2613  X625  X638 X2907 X2500 
-##     4     2    11     7     7     7     7    10     7     3     3     3     1 
-##  X110 X1232  X335  X680 X1720 X2200 X2296 X1068 X2840 X2263 X2698 X1869 X2025 
-##     2     2     5     5     9     5     8     2     3     3     3     3     3 
-##  X713  X446  X693 X1116 X2934  X486  X613 X1176 X2887 X1347 X1620 X1670  X144 
-##     2     1     0     3     0     4     8     4     4     3     3     3     2 
-## X2600 X2839   X88  X489  X631 X1936  X545  X775 X1138 X2285 X1399 X2831  X973 
-##     2     2     2     2     7     1     5     5     9     5     2     2     3 
-## X1387   X84 X1507 X1880 X2627 X2782  X637 X1395 X1511  X337 X1268 X1811  X572 
-##     3     6     7     8     4     4     3     3     3     3     3     5     3 
-## X2705 X2903 X1510 X2634 X1041 X1196 X1342 X1633 X2855  X935 X2120  X718 X2957 
-##     7     3     3     1     6     4     5     1     1     3     1     2     2 
-##  X403  X581 X1538 X1749  X414  X824 X1164 X2035 X2345   X55  X982 X1520 X1108 
-##    10     4     4     4     5     5     7    11     5     2     2     2     3 
-## X2343 X2958  X247 X2123 X2459  X483 X1813 X1984 X2460 X1926  X190 X2660 X2975 
-##     3     3     2     2     2     6     4     4     4     0     2     2     2 
-##  X150  X391 X1231 X1230 X1911 X1033 X1225 X1422 X1537 X1255 X1777 X2854  X559 
-##     3     3     3     4     2     0     3     3     3     4     9     9     0 
-##  X442 X1976  X746 X2929 X1047 X1355 X1546 X2724 X2623  X366 X1328 X2645  X977 
-##     2     0     1     1     3     3     3     3     0     8     4     6     1 
-## X2301 X1663 X2130 X2734   X71 X2000 X1351 X2248 X2987  X980 X2841  X240  X496 
-##     1     0     1     1     1     1     6     4     4     1     1     3     3 
-##  X590 X1941  X106  X950 X1577 X1839 X1701 X1987 X2584  X288 X2725 X1297  X280 
-##     3    13     3     3     3     3     2     2     4     1     1     0     0 
-## X1586 X1646 X2481   X38 X1118 X1559 X2861 X2868 X1909 X2414 X2588 X2846 X1895 
-##     2     2     6     3     3     2     2     2     3     3     3     5     1 
-## X2919 X1256 X2443 X1840 X2591 X2672  X241 X2399 X1492 X1556 X2954 X2181  X448 
-##     1     1     5     3     3     3     1     1     2     4     2     0     2 
-## X2236 X2336  X253  X415 X1515 X2004 X2680 X1684 X2721  X861  X612 X1698 X2042 
-##     3     2     5     5    10     5     5     1     1     0     4     4    10 
-## X2320  X226 X1082 X1312 X2055  X872 X1900  X258  X619 X1627  X204 X2274   X18 
-##     4     4     4     4     4     1     1     2     2     0     2     2     3 
-## X1480 X2101 X1150  X353  X797  X949   X95 X1075 X1956  X547 X1644 X2169 X2568 
-##     3     3     0     3     3     3     2     2     3     4     3     3     3 
-##  X396  X430  X710 X1501 X2675   X79  X209 X1806 X1974 X1513  X752 X2653 X2974 
-##     4     4     4     4     4     5     5     5     5     0     1     1     0 
-##  X140 X1315 X2216 X2368  X422  X531 X2059  X610 X2087  X289 X1787 X2469  X735 
-##     4     4     4     0     2     2     1     3     3     2     2     2     2 
-## X1761  X128 X2201 X1796 X2316 X2871  X864  X342  X513 X1092  X297 X1089 X1250 
-##     2     1     1     2     2     2     1     2     4     2     5     5     5 
-## X1411 X2333 X2574 X2163 X2381   X74 X1248 X1348 X1930 X2212  X225 X2681 X2798 
-##     5     5     5     4     4     6     6     6     6     6     4     4     1 
-##  X565  X575 X2295 X2319 X2860   X99 X1403 X2254 X1228 X1877  X194 X2026 X2528 
-##     6     6     6     6     6     4     4     8     1     1     2     5     2 
-## X2995 X2583 X2775 X2196  X383 X1385 X2816 X1742 X2125 X2327 X2833  X862 X1999 
-##     4     2     2     0     2     2     2     8     4     4     4     2     2 
-##  X881 X1505 X2691   X17 X1950 X2430 X2607 X2827  X939 X1187 X1972 X2429 X1988 
-##     2     2     2     4     6     4     3     3     4     4     4     4     5 
-## X2557 X2659  X773  X473 X1630 X1265 X1373 X2376 X2594 X2663 X2877  X283 X1210 
-##     2     2     1     2     2     6     2     0     2     2     2     2     2 
-## X1304   X76  X389  X726 X2279 X2293 X1975 X2109  X571 X2100  X742  X924 X2307 
-##     2    12    10     6     6     6     1     1     3     3     3     3     3 
-## X2322  X722  X740  X921 X1502 X1706 X1168  X265  X856 X2598 X2640 X1907 X2282 
-##     3     4     4     4     4     4     0     4     4     4     4     4     4 
-##  X130  X173 X1692 X1709 X1867 X2900  X999   X85 X2911  X741 X2256  X874 X2847 
-##     6     6     6     6     6     1     1     2     2     2     1     2     2 
-## X2124  X379  X900 X1921   X14 X2990  X686 X1803   X36  X148  X627 X2340 X2401 
-##     1     2     2     1     2     2     2     2     1     1     4     8     4 
-## X1525  X292  X925 X1167 X1939 X2242  X996 X2210 X2927 X1826  X302 X2768 X2043 
-##     0     4     4     4     4     4     2     2     2     1     1     1     0 
-## X1614 X2162  X162  X242  X933 X1621  X268  X830 X1317 X1524 X1585  X322  X616 
-##     2     2     4     4     4     1     1     1     7     2     2     4     4 
-##  X771 X1404 X2261  X834 X2313 X2615 X1432 X1491 X1715 X1599 X2273 X2318 X2139 
-##     4     4     4     2     2     2     1     1     0     4     4     4     0 
-##  X519 X1963  X395 X1037 X1005 X1356 X1381 X2795 X1955  X228 X2377  X388  X257 
-##     2     2     2     2     3     3     3     2     0     2     6     2     1 
-##  X603 X1786  X639  X695 X2657  X650 X1872 X1449  X347 X1923 X2527  X782 X1474 
-##     4     4     4     4     4     3     3     1     2     1     0     4     4 
-##  X855 X1545 X1775  X599 X2545 X2575  X360  X954 X1398 X2424 X2761  X300  X629 
-##     2     2     2     1     1     1     3     3     3     6     6     4     4 
-##  X846 X2105 X1060 X1616  X205  X299  X104  X458 X2758 X1696 X1967 X2531  X987 
-##     4     4     2     4     2     2     4     4     4     3     3     3     3 
-## X2005 X2030 X2382  X487 X2766   X51 X1971 X1889 X1073 X1208 X1420 X2823  X370 
-##     3     3     3     1     1     2     2     1     6     3     3     3     2 
-## X1571 X2829  X753  X200  X206  X890 X1065 X2036  X382 X2032 X2252 X2356 X1899 
-##     2     2     0     2     2     2     3     3     3     3     3     3     2 
-##  X432 X2673  X600  X963 X1045   X40  X423 X1657 X2669 X2722 X1123 X1552 X1566 
-##     1     1     3     3     3     0     3     3     3     2     3     3     3 
-## X1827 X1792 X2573    X1 X1568 X2388 X2695   X41  X278  X341  X447 X2939 X2165 
-##     3     3     3     4     4     4     4     6     6     6     6     6     2 
-## X2618  X188  X356  X666 X2362  X910 X1070 X1655 X1904 X1015 X2091 X1027 X1799 
-##     2     1     1     1     1     8     5     5     2     1     0     1     1 
-## X1413 X1729 X2253   X10  X739  X821 X1091 X1325 X2158 X1332  X484 X1218 X2095 
-##     2     2     2     5     5     5     7     5     5     0     6     6     6 
-## X1719 X1932 X1727 X1835 X2978 X2375  X968 X2777  X597 X1222 X1549 X2713  X125 
-##     3     3     0     2     3     0     3     3     4     4     4     4     2 
-##  X309 X2170  X441 X2013  X155  X378 
-##     2     0     1     1     1     1</code></pre>
+<span id="cb22-2"><a href="progress-and-revision.html#cb22-2"></a><span class="kw">mean</span>(deg)</span></code></pre></div>
+<pre><code>## [1] 5.331637</code></pre>
 
 </div>
 </div>

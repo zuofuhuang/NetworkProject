@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Initial Steps | MATH 479 Network Science Project</title>
   <meta name="description" content="Chapter 2 Initial Steps | MATH 479 Network Science Project" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Initial Steps | MATH 479 Network Science Project" />
   <meta property="og:type" content="book" />
@@ -206,7 +206,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="sample-mutations-for-patients-at-snp-locations" class="section level2">
 <h2><span class="header-section-number">2.3</span> Sample mutations for patients at SNP locations</h2>
-<p>We then sample mutations at SNP locations who were categorized at patients.</p>
+<p>We then sample mutations at SNP locations who were categorized as patients.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="initial-steps.html#cb4-1"></a>disease_people_row_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>, <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="initial-steps.html#cb5-1"></a>combo_number &lt;-<span class="st"> </span><span class="dv">15</span></span>
 <span id="cb5-2"><a href="initial-steps.html#cb5-2"></a>SNP_number &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, combo_number, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
@@ -257,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="sample-mutations-for-non-patients-at-snp-locations" class="section level2">
 <h2><span class="header-section-number">2.4</span> Sample mutations for non-patients at SNP locations</h2>
-<p>We then hypothesize that given a common condition, non-patients are also more likely to have mutations at the SNP locations than at most other locations (e.g. those locations that make human human).</p>
+<p>We then hypothesize that given a common condition, non-patients are also more likely to have mutations at the SNP locations than at most other locations (e.g. those locations that make human <em>human</em>).</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="initial-steps.html#cb8-1"></a><span class="co"># For those who are not set to have disease first (400)</span></span>
 <span id="cb8-2"><a href="initial-steps.html#cb8-2"></a><span class="co"># Loop over 50 genes, each one has some possibility to mutate. (More likely than the other nucleotides on the genome)</span></span>
 <span id="cb8-3"><a href="initial-steps.html#cb8-3"></a></span>
@@ -354,15 +354,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.8</span> Discussion</h2>
 <p>Problems with this approach, as we realized later, were that:</p>
 <ul>
-<li><p>We assumed genetic variants were the only reason people caused the disease, which was almost never the case.</p></li>
-<li><p>People who were initially categorized as non-patients and later changed their status are more than we expected. This casts doubt on the necessity of pre-determining the number of patients (100 in this case).</p></li>
+<li><p>We assumed genetic variant was the only reason people had the disease, which was almost never the case.</p></li>
+<li><p>People who were initially categorized as non-patients and later have their status changed are more than we expected. This casts doubt on the necessity of pre-determining the number of patients (100 in this case).</p></li>
 <li><p>Our approach was not fully supported by pre-existing literature. We pasted pieces of several literature into this approach. The probability of mutations at each location was also not documented.</p></li>
 <li><p>When we are simulating random variants, we set the number of changes to be size = (loci*locus_length/1000) as we believed the average probability of SNP is 1/1000. However, this is faulty because the size was fixed at the expected value of the number of mutation sites, without allowing any difference across individuals.</p>
 <ul>
 <li>Let <span class="math inline">\(\text{X = number of variants}\)</span> and <span class="math inline">\(\text{n = number of locations}\)</span>. <span class="math inline">\(X\)</span> follows the distribution: <span class="math inline">\(X \sim Bin(n,p)\)</span>. However, <span class="math inline">\(X\)</span> can vary as we draw from the Binomial distribution.</li>
 </ul></li>
 </ul>
-<p>With the reasons above, we keep digging into the literature and tested potential alternatives.</p>
+<p>With the reasons above, we keep digging into the literature and test potential alternatives.</p>
 
 </div>
 </div>

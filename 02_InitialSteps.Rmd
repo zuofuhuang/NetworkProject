@@ -32,7 +32,7 @@ reference_level_SNP_location <- reference[SNP_location]
 
 ## Sample mutations for patients at SNP locations
 
-We then sample mutations at SNP locations who were categorized at patients.
+We then sample mutations at SNP locations who were categorized as patients.
 
 ```{r eval=FALSE} 
 disease_people_row_number <- sample(1:500, 100, replace = FALSE)
@@ -96,7 +96,7 @@ for (i in 1:n_disease){
 
 ## Sample mutations for non-patients at SNP locations
 
-We then hypothesize that given a common condition, non-patients are also more likely to have mutations at the SNP locations than at most other locations (e.g. those locations that make human human). 
+We then hypothesize that given a common condition, non-patients are also more likely to have mutations at the SNP locations than at most other locations (e.g. those locations that make human *human*). 
 
 ```{r eval=FALSE}
 # For those who are not set to have disease first (400)
@@ -214,9 +214,9 @@ for (i in potential_SNP_places){
 
 Problems with this approach, as we realized later, were that:
 
-- We assumed genetic variants were the only reason people caused the disease, which was almost never the case. 
+- We assumed genetic variant was the only reason people had the disease, which was almost never the case. 
 
-- People who were initially categorized as non-patients and later changed their status are more than we expected. This casts doubt on the necessity of pre-determining the number of patients (100 in this case).
+- People who were initially categorized as non-patients and later have their status changed are more than we expected. This casts doubt on the necessity of pre-determining the number of patients (100 in this case).
 
 - Our approach was not fully supported by pre-existing literature. We pasted pieces of several literature into this approach. The probability of mutations at each location was also not documented.
 
@@ -224,4 +224,4 @@ Problems with this approach, as we realized later, were that:
 
   - Let $\text{X = number of variants}$ and $\text{n = number of locations}$. $X$ follows the distribution: $X \sim Bin(n,p)$. However, $X$ can vary as we draw from the Binomial distribution.
 
-With the reasons above, we keep digging into the literature and tested potential alternatives.
+With the reasons above, we keep digging into the literature and test potential alternatives.
