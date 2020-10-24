@@ -34,7 +34,7 @@ Enhanced Influence Model is an efficient algorithm to identify a significantly m
 
 The code below shows how we construct the enhanced influence model from scratch.
 
-```{r}
+```{r, eval=FALSE}
 # normalize A
 A_normalized <- matrix(0,nrow(A),nrow(A))
 
@@ -55,9 +55,7 @@ S_normalized <- diag(rowSums(A_normalized))
 gamma <- 5
 L_gamma <- S_normalized+diag(gamma,nrow(A))-A_normalized
 inv_L_gamma <- solve(L_gamma)
-```
 
-```{r}
 # compute symmetric importance score using Enhanced Influence Model
 W <- matrix(NA, nrow(A),ncol(A))
 for(i in 1:(nrow(A)-1)){
@@ -84,14 +82,14 @@ removeColdEdge <- function(mat,W,delta){
 }
 ```
 
-```{r}
+```{r,eval=FALSE}
+# get the filtered network
 Hotnet <- removeColdEdge(A_normalized,W,0.04)
 Hotnet <- as.matrix(forceSymmetric(Hotnet,"U"))
 colnames(Hotnet) <- position
 rownames(Hotnet) <- position
-```
 
-```{r}
+# convert the adjacency matrix to an edge list
 HotEdges <- melt(Hotnet) %>% 
   rename(Source = Var1, Target = Var2, Weight = value) %>%
   mutate(Type = "Undirected") %>% 
@@ -101,19 +99,7 @@ HotEdges <- melt(Hotnet) %>%
 ```
 
 ```{r}
-edges.copy <- edges
-edges.copy <- edges.copy %>%
-  select(Source,Target)
-colnames(edges.copy) <- c("from","to")
-
-g <- graph_from_data_frame(edges.copy, directed=FALSE, vertices=nodes)
-
-# get a list of connected components
-clu <- components(g)
-res <- groups(clu)
-```
-
-```{r}
+# helper function that returns the number of connected components of size >s
 getNumComp <- function(edges,nodes,s){
   edges.copy = edges
   edges.copy = edges.copy%>%select(Source,Target)
@@ -133,7 +119,7 @@ getNumComp <- function(edges,nodes,s){
 }
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, eval=FALSE, results='hide'}
 # The number of components is 13.
 getNumComp(HotEdges,nodes,3)
 ```
@@ -206,7 +192,86 @@ $$\text{Figure 5.2: Modularity Class Breakdown within the Major Component when d
 
 Figure 5.2 shows after modularity decomposition, our algorithm successfully captures most of the structures of the 4 pre-selected genetic pathways we listed in Chapter 4.2. The pink modularity class corresponds perfectly to the first pathway (X2699, X1320, X520, X2881); out of the 5 nodes classified in the orange modularity class, 4 of them come from the second pathway (X2766, X1237, X2075, X521, X526) and 4 from the third pathway (X526, X2766, X2106, X2075, X1533); the 3 nodes in the green modularity class are 3 of the 5 SNP locations from the fourth pathway (X2699, X521, X2881, X1533, X1627). Note that nodes with high closeness centralities such as X521, X1533, and X2699 happen to be those SNP locations shared by multiple pathways.
 
-The fact that the fourth pathway captured by our algorithm appears to be most imperfect one might be explained by the fact that 3 of its components are shared with other pathways. As our algorithm obtains subgraphs by removing edges, we conjecture that shared SNP locations by multiple pathways makes the it hard for the algorithm to make a perfect division between pathways. To confirm our thought, we simulated dataset under a simplied situation where no two pathways share a mutural SNP location and presented the results below.
+The fact that the fourth pathway captured by our algorithm appears to be most imperfect one might be explained by the fact that 3 of its components are shared with other pathways. As our algorithm obtains subgraphs by removing edges, we conjecture that shared SNP locations by multiple pathways makes the it hard for the algorithm to make a perfect division between pathways. To confirm our thought, we simulated 50 dataset under a simplified situation where no two pathways share a mutual SNP location and presented the results below.
+
+We used the codes below to help determine an appropriate value for the threshold $\delta$:
+
+```{r, eval=FALSE}
+# generate 50 datasets under the null hypothesis
+disease_status_mat <- matrix(NA,50,500)
+for(i in 1:50){
+  disease_status_mat[i,] <- permute(disease_status_vector)
+}
+
+# compute scores for each gene in the 50 datasets
+pVal.lst <- list()
+for(k in 1:50){
+  res <- c()
+  for (i in 1:length(position)){
+    outcome <- "disease_status_mat[k,]"
+    variable <- position[i]
+    f <- as.formula(paste(outcome, 
+        paste(variable), 
+        sep = " ~ "))
+    model <- lm(f, data = sub_data)
+    res <- c(res,summary(model)$coefficient[,4][2])
+    pVal.lst[[k]] = res
+  }
+  
+}
+score.lst = list()
+for(k in 1:50){
+  score.lst[[k]] = -2*log(pVal.lst[[k]])
+}
+
+# apply the Enhanced Influence Model to the 50 datasets
+W.lst = list()
+
+for(k in 1:50){
+  W.lst[[k]] = matrix(NA, nrow(A),ncol(A))
+  for(i in 1:(nrow(A)-1)){
+    for(j in (i+1):nrow(A)){
+      W.lst[[k]][i,j] = min(inv_L_gamma[i,j],inv_L_gamma[j,i])*max(score.lst[[k]][i],score.lst[[k]][j])
+    }
+  }
+}
+
+# a helper function that returns the average number of connected components
+# of size greater than s under the null hypothesis using delta
+aveNumComp_s <- function(delta, s=3){
+
+  Hotnet.lst = list()
+  for(k in 1:50){
+    Hotnet.lst[[k]] = removeColdEdge(A_normalized,W.lst[[k]],delta)
+    Hotnet.lst[[k]] = as.matrix(forceSymmetric(Hotnet.lst[[k]],"U"))
+  }
+
+  HotEdges.lst = list()
+  for(k in 1:50){
+    colnames(Hotnet.lst[[k]]) = position
+    rownames(Hotnet.lst[[k]]) = position
+    HotEdges.lst[[k]]= melt(Hotnet.lst[[k]]) %>% 
+      rename(Source = Var1, Target = Var2, Weight = value)%>%
+      mutate(Type = "Undirected") %>% 
+      select(Source, Target, Type,Weight) %>% 
+      filter(Weight != 0)%>%select(-Weight)
+  }
+
+  numComp_s = rep(0,50)
+  for(k in 1:50){
+    numComp_s[k] = getNumComp(HotEdges.lst[[k]],nodes,s)
+    
+  }
+  return(mean(numComp_s))
+}
+```
+
+```{r eval=FALSE}
+# Compute the average number of connected components of size>3
+# as a function of delta ranging from 0.01 to 0.09
+x <- seq(0.01,0.09, 0.01)
+sapply(x, aveNumComp_s,s=3)
+```
 
 ## Alternative Situation
 
@@ -252,89 +317,3 @@ width=50% }
 
 $$\text{Figure 5.5: All 4 Pathways Identified under Scenario B}$$
 
-## Code
-
-Below is the code that supports our work in this chapter.
-
-```{r}
-disease_status_mat <- matrix(NA,50,500)
-for(i in 1:50){
-  disease_status_mat[i,] <- permute(disease_status_vector)
-}
-```
-
-```{r}
-pVal.lst <- list()
-for(k in 1:50){
-  res <- c()
-  for (i in 1:length(position)){
-    outcome <- "disease_status_mat[k,]"
-    variable <- position[i]
-    f <- as.formula(paste(outcome, 
-        paste(variable), 
-        sep = " ~ "))
-    model <- lm(f, data = sub_data)
-    res <- c(res,summary(model)$coefficient[,4][2])
-    pVal.lst[[k]] = res
-  }
-  
-}
-score.lst = list()
-for(k in 1:50){
-  score.lst[[k]] = -2*log(pVal.lst[[k]])
-}
-```
-
-
-```{r}
-W.lst = list()
-
-for(k in 1:50){
-  W.lst[[k]] = matrix(NA, nrow(A),ncol(A))
-  for(i in 1:(nrow(A)-1)){
-    for(j in (i+1):nrow(A)){
-      W.lst[[k]][i,j] = min(inv_L_gamma[i,j],inv_L_gamma[j,i])*max(score.lst[[k]][i],score.lst[[k]][j])
-    }
-  }
-}
-```
-
-```{r}
-aveNumComp_s <- function(delta, s=3){
-  # list of adjacency matrices for HotNet for 50 datasets under the null hypothesis
-  # under the given threshold delta
-  Hotnet.lst = list()
-  for(k in 1:50){
-    Hotnet.lst[[k]] = removeColdEdge(A_normalized,W.lst[[k]],delta)
-    Hotnet.lst[[k]] = as.matrix(forceSymmetric(Hotnet.lst[[k]],"U"))
-  }
-
-  HotEdges.lst = list()
-  for(k in 1:50){
-    colnames(Hotnet.lst[[k]]) = position
-    rownames(Hotnet.lst[[k]]) = position
-    HotEdges.lst[[k]]= melt(Hotnet.lst[[k]]) %>% 
-      rename(Source = Var1, Target = Var2, Weight = value)%>%
-      mutate(Type = "Undirected") %>% 
-      select(Source, Target, Type,Weight) %>% 
-      filter(Weight != 0)%>%select(-Weight)
-  }
-
-  numComp_s = rep(0,50)
-  for(k in 1:50){
-    numComp_s[k] = getNumComp(HotEdges.lst[[k]],nodes,s)
-    
-  }
-  return(mean(numComp_s))
-}
-```
-
-```{r eval=FALSE}
-x <- seq(0.01,0.09, 0.01)
-sapply(x, aveNumComp_s,s=3)
-```
-
-```{r eval=FALSE}
-x <- seq(0.01,0.09, 0.01)
-sapply(x, aveNumComp_s,s=2)
-```

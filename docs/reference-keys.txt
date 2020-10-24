@@ -21,7 +21,6 @@ graph-diffusion-kernel
 enhanced-influence-model-1
 determine-value-for-cold-edge-threshold-delta
 alternative-situation
-code
 discussion-and-future-work
 what-did-we-achieve
 limitations
